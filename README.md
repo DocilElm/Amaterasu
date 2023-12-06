@@ -1,0 +1,2 @@
+# Amaterasu
+ChatTriggers Library
