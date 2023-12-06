@@ -1,0 +1,59 @@
+{
+    "Button": {
+        "backgroundBox": [0, 0, 0, 80],
+        "backgroundBox1": [0, 0, 0, 0],
+        "lines": [0, 0, 0, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseClick": [255, 255, 255, 80],
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [0, 0, 0, 0]
+    },
+    "TextInput": {
+        "backgroundBox": [0, 0, 0, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 255]
+    },
+    "Checkbox": {
+        "enabled": [255, 255, 255, 80],
+        "disabled": [0, 0, 0, 80]
+    },
+    "Switch": {
+        "backgroundBox": [0, 0, 0, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "enabled": [255, 255, 255, 80],
+        "disabled": [0, 0, 0, 80]
+    },
+    "Slider": {
+        "backgroundBar": [0, 0, 0, 0],
+        "backgroundBox": [255, 255, 255, 80],
+        "sliderBox": [0, 0, 0, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 80]
+    },
+    "Selection": {
+        "backgroundBar": [0, 0, 0, 80],
+        "leftArrow": "<",
+        "rightArrow": ">",
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 255]
+    },
+    "ColorPicker": {
+        "backgroundBox": [0, 0, 0, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 255]
+    },
+    "Text": {
+        "textScale": 1,
+        "textColor": [255, 255, 255, 255]
+    }
+}
