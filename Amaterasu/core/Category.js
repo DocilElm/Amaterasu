@@ -3,7 +3,10 @@ import Button1Element from "../../DocGuiLib/elements/Button1"
 import ButtonElement from "../../DocGuiLib/elements/Button"
 import CheckboxElement from "../../DocGuiLib/elements/Checkbox"
 import SliderElement from "../../DocGuiLib/elements/Slider"
+import SelectionElement from "../../DocGuiLib/elements/Selection"
 import TextDescriptionElement from "../../DocGuiLib/elements/TextDescription"
+import TextInputElement from "../../DocGuiLib/elements/TextInput"
+import ColorPickerElement from "../../DocGuiLib/elements/ColorPicker"
 import { CenterConstraint, CramSiblingConstraint, ScrollComponent, SiblingConstraint, UIRoundedRectangle } from "../../Elementa"
 import ConfigTypes from "./ConfigTypes"
 
@@ -78,6 +81,7 @@ export default class Category {
         }
 
         this.rightBlock.unhide(true)
+        this.rightBlock.scrollToTop(true)
 
         this.parentClass.currentCategory = this.categoryName
         if (!this.parentClass.oldCategory) this.parentClass.oldCategory = this.categoryName
@@ -122,7 +126,7 @@ export default class Category {
 
                 case ConfigTypes.SLIDER:
                     this._addSlider(defaultValue, value, text, description, (sliderValue) => {
-                        if (typeof(sliderValue) !== "number") return
+                        if (typeof(sliderValue) !== "number" || !this.selected) return
         
                         obj.value = sliderValue
                     })
@@ -130,6 +134,30 @@ export default class Category {
 
                 case ConfigTypes.BUTTON:
                     this._addButton(name, text, description)
+                    break
+
+                case ConfigTypes.SELECTION:
+                    this._addSelection(defaultValue, value, text, description, (selectionIndex) => {
+                        if (typeof(selectionIndex) !== "number" || !this.selected) return
+
+                        obj.value = selectionIndex
+                    })
+                    break
+
+                case ConfigTypes.TEXTINPUT:
+                    this._addTextInput(value, text, description, (inputText) => {
+                        if (!this.selected) return
+
+                        obj.value = inputText
+                    })
+                    break
+
+                case ConfigTypes.COLORPICKER:
+                    this._addColorPicker(value, text, description, ([r, g, b]) => {
+                        if (!this.selected) return
+
+                        obj.value = [r, g, b]
+                    })
                     break
             
                 default:
@@ -170,6 +198,51 @@ export default class Category {
         return this
     }
 
+    _addSelection(defaultValues = [], values, string, description, fn) {
+        const textDescription = this._makeTextDescription(string, description)
+
+        new SelectionElement(defaultValues, values, 0, 0, 17, 30)
+            ._setPosition(
+                (5).pixel(true),
+                new CenterConstraint()
+            )
+            .onMouseClickEvent(fn)
+            ._create(this.handler.getColorScheme())
+            .setChildOf(textDescription)
+
+        return this
+    }
+
+    _addTextInput(value, string, description, fn) {
+        const textDescription = this._makeTextDescription(string, description)
+
+        new TextInputElement(value, 0, 0, 17, 30)
+            ._setPosition(
+                (5).pixel(true),
+                new CenterConstraint()
+            )
+            .onKeyTypeEvent(fn)
+            ._create(this.handler.getColorScheme())
+            .setChildOf(textDescription)
+
+        return this
+    }
+
+    _addColorPicker(value, string, description, fn) {
+        const textDescription = this._makeTextDescription(string, description)
+
+        new ColorPickerElement(value, 0, 0, 17, 30)
+            ._setPosition(
+                (5).pixel(true),
+                new CenterConstraint()
+            )
+            .onKeyTypeEvent(fn)
+            ._create(this.handler.getColorScheme())
+            .setChildOf(textDescription)
+
+        return this
+    }
+
     /**
      * - Makes a button with title and description
      * @param {String} name 
@@ -182,7 +255,7 @@ export default class Category {
 
         // Making a variable for it so we can further more change this element
         // and also add it to the [Map]
-        const button = new ButtonElement("Click", 0, 0, 13, 30)
+        const button = new ButtonElement("Click", 0, 0, 15, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()

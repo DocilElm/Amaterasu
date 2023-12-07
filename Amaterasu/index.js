@@ -19,7 +19,10 @@ const defaultConfig = {
         ["gemstoneProfit", "Gemstone Mining Proift", "Displays the amount of money mining you've made this session", ConfigTypes.TOGGLE, false]
     ],
     "Kuudra": [
-        ["ftDisplay", "Fatal Tempo Display", "Displays the current fatal tempo amount", ConfigTypes.TOGGLE, false]
+        ["ftDisplay", "Fatal Tempo Display", "Displays the current fatal tempo amount", ConfigTypes.TOGGLE, false],
+        ["customItem", "Custom Item", "Some random example text here", ConfigTypes.SELECTION, ["item", "item2", "item3"], 2],
+        ["customInput", "Custom Input", "Some random example text here", ConfigTypes.TEXTINPUT, "testing input"],
+        ["customColorPicker", "Custom Color Picker", "Some random example text here", ConfigTypes.COLORPICKER, "FFFFFF"]
     ]
 }
 
