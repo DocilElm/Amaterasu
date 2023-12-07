@@ -4,12 +4,12 @@ import Settings from "./core/Settings"
 const defaultConfig = {
     "Dungeons": [
         ["runSplits", "Run Splits", "Displays your current dungeon's run splits", ConfigTypes.TOGGLE, false],
-        ["bossSplits", "Boss Splits", "Displays your current dungeon's boss splits", ConfigTypes.SLIDER, [0, 10, 1]],
+        ["bossSplits", "Boss Splits", "Displays your current dungeon's boss splits", ConfigTypes.SLIDER, [0, 10], 1],
         ["someButton", "Feature button", "This is just an example of a button", ConfigTypes.BUTTON, 0]
     ],
     "Fishing": [
         ["bossBar", "Boss Bar", "Displays a boss bar on creatures that you can lootshare from", ConfigTypes.TOGGLE, false],
-        ["titleTimer", "Title Timer","Displays the hypixel's timer as a client title", ConfigTypes.SLIDER, [0, 10, 1]],
+        ["titleTimer", "Title Timer","Displays the hypixel's timer as a client title", ConfigTypes.SLIDER, [0, 10], 1],
         ["someButton2", "Feature button 2", "This is just an example of a button", ConfigTypes.BUTTON, 0]
     ],
     "Garden": [
@@ -25,9 +25,7 @@ const defaultConfig = {
 
 const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme.json", defaultConfig)
     .setCommand("amat")
-
-setting
     .onClick("Dungeons", "someButton", () => ChatLib.chat("Test"))
     .onClick("Fishing", "someButton2", () => ChatLib.chat("Test 2"))
 
-ChatLib.chat(setting.settings.runSplits) // false/true
+// ChatLib.chat(setting.settings.runSplits) // false/true

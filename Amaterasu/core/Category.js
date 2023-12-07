@@ -35,11 +35,8 @@ export default class Category {
             .setHeight((100).percent())
             .setChildOf(this.mainRightBlock)
 
-        // Hide/Unhides this category from the main block
-        this._refresh()
-
         // Adding side button with the category name into the sidebar
-        new Button1Element(this.categoryName, 0, 0, 80, 8)
+        this.sidebarButton = new Button1Element(this.categoryName, 0, 0, 80, 8)
             ._setPosition(
                 (1).pixel(),
                 new SiblingConstraint()
@@ -51,8 +48,13 @@ export default class Category {
                 this._setSelected(true)
                 this.parentClass._checkCategories()
             })
+        
+        this.sidebarButton
             ._create(this.handler.getColorScheme())
             .setChildOf(this.leftBlock)
+
+        // Hide/Unhides this category from the main block
+        this._refresh()
     }
 
     /**
@@ -68,7 +70,12 @@ export default class Category {
     }
 
     _refresh() {
-        if (!this.selected) return this.rightBlock.hide(true), this.rightBlock.loseFocus()
+        if (!this.selected) {
+            this.rightBlock.hide(true)
+            this.rightBlock.loseFocus()
+            
+            return
+        }
 
         this.rightBlock.unhide(true)
 
@@ -104,7 +111,7 @@ export default class Category {
         const configSettings = configCategory.settings
 
         configSettings.forEach(obj => {
-            const { name, text, description, type, value } = obj
+            const { name, text, description, type, defaultValue, value } = obj
 
             switch (type) {
                 case ConfigTypes.TOGGLE:
@@ -114,10 +121,10 @@ export default class Category {
                     break
 
                 case ConfigTypes.SLIDER:
-                    this._addSlider(value, text, description, (sliderValue) => {
+                    this._addSlider(defaultValue, value, text, description, (sliderValue) => {
                         if (typeof(sliderValue) !== "number") return
         
-                        obj.value[2] = sliderValue
+                        obj.value = sliderValue
                     })
                     break
 
@@ -148,10 +155,10 @@ export default class Category {
         return this
     }
 
-    _addSlider(values = [], string, description, fn) {
+    _addSlider(defaultValues = [], values, string, description, fn) {
         const textDescription = this._makeTextDescription(string, description)
 
-        new SliderElement(values, 0, 0, 15, 30)
+        new SliderElement(defaultValues, values, 0, 0, 15, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()

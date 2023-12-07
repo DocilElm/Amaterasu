@@ -25,6 +25,11 @@ export default class Settings {
         this._init()
     }
 
+    /**
+     * - Sets the command to open this gui
+     * @param {String} name 
+     * @returns this for method chaining
+     */
     setCommand(name) {
         this.handler.setCommand(name)
 
