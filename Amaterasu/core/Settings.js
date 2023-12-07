@@ -2,24 +2,33 @@ import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
 import { CenterConstraint, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 import Category from "./Category"
+import Configs from "./Config"
 
 export default class Settings {
-    constructor(configPath, colorSchemePath, moduleName, commandName) {
+    constructor(moduleName, configPath, colorSchemePath, defaultConfig) {
         this.moduleName = moduleName
         this.configPath = configPath
-        this.handler = new HandleGui(colorSchemePath, this.moduleName).setCommand(commandName)
-        this.config = JSON.parse(FileLib.read(this.moduleName, this.configPath)) ?? []
-        this.settings = null
+        this.defaultConfig = defaultConfig
+        this.handler = new HandleGui(colorSchemePath, this.moduleName)
 
+        // Config variables
+        this.configsClass = new Configs(this.moduleName, this.configPath, this.defaultConfig)
+        this.config = this.configsClass.config
+        this.settings = this.configsClass._normalizeSettings()
+
+        // Categories variables
         this.categories = new Map()
         this.currentCategory = null
         this.oldCategory = null
 
+        // Init functions
         this._init()
-        this._makeNormalSettings()
+    }
 
-        // Registers
-        register("gameUnload", () => this._saveToFile())
+    setCommand(name) {
+        this.handler.setCommand(name)
+
+        return this
     }
 
     _init() {
@@ -87,33 +96,6 @@ export default class Settings {
             // Reset to default values
             selectedAmount = 0
         })
-    }
-
-    /**
-     * - Makes the current config into an actual dev friendly format
-     * e.g instead of [Settings: { name: "configName", text: "config stuff" ...etc }]
-     * converts it into { configName: false }
-     */
-    _makeNormalSettings() {
-        this.settings = {}
-
-        this.config.forEach(obj => {
-            obj.settings.forEach(settingsObj => {
-                this.settings[settingsObj.name] = settingsObj.value
-            })
-        })
-    }
-
-    /**
-     * - Saves the current config json into the module's given config file path
-     */
-    _saveToFile() {
-        FileLib.write(
-            this.moduleName,
-            this.configPath,
-            JSON.stringify(this.config, null, 4),
-            true
-        )
     }
 
     /**
