@@ -28,7 +28,7 @@ export default class Category {
         // is the one currently being selected
         this.selected = selected
         // This map holds all of the buttons created
-        // this is to ensure the user can use their own function for the click method it
+        // this is to ensure the user can use their own function for the click method
         this.buttonsFn = new Map()
 
         this.rightBlock = new ScrollComponent("no elements", 5.0)

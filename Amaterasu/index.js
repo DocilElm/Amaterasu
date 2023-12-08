@@ -29,5 +29,5 @@ import Settings from "./core/Settings"
 
 const defaultConfig = JSON.parse(FileLib.read("Amaterasu", "data/defaultSettings.json"))
 
-const setting = new Settings("Amaterasu", "data/settings2.json", "data/ColorScheme.json", defaultConfig, "&&aAmaterasu Settings")
+const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme.json", defaultConfig, "&&aAmaterasu Settings")
     .setCommand("amat")

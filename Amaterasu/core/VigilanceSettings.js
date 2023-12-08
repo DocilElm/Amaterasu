@@ -10,10 +10,14 @@ const localDir = "./config/ChatTriggers/modules/"
  * @param {Boolean} overWrite Whether it should overwrite the old file if it exists or not (false by default)
  * @returns 
  */
-export const convertToJSON = (obj = {}, objFn = {}, moduleName, overWrite = false, moduleToConvert = null) => {
+export const convertToJSON = (instance, moduleName, overWrite = false, moduleToConvert = null) => {
     if (FileLib.exists(`${localDir}${moduleName}/data/defaultSettings.json`) && !overWrite) return
     if (moduleToConvert && moduleName !== moduleToConvert) return
 
+    const currentInstance = instance.__proto__
+    const obj = currentInstance.__config_props__
+    const objFn = currentInstance.__config_functions__
+    
     let resultObj = {}
 
     Object.keys(obj).forEach(key => {
