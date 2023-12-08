@@ -55,5 +55,9 @@
     "Text": {
         "textScale": 1,
         "textColor": [255, 255, 255, 255]
+    },
+    "Amaterasu": {
+        "backgroundBox": [0, 0, 0, 80],
+        "textDescriptionBg": [0, 0, 0, 80]
     }
 }

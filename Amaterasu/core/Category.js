@@ -93,10 +93,10 @@ export default class Category {
             .setY(new CramSiblingConstraint(5))
             .setWidth((85).percent())
             .setHeight((20).percent())
-            .setColor(ElementUtils.getJavaColor([0, 0, 0, 80]))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.textDescriptionBg))
             .setChildOf(this.rightBlock)
 
-        new TextDescriptionElement(string, description, false, 0, 0, 80, 80)
+        new TextDescriptionElement(string, description, false, 0, 0, 80, 75)
             ._setPosition(
                 (3).pixel(),
                 new CenterConstraint()

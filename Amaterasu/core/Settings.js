@@ -5,11 +5,13 @@ import Category from "./Category"
 import Configs from "./Config"
 
 export default class Settings {
-    constructor(moduleName, configPath, colorSchemePath, defaultConfig) {
+    constructor(moduleName, configPath, colorSchemePath, defaultConfig, title, sortCategories = true) {
         this.moduleName = moduleName
         this.configPath = configPath
         this.defaultConfig = defaultConfig
         this.handler = new HandleGui(colorSchemePath, this.moduleName)
+        this.title = title?.replace("&&", "§") ?? `${this.moduleName} Settings`
+        this.sortCategories = sortCategories
 
         // Config variables
         this.configsClass = new Configs(this.moduleName, this.configPath, this.defaultConfig)
@@ -42,9 +44,9 @@ export default class Settings {
             .setY((20).percent())
             .setWidth((65).percent())
             .setHeight((50).percent())
-            .setColor(ElementUtils.getJavaColor([0, 0, 0, 80]))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
-        this.title = new UIText("§aSettings")
+        this.title = new UIText(this.title)
             .setX(new CenterConstraint())
             .setY((3).percent())
             .setChildOf(this.mainBlock)
@@ -65,6 +67,12 @@ export default class Settings {
             .setChildOf(this.mainBlock)
 
         this.handler.draw(this.mainBlock, false)
+
+        if (this.sortCategories) this.config.sort((a, b) => {
+            if (a.category < b.category) return -1
+            else if (a.category > b.category) return 1
+            return 0
+        })
 
         this.config.forEach((obj, index) => {
             const categoryName = obj.category
