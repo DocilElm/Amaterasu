@@ -5,12 +5,12 @@ import Category from "./Category"
 import Configs from "./Config"
 
 export default class Settings {
-    constructor(moduleName, configPath, colorSchemePath, defaultConfig, title, sortCategories = true) {
+    constructor(moduleName, configPath, colorSchemePath, defaultConfig, titleText, sortCategories = true) {
         this.moduleName = moduleName
         this.configPath = configPath
         this.defaultConfig = defaultConfig
         this.handler = new HandleGui(colorSchemePath, this.moduleName)
-        this.title = title?.replace("&&", "§") ?? `${this.moduleName} Settings`
+        this.titleText = titleText?.replace("&&", "§") ?? `${this.moduleName} Settings`
         this.sortCategories = sortCategories
 
         // Config variables
@@ -46,7 +46,7 @@ export default class Settings {
             .setHeight((50).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
-        this.title = new UIText(this.title)
+        this.title = new UIText(this.titleText)
             .setX(new CenterConstraint())
             .setY((3).percent())
             .setChildOf(this.mainBlock)
@@ -120,6 +120,63 @@ export default class Settings {
      */
     onClick(categoryName, featureName, fn) {
         this.categories.get(categoryName).buttonsFn.get(featureName).onMouseClickEvent(fn)
+
+        return this
+    }
+
+    /**
+     * - Creates and adds an element with the given params into the [JSON] file
+     * @param {String} categoryName 
+     * @param {String} configName The config name to use for settings
+     * @param {String} text The text to display for this element
+     * @param {String} description The description to display for this element
+     * @param {ConfigType} type The config type of this element
+     * @param {*} defaultValue 
+     * @param {*} value 
+     * @param {String} hideFeatureName The feature name that should be enabled for this element to unhide (currently disabled)
+     * @param {Boolean} overWrite Whether it should overwrite the setting if it's found in the [JSON] or not (false by default)
+     * @returns this for method chaining
+     */
+    addElement(categoryName, configName, text, description, type, defaultValue, value = null, hideFeatureName = null, overWrite = false) {
+        const categoryObj = this.config.find(obj => obj.category === categoryName)
+
+        if (!categoryObj || !overWrite && categoryObj.settings.some(obj => obj.name === configName)) return this
+
+        categoryObj.settings.push({
+            name: configName,
+            text: text,
+            description: description,
+            type: type,
+            defaultValue: defaultValue,
+            value: value ?? defaultValue,
+            hideFeatureName: hideFeatureName
+        })
+
+        this.handler.getWindow().clearChildren()
+        this._init()
+
+        return this
+    }
+
+    /**
+     * - Removes an element that matches the given params
+     * @param {String} categoryName 
+     * @param {String} configName 
+     * @returns this for method chaining
+     */
+    removeElement(categoryName, configName) {
+        const categoryObj = this.config.find(obj => obj.category === categoryName)
+
+        if (!categoryObj || !categoryObj.settings.some(obj => obj.name === configName)) return this
+
+        categoryObj.settings.forEach((obj, index) => {
+            if (obj.name !== configName) return
+
+            categoryObj.settings.splice(index, 1)
+        })
+
+        this.handler.getWindow().clearChildren()
+        this._init()
 
         return this
     }

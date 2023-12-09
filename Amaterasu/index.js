@@ -31,3 +31,5 @@ const defaultConfig = JSON.parse(FileLib.read("Amaterasu", "data/defaultSettings
 
 const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme.json", defaultConfig, "&&aAmaterasu Settings")
     .setCommand("amat")
+    .addElement("Dungeons", "testFeature", "Testing feature", "Some example text here", ConfigTypes.BUTTON, 0)
+    .removeElement("Dungeons", "testFeature")

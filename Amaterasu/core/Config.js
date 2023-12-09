@@ -19,7 +19,7 @@ export default class Configs {
      * @returns this for method chaining
      */
     _makeSettings(category, array = [], overWrite = false) {
-        const [ name, text, description, type, defaultValues, value ] = array
+        const [ name, text, description, type, defaultValues, value, hideFeatureName ] = array
 
         const obj = this.config.find(names => names.category === category)
 
@@ -31,7 +31,8 @@ export default class Configs {
                     description: description,
                     type: type,
                     defaultValue: defaultValues,
-                    value: value ?? defaultValues
+                    value: value ?? defaultValues,
+                    hideFeatureName: hideFeatureName
                 }
             ] })
             
@@ -47,7 +48,8 @@ export default class Configs {
             description: description,
             type: type,
             defaultValue: defaultValues,
-            value: value ?? defaultValues
+            value: value ?? defaultValues,
+            hideFeatureName: hideFeatureName
         })
 
         return this
