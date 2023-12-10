@@ -6,10 +6,14 @@ import Configs from "./Config"
 
 export default class Settings {
     constructor(moduleName, configPath, colorSchemePath, defaultConfig, titleText, sortCategories = true) {
+        // Module variables
         this.moduleName = moduleName
         this.configPath = configPath
         this.defaultConfig = defaultConfig
-        this.handler = new HandleGui(colorSchemePath, this.moduleName)
+        this.colorScheme = this._checkScheme(this.moduleName, colorSchemePath)
+
+        //
+        this.handler = new HandleGui()._setColorScheme(this.colorScheme)
         this.titleText = titleText?.replace("&&", "§") ?? `${this.moduleName} Settings`
         this.sortCategories = sortCategories
 
@@ -23,7 +27,7 @@ export default class Settings {
         this.currentCategory = null
         this.oldCategory = null
 
-        // Init functions
+        // Init function
         this._init()
     }
 
@@ -36,6 +40,31 @@ export default class Settings {
         this.handler.setCommand(name)
 
         return this
+    }
+
+    /**
+     * - Checks whether the color scheme exists and if it dosent it creates
+     * a new one using the path and the default color scheme from the module
+     * @param {String} moduleName 
+     * @param {String} path 
+     * @returns {Object}
+     */
+    _checkScheme(moduleName, path) {
+        const defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
+        let colorScheme = JSON.parse(FileLib.read(moduleName, path))
+
+        if (!colorScheme) {
+            FileLib.write(
+                moduleName,
+                path,
+                JSON.stringify(defaultScheme, null, 4),
+                true
+            )
+
+            colorScheme = JSON.parse(FileLib.read(moduleName, path))
+        }
+
+        return colorScheme
     }
 
     _init() {
@@ -111,6 +140,11 @@ export default class Settings {
         })
     }
 
+    _reloadWindow() {
+        this.handler.getWindow().clearChildren()
+        this._init()
+    }
+
     /**
      * - Triggers this function whenever the given button's feature is clicked
      * @param {String} categoryName 
@@ -152,8 +186,7 @@ export default class Settings {
             hideFeatureName: hideFeatureName
         })
 
-        this.handler.getWindow().clearChildren()
-        this._init()
+        this._reloadWindow()
 
         return this
     }
@@ -175,8 +208,7 @@ export default class Settings {
             categoryObj.settings.splice(index, 1)
         })
 
-        this.handler.getWindow().clearChildren()
-        this._init()
+        this._reloadWindow()
 
         return this
     }
