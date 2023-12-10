@@ -121,6 +121,7 @@ export default class Category {
                 case ConfigTypes.TOGGLE:
                     this._addToggle(value, text, description, () => {
                         obj.value = !obj.value
+                        this._reBuildConfig()
                     })
                     break
 
@@ -129,6 +130,7 @@ export default class Category {
                         if (typeof(sliderValue) !== "number" || !this.selected) return
         
                         obj.value = sliderValue
+                        this._reBuildConfig()
                     })
                     break
 
@@ -141,6 +143,7 @@ export default class Category {
                         if (typeof(selectionIndex) !== "number" || !this.selected) return
 
                         obj.value = selectionIndex
+                        this._reBuildConfig()
                     })
                     break
 
@@ -149,6 +152,7 @@ export default class Category {
                         if (!this.selected) return
 
                         obj.value = inputText
+                        this._reBuildConfig()
                     })
                     break
 
@@ -157,6 +161,7 @@ export default class Category {
                         if (!this.selected) return
 
                         obj.value = [r, g, b]
+                        this._reBuildConfig()
                     })
                     break
             
@@ -267,6 +272,16 @@ export default class Category {
 
         // Adding this button to the map so the user can use [onClick] method
         this.buttonsFn.set(name, button)
+
+        return this
+    }
+
+    /**
+     * - Re-builds the normalize settings
+     * @returns this for method chaining
+     */
+    _reBuildConfig() {
+        this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
 
         return this
     }
