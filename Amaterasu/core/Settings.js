@@ -111,9 +111,7 @@ export default class Settings {
 
             this.categories.set(
                 categoryName,
-                new Category(this, categoryName, index === 0)
-                    .createElementClass._create()
-                    // ._create()
+                new Category(this, categoryName, index === 0).createElementClass._create()
                 )
         })
     }
