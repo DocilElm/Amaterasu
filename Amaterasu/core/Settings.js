@@ -1,5 +1,6 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
+import SearchElement from "./Search"
 import { CenterConstraint, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 import Category from "./Category"
 import Configs from "./Config"
@@ -95,6 +96,8 @@ export default class Settings {
             .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             .setChildOf(this.mainBlock)
 
+        this.searchBar = new SearchElement(this)
+
         this.handler.draw(this.mainBlock, false)
 
         if (this.sortCategories) this.config.sort((a, b) => {
@@ -109,7 +112,8 @@ export default class Settings {
             this.categories.set(
                 categoryName,
                 new Category(this, categoryName, index === 0)
-                    ._create()
+                    .createElementClass._create()
+                    // ._create()
                 )
         })
     }
@@ -153,7 +157,7 @@ export default class Settings {
      * @returns this for method chaining
      */
     onClick(categoryName, featureName, fn) {
-        this.categories.get(categoryName).buttonsFn.get(featureName).onMouseClickEvent(fn)
+        this.categories.get(categoryName).createElementClass.buttonsFn.get(featureName).onMouseClickEvent(fn)
 
         return this
     }
@@ -167,7 +171,7 @@ export default class Settings {
      * @param {ConfigType} type The config type of this element
      * @param {*} defaultValue 
      * @param {*} value 
-     * @param {String} hideFeatureName The feature name that should be enabled for this element to unhide (currently disabled)
+     * @param {String} hideFeatureName The feature name that should be enabled for this element to unhide
      * @param {Boolean} overWrite Whether it should overwrite the setting if it's found in the [JSON] or not (false by default)
      * @returns this for method chaining
      */
@@ -211,5 +215,15 @@ export default class Settings {
         this._reloadWindow()
 
         return this
+    }
+
+    _hideAll() {
+        this.categories.forEach((value, key) => {
+            value._setSelected(false)
+        })
+    }
+
+    _unhideAll() {
+        this.categories.get(this.currentCategory)._setSelected(true)
     }
 }

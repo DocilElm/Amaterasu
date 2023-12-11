@@ -1,8 +1,9 @@
 export default class Configs {
-    constructor(moduleName, configPath, defaultConfig) {
+    constructor(moduleName, configPath, defaultConfig, save = true) {
         this.moduleName = moduleName
         this.configPath = configPath
         this.defaultConfig = defaultConfig
+        this.save = save
 
         this.config = JSON.parse(FileLib.read(this.moduleName, this.configPath)) ?? []
         this._makeDefaultSettings()
@@ -60,6 +61,8 @@ export default class Configs {
      * @returns {JSON}
      */
     _makeDefaultSettings() {
+        if (!this.defaultConfig) return
+        
         Object.keys(this.defaultConfig).forEach(categoryName => {
             this.defaultConfig[categoryName].forEach(arrays => {
                 this._makeSettings(categoryName, arrays)
@@ -93,6 +96,8 @@ export default class Configs {
      * - Saves the current config json into the module's given config file path
      */
     _saveToFile() {
+        if (!this.save) return
+
         FileLib.write(
             this.moduleName,
             this.configPath,
