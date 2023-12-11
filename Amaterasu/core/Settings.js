@@ -136,6 +136,7 @@ export default class Settings {
 
             // Disable the old category (aka just hide it)
             oldCategoryClass._setSelected(false)
+            this.searchBar._hide()
 
             // Set this key as the old category
             this.oldCategory = key
@@ -144,6 +145,9 @@ export default class Settings {
         })
     }
 
+    /**
+     * - Clears the childen of the current window and re-builds it
+     */
     _reloadWindow() {
         this.handler.getWindow().clearChildren()
         this._init()
@@ -158,6 +162,7 @@ export default class Settings {
      */
     onClick(categoryName, featureName, fn) {
         this.categories.get(categoryName).createElementClass.buttonsFn.get(featureName).onMouseClickEvent(fn)
+        this.searchBar._setClick(featureName, fn)
 
         return this
     }
@@ -217,12 +222,20 @@ export default class Settings {
         return this
     }
 
+    /**
+     * - Hides all of the categories
+     * - Currently only used by [SearchBar]
+     */
     _hideAll() {
-        this.categories.forEach((value, key) => {
+        this.categories.forEach(value => {
             value._setSelected(false)
         })
     }
 
+    /**
+     * - Unhides the previously selected category
+     * - Currently only used by [SearchBar]
+     */
     _unhideAll() {
         this.categories.get(this.currentCategory)._setSelected(true)
     }

@@ -18,6 +18,7 @@ export default class SearchElement {
 
         this.selected = false
         this.matches = null
+        this.clickFn = new Map()
 
         this.rightBlock = new ScrollComponent("no elements found", 5.0)
             .setX((1).pixel())
@@ -41,7 +42,6 @@ export default class SearchElement {
         if (!string || string === "Search..." || !this.selected) {
             this.rightBlock.hide()
             this.parentClass._unhideAll()
-            //this.selected = false
             return
         }
 
@@ -70,6 +70,7 @@ export default class SearchElement {
         this.config = this.matches
 
         this.createElementClass._create()
+        this._checkClicks()
     }
 
     /**
@@ -81,5 +82,37 @@ export default class SearchElement {
         this.createElementClass._hideElement()
 
         return this
+    }
+
+    /**
+     * - Hides the [rightBlock] component from the [mainRightBlock]
+     * and sets this category unselected
+     */
+    _hide() {
+        this.rightBlock.hide()
+        this.selected = false
+    }
+
+    /**
+     * - Checks whether there's a click function for the current button
+     * being clicked inside of the search bar [rightBlock] if so add that
+     * saved function into the component so it behaves the same way the normal
+     * component behaves when given an [onClick] function
+     */
+    _checkClicks() {
+        this.clickFn.forEach((fn, key) => {
+            if (!this.createElementClass.buttonsFn.has(key)) return
+
+            this.createElementClass.buttonsFn.get(key).onMouseClickEvent(fn)
+        })
+    }
+
+    /**
+     * - Sets the function to be ran whenever the given [configName] button is clicked
+     * @param {String} configName 
+     * @param {Function} fn 
+     */
+    _setClick(configName, fn) {
+        this.clickFn.set(configName, fn)
     }
 }
