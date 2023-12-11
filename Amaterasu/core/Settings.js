@@ -11,7 +11,7 @@ export default class Settings {
         this.moduleName = moduleName
         this.configPath = configPath
         this.defaultConfig = defaultConfig
-        this.colorScheme = this._checkScheme(this.moduleName, colorSchemePath)
+        this.colorScheme = this._checkScheme(colorSchemePath)
 
         //
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
@@ -50,20 +50,15 @@ export default class Settings {
      * @param {String} path 
      * @returns {Object}
      */
-    _checkScheme(moduleName, path) {
+    _checkScheme(path) {
         const defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
-        let colorScheme = JSON.parse(FileLib.read(moduleName, path))
+        const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
+        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path))
 
-        if (!colorScheme) {
-            FileLib.write(
-                moduleName,
-                path,
-                JSON.stringify(defaultScheme, null, 4),
-                true
-            )
+        if (!colorScheme) colorScheme = defaultScheme
 
-            colorScheme = JSON.parse(FileLib.read(moduleName, path))
-        }
+        Object.assign(colorScheme, mainDefaultScheme)
+        this._saveScheme(path, colorScheme)
 
         return colorScheme
     }
@@ -236,5 +231,19 @@ export default class Settings {
      */
     _unhideAll() {
         this.categories.get(this.currentCategory)._setSelected(true)
+    }
+
+    /**
+     * - Saves the json color scheme into the given path
+     * @param {String} path 
+     * @param {Object} json 
+     */
+    _saveScheme(path, json) {
+        FileLib.write(
+            this.moduleName,
+            path,
+            JSON.stringify(json, null, 4),
+            true
+        )
     }
 }
