@@ -7,7 +7,7 @@ export default class Category {
     /**
      * @param {Settings} parentClass
      */
-    constructor(parentClass, categoryName, selected = false) {
+    constructor(parentClass, categoryName, selected = false, shouldCreate = true) {
         this.parentClass = parentClass
         this.categoryName = categoryName
 
@@ -57,7 +57,7 @@ export default class Category {
         // Hide/Unhides this category from the main block
         this._refresh()
         // Creat the elements for this gui based off of the [JSON] file
-        this.createElementClass = new CreateElement(this)
+        if (shouldCreate) this.createElementClass = new CreateElement(this)
     }
 
     /**

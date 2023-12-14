@@ -32,10 +32,19 @@ export default class SearchElement {
         this.searchBar = new TextInputElement("Search...", 73.3, 2, 15, 5)
             .onMouseClickEvent(() => this.selected = true)
             .onKeyTypeEvent(this._onKeyType.bind(this))
-            ._create(this.handler.colorScheme)
-            .setChildOf(this.mainBlock)
 
         this.createElementClass = new CreateElement(this)
+
+        // Whenever [CTRL+F] is typed on the main window enable search
+        this.handler.getWindow().onKeyType((_, __, keycode) => {
+            if (keycode !== 33 || !Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) return
+            
+            this._focusSearch()
+        })
+
+        this.searchBar
+            ._create(this.handler.colorScheme)
+            .setChildOf(this.mainBlock)
     }
 
     _onKeyType(string) {
@@ -56,7 +65,7 @@ export default class SearchElement {
         this.oldConfig.forEach(mainObj => {
 
             mainObj.settings.forEach(obj => {
-                if (this.matches[0].settings.some(someObj => someObj.name === obj.name)) return ChatLib.chat("a")
+                if (this.matches[0].settings.some(someObj => someObj.name === obj.name)) return
 
                 if (obj.text.includes(string) || obj.description.includes(string)) {
                     this.matches[0].settings.push(obj)
@@ -114,5 +123,14 @@ export default class SearchElement {
      */
     _setClick(configName, fn) {
         this.clickFn.set(configName, fn)
+    }
+
+    /**
+     * - Focus the search component to be interacted with
+     */
+    _focusSearch() {
+        this.selected = true
+        this.searchBar.textInput.grabWindowFocus()
+        this.searchBar.textInput.focus()
     }
 }

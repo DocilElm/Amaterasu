@@ -39,6 +39,16 @@ NormalObject = {
 }
 */
 
+const changelog = [
+    "# Some Changelog",
+    "+ Example 1",
+    "   + some example description here",
+    "- Example 2",
+    "   + some example description here",
+    "+ Test code",
+    "   + ``` let test = \"test code!\" ```"
+]
+
 // Make a new [Settings] class and save it so you can further more use this variable outside of this file
 // The params would be (ModuleName, SettingsPath, ColorSchemePath, DefaultConfig, optional: TitleText, optional: SortCategories)
 const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme.json", defaultConfig, "&&aAmaterasu Settings")
@@ -54,6 +64,15 @@ const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorSchem
     // This is an example of a click function in a button element
     // The params (CategoryName, ConfigName, Function to run)
     .onClick("Dungeons", "changeRunSplitsDisplay", () => ChatLib.chat("Click !"))
+    // This is an example of adding changelog section to the gui
+    // The params (Text)
+    // There's 2 options on doing this you either send the string
+    // like this
+
+    // .addChangelog("# Some Changelog\n+ Example 1\n    + some example description here\n+ Example 2\n    + some example description here\n+ There's also this dumb thing\n    + ```let test = \"code test\" ```")
+
+    // or you send an array (which i personally prefer)
+    .addChangelog(changelog)
 
 // This is how to get settings values
 setting.settings.testFeature

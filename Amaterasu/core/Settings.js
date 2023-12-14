@@ -1,7 +1,8 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
+import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
-import { CenterConstraint, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 import Category from "./Category"
 import Configs from "./Config"
 
@@ -245,5 +246,27 @@ export default class Settings {
             JSON.stringify(json, null, 4),
             true
         )
+    }
+
+    /**
+     * - Adds a [Changelog] section with the given string
+     * @param {String} text 
+     * @returns this for method chaining
+     */
+    addChangelog(text) {
+        if (text instanceof Array) text = text.join("\n")
+
+        const changelogCategory = new Category(this, "Changelog", false, false)
+        new MarkdownElement(text, 0, 0, 85, 85)
+            ._setPosition(
+                (1).pixel(),
+                new CramSiblingConstraint(5)
+            )
+            ._create(this.handler.getColorScheme())
+            .setChildOf(changelogCategory.rightBlock)
+
+        this.categories.set("Changelog", changelogCategory)
+
+        return this
     }
 }
