@@ -69,6 +69,7 @@ export default class Configs {
             })
         })
 
+        this._checkSettings()
         this._saveToFile()
 
         return this.config
@@ -90,6 +91,82 @@ export default class Configs {
         })
 
         return settings
+    }
+
+    /**
+     * - Checks whether the current file setting contains the
+     * correct values, types etc... for all the different settings
+     * @returns
+     */
+    _checkSettings() {
+        if (!this.config) return
+
+        const defaultConfigNames = new Map()
+        const defaultCategories = new Set()
+
+        Object.keys(this.defaultConfig).forEach(categoryName => {
+            // Add the category to the [Set] so it can check if it exists
+            defaultCategories.add(categoryName)
+
+            // Loop through all the config elements
+            this.defaultConfig[categoryName].forEach(arr => {
+                const [ name, text, description, type, defaultValues, value, hideFeatureName ] = arr
+
+                // Making a config object so we can use it as check
+                const confObj = {
+                    name: name,
+                    text: text,
+                    description: description,
+                    type: type,
+                    defaultValue: defaultValues,
+                    value: value ?? defaultValues,
+                    hideFeatureName: hideFeatureName
+                }
+
+                // Add it to the [Map] so we can use it outside of this loop
+                defaultConfigNames.set(name, confObj)
+            })
+        })
+
+        // Loop through all the main config objects
+        this.config.forEach((obj, mainIdx) => {
+            // Checks whether the category exists in default values or not
+            // if it dosen't, delete it from the config file.
+            if (!defaultCategories.has(obj.category)) return this.config.splice(mainIdx, 1)
+
+            // Loop through all the config objects
+            obj.settings.forEach((objConf, idx) => {
+                const name = objConf.name
+
+                // Check whether the key [name] exists in the default values
+                if (defaultConfigNames.has(name)) {
+                    const confObj = defaultConfigNames.get(name)
+
+                    // Check if any of these object values changed
+                    // from from the main default values
+                    if (
+                        objConf.type === confObj.type &&
+                        objConf.text === confObj.text &&
+                        objConf.description === confObj.description &&
+                        objConf.hideFeatureName === confObj.hideFeatureName
+                        ) return
+
+                    // If they did update this object to have the correct values
+                    objConf.type = confObj.type
+                    objConf.text = confObj.text
+                    objConf.desc = confObj.desc
+                    objConf.defaultValue = confObj.defaultValue
+                    objConf.value = objConf.value ?? confObj.value
+                    objConf.hideFeatureName = confObj.hideFeatureName
+
+                    return
+                }
+
+                // If the key [name] dosen't exist anymore in the default values
+                // we delete it from the file settings
+                obj.settings.splice(idx, 1)
+            })
+        })
     }
 
     /**
