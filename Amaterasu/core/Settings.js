@@ -54,11 +54,10 @@ export default class Settings {
     _checkScheme(path) {
         const defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
         const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
-        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path))
+        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
 
-        if (!colorScheme) colorScheme = defaultScheme
+        colorScheme = Object.assign(mainDefaultScheme, defaultScheme, colorScheme)
 
-        Object.assign(colorScheme, mainDefaultScheme)
         this._saveScheme(path, colorScheme)
 
         return colorScheme
@@ -145,6 +144,8 @@ export default class Settings {
     _reloadWindow() {
         this.handler.getWindow().clearChildren()
         this._init()
+
+        if (this.changelogText) this.addChangelog(this.changelogText)
     }
 
     /**
@@ -232,6 +233,9 @@ export default class Settings {
      */
     _unhideAll() {
         this.categories.get(this.currentCategory)._setSelected(true)
+
+        this.searchBar.searchBar.textInput.releaseWindowFocus()
+        this._reloadWindow()
     }
 
     /**
@@ -255,6 +259,7 @@ export default class Settings {
      */
     addChangelog(text) {
         if (text instanceof Array) text = text.join("\n")
+        this.changelogText = text
 
         const changelogCategory = new Category(this, "Changelog", false, false)
         new MarkdownElement(text, 0, 0, 85, 85)

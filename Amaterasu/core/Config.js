@@ -5,11 +5,15 @@ export default class Configs {
         this.defaultConfig = defaultConfig
         this.save = save
 
-        this.config = JSON.parse(FileLib.read(this.moduleName, this.configPath)) ?? []
-        this._makeDefaultSettings()
+        this._reloadConfig()
 
         // Registers
         register("gameUnload", () => this._saveToFile())
+    }
+
+    _reloadConfig() {
+        this.config = JSON.parse(FileLib.read(this.moduleName, this.configPath)) ?? []
+        this._makeDefaultSettings()
     }
 
     /**

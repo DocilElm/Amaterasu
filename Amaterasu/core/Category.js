@@ -1,6 +1,7 @@
+import ElementUtils from "../../DocGuiLib/core/Element"
 import Button1Element from "../../DocGuiLib/elements/Button1"
 import DividerElement from "../../DocGuiLib/elements/Divider"
-import { CramSiblingConstraint, ScrollComponent, SiblingConstraint } from "../../Elementa"
+import { Animations, ConstantColorConstraint, CramSiblingConstraint, ScrollComponent, SiblingConstraint, animate } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class Category {
@@ -40,7 +41,7 @@ export default class Category {
         this.sidebarButton = new Button1Element(this.categoryName, 0, 0, 80, 8)
             ._setPosition(
                 (1).pixel(),
-                new SiblingConstraint()
+                new SiblingConstraint(1)
             )
             .onMouseClickEvent(() => {
                 // Avoid hiding this element incase it's the only one being shown
@@ -76,12 +77,14 @@ export default class Category {
         if (!this.selected) {
             this.rightBlock.hide(true)
             this.rightBlock.loseFocus()
+            this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColor"))
             
             return
         }
 
         this.rightBlock.unhide(true)
         this.rightBlock.scrollToTop(true)
+        this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColorSelected"))
 
         this.parentClass.currentCategory = this.categoryName
         if (!this.parentClass.oldCategory) this.parentClass.oldCategory = this.categoryName

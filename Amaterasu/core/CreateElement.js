@@ -67,6 +67,12 @@ export default class CreateElement {
 
         const configSettings = configCategory.settings
 
+        configSettings.sort((a, b) => {
+            if (a.text < b.text) return -1
+            else if (a.text > b.text) return 1
+            return 0
+        })
+
         configSettings.forEach(obj => {
             switch (obj.type) {
                 case ConfigTypes.TOGGLE:

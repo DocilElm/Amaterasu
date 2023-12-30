@@ -48,7 +48,9 @@ export default class SearchElement {
     }
 
     _onKeyType(string) {
-        if (!string || string === "Search..." || !this.selected) {
+        if (/^Search[\.]+$/.test(string)) return this.searchBar.textInput.setText("")
+
+        if (!string || !this.selected) {
             this.rightBlock.hide()
             this.parentClass._unhideAll()
             return
@@ -65,9 +67,9 @@ export default class SearchElement {
         this.oldConfig.forEach(mainObj => {
 
             mainObj.settings.forEach(obj => {
-                if (this.matches[0].settings.some(someObj => someObj.name === obj.name)) return
+                if (this.matches[0].settings.some(someObj => someObj.name.toLowerCase() === obj.name.toLowerCase())) return
 
-                if (obj.text.includes(string) || obj.description.includes(string)) {
+                if (obj.text.toLowerCase().includes(string) || obj.description.toLowerCase().includes(string)) {
                     this.matches[0].settings.push(obj)
                 }
             })
@@ -88,6 +90,7 @@ export default class SearchElement {
      */
     _reBuildConfig() {
         this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
+        this.parentClass.configsClass._reloadConfig()
         this.createElementClass._hideElement()
 
         return this

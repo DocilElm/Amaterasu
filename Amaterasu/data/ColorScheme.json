@@ -4,6 +4,7 @@
         "backgroundBox1": [0, 0, 0, 0],
         "lines": [0, 0, 0, 80],
         "textColor": [255, 255, 255, 255],
+        "textColorSelected": [19, 117, 141, 255],
         "textScale": 1,
         "mouseClick": [255, 255, 255, 80],
         "mouseEnter": [0, 0, 0, 80],
