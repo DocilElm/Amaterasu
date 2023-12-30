@@ -6,6 +6,46 @@ import { CenterConstraint, CramSiblingConstraint, ScrollComponent, UIRoundedRect
 import Category from "./Category"
 import Configs from "./Config"
 
+// I know this is a very bad solution but
+// honestly i don't want to further more bother
+// with this dumb thing
+const customAssignObject = (obj1, obj2) => {
+    /**
+     specifically made for an object like this:
+     {
+        "Button": {
+            "backgroundBox": [0, 0, 0, 80],
+            "backgroundBox1": [0, 0, 0, 0],
+            "lines": [0, 0, 0, 80],
+            "textColor": [255, 255, 255, 255],
+            "textColorSelected": [19, 117, 141, 255],
+            "textScale": 1,
+            "mouseClick": [255, 255, 255, 80],
+            "mouseEnter": [0, 0, 0, 80],
+            "mouseLeave": [0, 0, 0, 0]
+        }
+    }
+     */
+    Object.keys(obj2).forEach(key => {
+        // If the [key] doesn't exist in the first object
+        // we assign an object into it
+        if (!obj1[key]) obj1[key] = {}
+
+        Object.keys(obj2[key]).forEach(key2 => {
+            // If the [key] exist in the first object
+            // we return
+            if (obj1[key][key2]) return
+
+            // Else we add the second object's value into it
+            obj1[key][key2] = obj2[key][key2]
+        })
+
+    })
+
+    // return the edited object
+    return obj1
+}
+
 export default class Settings {
     constructor(moduleName, configPath, colorSchemePath, defaultConfig, titleText, sortCategories = true) {
         // Module variables
@@ -45,19 +85,20 @@ export default class Settings {
     }
 
     /**
-     * - Checks whether the color scheme exists and if it dosent it creates
+     * - Checks whether the color scheme exists and if it doesnt it creates
      * a new one using the path and the default color scheme from the module
      * @param {String} moduleName 
      * @param {String} path 
      * @returns {Object}
      */
     _checkScheme(path) {
-        const defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
+        let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
         const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
         let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
 
-        colorScheme = Object.assign(mainDefaultScheme, defaultScheme, colorScheme)
-
+        defaultScheme = customAssignObject(defaultScheme, mainDefaultScheme)
+        colorScheme = customAssignObject(colorScheme, defaultScheme)
+        
         this._saveScheme(path, colorScheme)
 
         return colorScheme
