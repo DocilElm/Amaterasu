@@ -144,7 +144,7 @@ export default class CreateElement {
     _addToggle(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
             
-        new CheckboxElement(obj.value, 0, 0, 12, 30)
+        new CheckboxElement(obj.value, 0, 0, 12, 30, true)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -221,7 +221,7 @@ export default class CreateElement {
 
         // Making a variable for it so we can further more change this element
         // and also add it to the [Map]
-        const button = new ButtonElement("Click", 0, 0, 15, 30)
+        const button = new ButtonElement("Click", 0, 0, 15, 30, true)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
