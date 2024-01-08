@@ -90,7 +90,6 @@ export default class SearchElement {
      */
     _reBuildConfig() {
         this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
-        this.parentClass.configsClass._reloadConfig()
         this.createElementClass._hideElement()
 
         return this
