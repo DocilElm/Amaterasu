@@ -18,6 +18,7 @@ export default class SearchElement {
 
         this.selected = false
         this.matches = null
+        this.matchesAmount = 0
         this.clickFn = new Map()
 
         this.rightBlock = new ScrollComponent("no elements found", 5.0)
@@ -48,13 +49,17 @@ export default class SearchElement {
     }
 
     _onKeyType(string) {
+        // Make the text empty if the user deletes 2 chars
         if (/^Search[\.]+$/.test(string)) return this.searchBar.textInput.setText("")
 
-        if (!string || !this.selected) {
-            this.rightBlock.hide()
-            this.parentClass._unhideAll()
-            return
-        }
+        // Return & reset if the focus has been lost
+        if (!this.selected) return this._reset()
+
+        // Return & reset if the string is empty and the user has searched before
+        if (!string && this.matchesAmount) return this._reset()
+
+        // Return if the string is empty so it doesn't try to search for ""
+        if (!string) return
 
         this.rightBlock.clearChildren()
         this.matches = [
@@ -76,12 +81,28 @@ export default class SearchElement {
 
         })
 
+        // Add the current match length so we can use it on the reset values
+        const mLength = this.matches[0].settings.length
+        if (mLength) this.matchesAmount = mLength
+
         this.parentClass._hideAll()
         this.rightBlock.unhide(true)
         this.config = this.matches
 
         this.createElementClass._create()
         this._checkClicks()
+    }
+
+    /**
+     * - Resets the current search category and hides it
+     * @returns this for method chaining
+     */
+    _reset() {
+        this.rightBlock.hide()
+        this.parentClass._unhideAll()
+        this.matchesAmount = 0
+
+        return this
     }
 
     /**
