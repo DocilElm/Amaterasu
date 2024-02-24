@@ -61,7 +61,7 @@ export default class CreateElement {
     }
 
     _create() {
-        const configCategory = this.categoryClass.config.find(obj => obj.category === this.categoryName)
+        const configCategory = this.categoryClass.config?.find(obj => obj.category === this.categoryName)
 
         if (!configCategory) return
 

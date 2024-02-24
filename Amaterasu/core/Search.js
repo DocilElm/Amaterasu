@@ -61,7 +61,11 @@ export default class SearchElement {
         // Return if the string is empty so it doesn't try to search for ""
         if (!string) return
 
+        this.config = {}
+        this.createElementClass.elements.clear()
+        this.createElementClass._create()
         this.rightBlock.clearChildren()
+
         this.matches = [
             {
                 "category": "SearchBar",
@@ -74,9 +78,10 @@ export default class SearchElement {
             mainObj.settings.forEach(obj => {
                 if (this.matches[0].settings.some(someObj => someObj.name.toLowerCase() === obj.name.toLowerCase())) return
 
-                if (obj.text.toLowerCase().includes(string) || obj.description.toLowerCase().includes(string)) {
-                    this.matches[0].settings.push(obj)
-                }
+                const matched = obj.text.toLowerCase().includes(string) || obj.description.toLowerCase().includes(string)
+                if (!matched) return
+
+                this.matches[0].settings.push(obj)
             })
 
         })
