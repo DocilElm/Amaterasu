@@ -114,10 +114,10 @@ export default class CreateElement {
                     break
 
                 case ConfigTypes.COLORPICKER:
-                    this._addColorPicker(obj, ([r, g, b]) => {
+                    this._addColorPicker(obj, ([r, g, b, a]) => {
                         if (!this.categoryClass.selected) return
 
-                        obj.value = [r, g, b]
+                        obj.value = [r, g, b, a]
                         this.categoryClass._reBuildConfig()
                     })
                     break
