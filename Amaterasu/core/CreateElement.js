@@ -21,6 +21,7 @@ export default class CreateElement {
         this.config = this.categoryClass.config
         this.categoryName = this.categoryClass.categoryName
         this.handler = this.categoryClass.handler
+        this.sortElement = this.categoryClass.parentClass.sortElements
 
         // This map holds all of the elements
         this.elements = new Map()
@@ -44,13 +45,40 @@ export default class CreateElement {
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.textDescriptionBg))
             .setChildOf(this.rightBlock)
 
-        new TextDescriptionElement(obj.text, obj.description, false, 0, 0, 80, 75)
+        const descElement = new TextDescriptionElement(obj.text, obj.description, false, 0, 0, 80, 75)
             ._setPosition(
                 (3).pixel(),
                 new CenterConstraint()
             )
+        descElement
             ._create(this.handler.getColorScheme())
             .setChildOf(bgBox)
+            .onMouseEnter((component) => {
+                // Checks the boundaries of the [rightBlock] to not render
+                // the text once the component is below the scrollable (meaning the hidden ->) area
+                // After this checks whether the text width is above the width
+                // if it is, this means that the text will be wrapped so we can
+                // render wrapped text only as hover values instead of every single description
+                if (!(
+                    component.getLeft() > this.rightBlock.getLeft() &&
+                    component.getRight() < this.rightBlock.getRight() &&
+                    component.getTop() > this.rightBlock.getTop() &&
+                    component.getBottom() < this.rightBlock.getBottom()) ||
+                    Renderer.getStringWidth(descElement.descriptionElement.getText().removeFormatting()) < bgBox.getWidth()
+                ) return
+
+                const hoverText = this.categoryClass.parentClass.hoverText
+
+                hoverText.setText(obj.description)
+                hoverText.setX((component.getLeft()).pixels())
+                hoverText.setY((descElement.descriptionElement.getTop()).pixels())
+                hoverText.setWidth((descElement.descriptionElement.getWidth()).pixels())
+            })
+            .onMouseLeave(() => {
+                const hoverText = this.categoryClass.parentClass.hoverText
+
+                hoverText.setText("")
+            })
 
         this.elements.set(obj.name, {
             component: bgBox,
@@ -67,11 +95,13 @@ export default class CreateElement {
 
         const configSettings = configCategory.settings
 
-        configSettings.sort((a, b) => {
-            if (a.text < b.text) return -1
-            else if (a.text > b.text) return 1
-            return 0
-        })
+        // TODO: finish this feature
+        if (this.sortElement) configSettings.sort(this.sortElement)
+        // configSettings.sort((a, b) => {
+        //     if (a.text < b.text) return -1
+        //     else if (a.text > b.text) return 1
+        //     return 0
+        // })
 
         configSettings.forEach(obj => {
             switch (obj.type) {

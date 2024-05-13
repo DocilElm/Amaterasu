@@ -2,7 +2,7 @@ import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
 import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
-import { CenterConstraint, CramSiblingConstraint, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, ScrollComponent, UIRoundedRectangle, UIText, UIWrappedText } from "../../Elementa"
 import Category from "./Category"
 import Configs from "./Config"
 
@@ -47,7 +47,7 @@ const customAssignObject = (obj1, obj2) => {
 }
 
 export default class Settings {
-    constructor(moduleName, configPath, colorSchemePath, defaultConfig, titleText, sortCategories = true) {
+    constructor(moduleName, configPath, colorSchemePath, defaultConfig, titleText, sortCategories) {
         // Module variables
         this.moduleName = moduleName
         this.configPath = configPath
@@ -57,7 +57,12 @@ export default class Settings {
         //
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
         this.titleText = titleText?.replace("&&", "§") ?? `${this.moduleName} Settings`
-        this.sortCategories = sortCategories
+        this.sortCategories = null
+        this.sortElements = null
+
+        // TODO: change the method name
+        // also finish this feature because currently it does a whole lot of nothing
+        if (sortCategories) console.warn(`[Amaterasu] Sorting categories parameter has been depricated. since it was found that you have set it to true a normal sorting function has been set, change this by adding your own function with the method #setSortingCategories`)
 
         // Config variables
         this.configsClass = new Configs(this.moduleName, this.configPath, this.defaultConfig)
@@ -80,6 +85,30 @@ export default class Settings {
      */
     setCommand(name) {
         this.handler.setCommand(name)
+
+        return this
+    }
+
+    /**
+     * - Function to be ran whenever the config gui attempts to sort the categories
+     * - The category names are passed through the function
+     * - NOTE: this function should return [-1, 0, 1]
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    setCategorySort(fn) {
+        if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setCategorySort] ${fn} is not a valid function`)
+        this.sortCategories = fn
+        this._reloadWindow()
+
+        return this
+    }
+
+    setSortElements(fn) {
+        if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setSortElements] ${fn} is not a valid function`)
+
+        this.sortElements = fn
+        this._reloadWindow()
 
         return this
     }
@@ -136,11 +165,7 @@ export default class Settings {
 
         this.handler.draw(this.mainBlock, false)
 
-        if (this.sortCategories) this.config.sort((a, b) => {
-            if (a.category < b.category) return -1
-            else if (a.category > b.category) return 1
-            return 0
-        })
+        if (this.sortCategories) this.config.sort((a, b) => this.sortCategories(a.category, b.category))
 
         this.config.forEach((obj, index) => {
             const categoryName = obj.category
@@ -150,6 +175,17 @@ export default class Settings {
                 new Category(this, categoryName, index === 0).createElementClass._create()
                 )
         })
+
+        this.hoverText = new UIWrappedText("")
+            .setX(new CenterConstraint())
+            .setY(new CenterConstraint())
+            .setChildOf(this.handler.getWindow())
+            .onMouseScroll(() => {
+                this.hoverText.setText("")
+                this.hoverText
+                    .setX((-1).pixels())
+                    .setY((-1).pixels())
+            })
     }
 
     /**
