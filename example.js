@@ -98,9 +98,4 @@ setting.settings.testFeature
 // You could also do (if it wasn't obvious enough)
 // in case you have a feature variable check
 const configName = "testFeature"
-setting.settings[configName];
-
-// This is how you translate your Vigilance settings to Amaterasu
-import {convertToJSON} from "./core/VigilanceSettings"
-import oldSettings from "./oldSettingsPath"
-convertToJSON(oldSettings, "moduleName")
+setting.settings[configName]

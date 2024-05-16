@@ -81,8 +81,8 @@ export default class Settings {
         this.oldCategory = null
 
         // Drawing variables
-        this.bgPos = null
-        this.bgSize = null
+        this.bgPos = { x: (20).percent(), y: (20).percent() }
+        this.bgSize = { w: (60).percent(), h: (60).percent() }
 
         // Init function
         this._init()
@@ -136,8 +136,8 @@ export default class Settings {
      * @returns this for method chaining
      */
     setPos(x, y) {
-        this.bgPos = { x, y }
-        this.bgSize = this.bgSize ?? {w: 100 - (x * 2), h: 100 - (x * 2)}
+        this.bgPos.x = (x).percent()
+        this.bgPos.y = (y).percent()
         
         return this
     }
@@ -149,8 +149,8 @@ export default class Settings {
      * @returns this for method chaining
      */
     setSize(w, h) {
-        this.bgSize = { w, h }
-        this.bgPos = this.bgPos ?? {x: (100 - w) / 2, y: (100 - h) / 2}
+        this.bgSize.w = (w).percent()
+        this.bgSize.h = (h).percent()
         
         return this
     }
@@ -187,10 +187,10 @@ export default class Settings {
 
     _init() {
         this.mainBlock = new UIRoundedRectangle(5)
-            .setX((this.bgPos?.x ?? 20).percent())
-            .setY((this.bgPos?.y ?? 20).percent())
-            .setWidth((this.bgSize?.w ?? 60).percent())
-            .setHeight((this.bgSize?.h ?? 60).percent())
+            .setX(this.bgPos.x)
+            .setY(this.bgPos.y)
+            .setWidth(this.bgSize.w)
+            .setHeight(this.bgSize.h)
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
         this.title = new UIText(this.titleText)
