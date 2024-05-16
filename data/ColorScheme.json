@@ -58,7 +58,8 @@
         "textColor": [255, 255, 255, 255]
     },
     "Amaterasu": {
-        "backgroundBox": [0, 0, 0, 80],
+        "backgroundBoxColor": [0, 0, 0, 80],
+        "backgroundBoxSize": [20, 20, 60, 60],
         "textDescriptionBg": [0, 0, 0, 80]
     }
 }
