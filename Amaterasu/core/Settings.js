@@ -149,7 +149,7 @@ export default class Settings {
     }
 
     _init() {
-        this.mainBlock = new UIRoundedRectangle(3)
+        this.mainBlock = new UIRoundedRectangle(5)
             .setX((20).percent())
             .setY((20).percent())
             .setWidth((60).percent())
