@@ -1,7 +1,7 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
 import Button1Element from "../../DocGuiLib/elements/Button1"
 import DividerElement from "../../DocGuiLib/elements/Divider"
-import { Animations, ConstantColorConstraint, CramSiblingConstraint, ScrollComponent, SiblingConstraint, animate } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, ScrollComponent, SiblingConstraint, UIRoundedRectangle } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class Category {
@@ -29,9 +29,18 @@ export default class Category {
             .setHeight((100).percent())
             .setChildOf(this.mainRightBlock)
 
+        this.elementsSlider = new UIRoundedRectangle(3)
+            .setX((3).pixels(true))
+            .setY((5).pixels())
+            .setHeight((5).pixels())
+            .setWidth((5).pixels())
+            .setColor(ElementUtils.getJavaColor([255, 255, 255, 80]))
+
+        this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
+
         new DividerElement(this.categoryName, 0, 0, 85, 5)
             ._setPosition(
-                (1).pixel(),
+                new CenterConstraint(),
                 new CramSiblingConstraint(5)
             )
             ._create(this.handler.getColorScheme())
@@ -78,6 +87,7 @@ export default class Category {
             this.rightBlock.hide(true)
             this.rightBlock.loseFocus()
             this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColor"))
+            this.mainRightBlock.removeChild(this.elementsSlider)
             
             return
         }
@@ -85,6 +95,7 @@ export default class Category {
         this.rightBlock.unhide(true)
         this.rightBlock.scrollToTop(true)
         this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColorSelected"))
+        this.mainRightBlock.addChild(this.elementsSlider)
 
         this.parentClass.currentCategory = this.categoryName
         if (!this.parentClass.oldCategory) this.parentClass.oldCategory = this.categoryName

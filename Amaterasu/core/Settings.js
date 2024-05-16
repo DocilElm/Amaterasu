@@ -137,7 +137,7 @@ export default class Settings {
         this.mainBlock = new UIRoundedRectangle(3)
             .setX((20).percent())
             .setY((20).percent())
-            .setWidth((65).percent())
+            .setWidth((60).percent())
             .setHeight((50).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
@@ -146,17 +146,25 @@ export default class Settings {
             .setY((3).percent())
             .setChildOf(this.mainBlock)
 
-        this.leftBlock = new ScrollComponent("no elements", 5.0)
+        this.leftBlockBg = new UIRoundedRectangle(3)
             .setX((3).pixel())
             .setY((7).percent())
             .setWidth((18).percent())
             .setHeight((90).percent())
+            .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             .setChildOf(this.mainBlock)
 
+        this.leftBlock = new ScrollComponent("no elements", 5.0)
+            .setX((1).pixel())
+            .setY((1).percent())
+            .setWidth((100).percent())
+            .setHeight((100).percent())
+            .setChildOf(this.leftBlockBg)
+
         this.mainRightBlock = new UIRoundedRectangle(3)
-            .setX((3).pixel(true))
+            .setX(new CramSiblingConstraint(5))
             .setY((7).percent())
-            .setWidth((78).percent())
+            .setWidth((70).percent())
             .setHeight((90).percent())
             .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             .setChildOf(this.mainBlock)
@@ -302,6 +310,8 @@ export default class Settings {
         this.categories.forEach(value => {
             value._setSelected(false)
         })
+
+        this.searchBar._addSlider()
     }
 
     /**
@@ -312,6 +322,8 @@ export default class Settings {
         this.categories.get(this.currentCategory)._setSelected(true)
 
         this.searchBar.searchBar.textInput.releaseWindowFocus()
+        this.searchBar._removeSlider()
+
         this._reloadWindow()
     }
 
@@ -341,7 +353,7 @@ export default class Settings {
         const changelogCategory = new Category(this, "Changelog", false, false)
         new MarkdownElement(text, 0, 0, 85, 85)
             ._setPosition(
-                (1).pixel(),
+                new CenterConstraint(),
                 new CramSiblingConstraint(5)
             )
             ._create(this.handler.getColorScheme())

@@ -2,6 +2,6 @@
   "name": "Amaterasu",
   "creator": "DocilElm",
   "description": "doc is the best.",
-  "version": "1.14.3",
+  "version": "1.15.3",
   "requires": ["Elementa", "DocGuiLib"]
 }

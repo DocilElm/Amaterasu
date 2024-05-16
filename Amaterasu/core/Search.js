@@ -1,5 +1,6 @@
+import ElementUtils from "../../DocGuiLib/core/Element"
 import TextInputElement from "../../DocGuiLib/elements/TextInput"
-import { ScrollComponent } from "../../Elementa"
+import { CramSiblingConstraint, ScrollComponent, UIRoundedRectangle } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class SearchElement {
@@ -17,6 +18,7 @@ export default class SearchElement {
         this.categoryName = "SearchBar"
 
         this.selected = false
+        this.sliderAdded = false
         this.matches = null
         this.matchesAmount = 0
         this.clickFn = new Map()
@@ -28,6 +30,14 @@ export default class SearchElement {
             .setHeight((100).percent())
             .setChildOf(this.mainRightBlock)
 
+        this.elementsSlider = new UIRoundedRectangle(3)
+            .setX((3).pixels(true))
+            .setY((5).pixels())
+            .setHeight((5).pixels())
+            .setWidth((5).pixels())
+            .setColor(ElementUtils.getJavaColor([255, 255, 255, 80]))
+
+        this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
         this.rightBlock.hide()
 
         this.searchBar = new TextInputElement("Search...", 73.3, 2, 15, 5)
@@ -160,5 +170,27 @@ export default class SearchElement {
         this.selected = true
         this.searchBar.textInput.grabWindowFocus()
         this.searchBar.textInput.focus()
+    }
+
+    /**
+     * - Adds the slider element to the current block
+     * @returns
+     */
+    _addSlider() {
+        if (this.sliderAdded) return
+
+        this.mainRightBlock.addChild(this.elementsSlider)
+        this.sliderAdded = true
+    }
+
+    /**
+     * - Removes the slider element to the current block
+     * @returns 
+     */
+    _removeSlider() {
+        if (!this.sliderAdded) return
+
+        this.mainRightBlock.removeChild(this.elementsSlider)
+        this.sliderAdded = false
     }
 }

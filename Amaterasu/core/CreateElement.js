@@ -38,7 +38,7 @@ export default class CreateElement {
      */
     _makeTextDescription(obj) {
         const bgBox = new UIRoundedRectangle(3)
-            .setX((1).pixel())
+            .setX(new CenterConstraint())
             .setY(new CramSiblingConstraint(5))
             .setWidth((85).percent())
             .setHeight((20).percent())
