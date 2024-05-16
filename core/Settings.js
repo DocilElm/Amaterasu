@@ -150,10 +150,10 @@ export default class Settings {
 
     _init() {
         this.mainBlock = new UIRoundedRectangle(5)
-            .setX((20).percent())
-            .setY((20).percent())
-            .setWidth((60).percent())
-            .setHeight((50).percent())
+            .setX((10).percent())
+            .setY((10).percent())
+            .setWidth((80).percent())
+            .setHeight((80).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
         this.title = new UIText(this.titleText)
