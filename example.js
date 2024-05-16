@@ -19,7 +19,7 @@ const defaultConfig1 = {
 // And hence why you can also just do this
 // since both function the exact same way (because they really are the same thing)
 // you can just read a json and parse it and then use that as default config
-const defaultConfig = JSON.parse(FileLib.read("Amaterasu", "data/defaultSettings.json"))
+const defaultConfig = JSON.parse(FileLib.read("MyModule", "data/defaultSettings.json"))
 
 /*
 This is what the object to making a config is built by
@@ -39,7 +39,9 @@ NormalObject = {
 }
 */
 
-const changelog = [
+// This is one way to load your changelog
+// Looks both messy and is harder to write
+const changelog1 = [
     "# Some Changelog",
     "+ Example 1",
     "   + some example description here",
@@ -49,10 +51,16 @@ const changelog = [
     "   + ``` let test = \"test code!\" ```"
 ]
 
+// This is another way to load your changelog (markdown or text files)
+const changelog = FileLib.read("MyModule", "changelog.md")
+
+// This is used for category sorting
+const categories = ["General", "Dungeons", "Kuudra", "Mining"]
+
 // Make a new [Settings] class and save it so you can further more use this variable outside of this file
 // The params would be (ModuleName, SettingsPath, ColorSchemePath, DefaultConfig, optional: TitleText, optional: SortCategories)
-const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme.json", defaultConfig, "&&aAmaterasu Settings")
-    .setCommand("amat") // Set the command for this gui to open with
+const setting = new Settings("MyModule", "data/settings.json", "data/ColorScheme.json", defaultConfig, "&&aMyModule Settings")
+    .setCommand("myCommand") // Set the command for this gui to open with
     // Adds a new element meaning it adds a whole new config with the given params and reloads the window itself
     // to have the changes
     // The params (CategoryName, ConfigName, Text, Description, ConfigType, DefaultValues, Value, HideFeatureName)
@@ -73,6 +81,16 @@ const setting = new Settings("Amaterasu", "data/settings.json", "data/ColorSchem
 
     // or you send an array (which i personally prefer)
     .addChangelog(changelog)
+    // This is an example of how to sort your categories by the order in the array
+    .setCategorySort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category))
+    // This is how you set your gui position (in percent)
+    // The params (xCoord, yCoord)
+    .setPos(15, 15)
+    // This is how you set your gui size (in percent)
+    // The params (width, height)
+    .setSize(70, 70)
+    // This is how to apply all your previously chained methods to the gui (Must come at the end of the method chain)
+    .apply()
 
 // This is how to get settings values
 setting.settings.testFeature

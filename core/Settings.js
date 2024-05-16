@@ -80,6 +80,10 @@ export default class Settings {
         this.currentCategory = null
         this.oldCategory = null
 
+        // Drawing variables
+        this.bgPos = { x: (20).percent(), y: (20).percent() }
+        this.bgSize = { w: (60).percent(), h: (60).percent() }
+
         // Init function
         this._init()
     }
@@ -106,7 +110,6 @@ export default class Settings {
     setCategorySort(fn) {
         if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setCategorySort] ${fn} is not a valid function`)
         this.sortCategories = fn
-        this._reloadWindow()
 
         return this
     }
@@ -121,11 +124,45 @@ export default class Settings {
      */
     setSortElements(fn) {
         if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setSortElements] ${fn} is not a valid function`)
-
         this.sortElements = fn
-        this._reloadWindow()
 
         return this
+    }
+
+    /**
+     * - Sets the starting x and y value of the gui
+     * @param {Number} x 
+     * @param {Number} y 
+     * @returns this for method chaining
+     */
+    setPos(x, y) {
+        this.bgPos.x = (x).percent()
+        this.bgPos.y = (y).percent()
+        
+        return this
+    }
+
+    /**
+     * - Sets the width and height of the gui
+     * @param {Number} w width
+     * @param {Number} h height
+     * @returns this for method chaining
+     */
+    setSize(w, h) {
+        this.bgSize.w = (w).percent()
+        this.bgSize.h = (h).percent()
+        
+        return this
+    }
+
+    /**
+     * Applies all changes to the gui, must be set at the end of the method chain
+     */
+    apply() {
+        this.handler.getWindow().clearChildren()
+        this._init()
+
+        if (this.changelogText) this.addChangelog(this.changelogText)
     }
 
     /**
@@ -150,10 +187,10 @@ export default class Settings {
 
     _init() {
         this.mainBlock = new UIRoundedRectangle(5)
-            .setX((20).percent())
-            .setY((20).percent())
-            .setWidth((60).percent())
-            .setHeight((50).percent())
+            .setX(this.bgPos.x)
+            .setY(this.bgPos.y)
+            .setWidth(this.bgSize.w)
+            .setHeight(this.bgSize.h)
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
         this.title = new UIText(this.titleText)
@@ -239,16 +276,6 @@ export default class Settings {
     }
 
     /**
-     * - Clears the childen of the current window and re-builds it
-     */
-    _reloadWindow() {
-        this.handler.getWindow().clearChildren()
-        this._init()
-
-        if (this.changelogText) this.addChangelog(this.changelogText)
-    }
-
-    /**
      * - Triggers this function whenever the given button's feature is clicked
      * @param {String} categoryName 
      * @param {String} featureName 
@@ -290,8 +317,6 @@ export default class Settings {
             hideFeatureName: hideFeatureName
         })
 
-        this._reloadWindow()
-
         return this
     }
 
@@ -311,8 +336,6 @@ export default class Settings {
 
             categoryObj.settings.splice(index, 1)
         })
-
-        this._reloadWindow()
 
         return this
     }
@@ -338,8 +361,6 @@ export default class Settings {
 
         this.searchBar.searchBar.textInput.releaseWindowFocus()
         this.searchBar._removeSlider()
-
-        this._reloadWindow()
     }
 
     /**
