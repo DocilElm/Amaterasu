@@ -60,9 +60,15 @@ export default class Settings {
         this.sortCategories = null
         this.sortElements = null
 
-        // TODO: change the method name
-        // also finish this feature because currently it does a whole lot of nothing
-        if (sortCategories) console.warn(`[Amaterasu] Sorting categories parameter has been depricated. since it was found that you have set it to true a normal sorting function has been set, change this by adding your own function with the method #setSortingCategories`)
+        if (sortCategories) {
+            console.warn(`[Amaterasu] Sorting categories parameter has been depricated. since it was found that ${this.moduleName} has set it to true a normal sorting function has been set, change this by adding your own function with the method #setCategorySort`)
+            this.sortCategories = (a, b) => {
+                if (a.category < b.category) return -1
+                else if (a.category > b.category) return 1
+                
+                return 0
+            }
+        }
 
         // Config variables
         this.configsClass = new Configs(this.moduleName, this.configPath, this.defaultConfig)
@@ -91,7 +97,8 @@ export default class Settings {
 
     /**
      * - Function to be ran whenever the config gui attempts to sort the categories
-     * - The category names are passed through the function
+     * - The object is passed through the function
+     * - (e.g "obj" would be a param so you can then do "obj.category" for its category name)
      * - NOTE: this function should return [-1, 0, 1]
      * @param {Function} fn 
      * @returns this for method chaining
@@ -104,6 +111,14 @@ export default class Settings {
         return this
     }
 
+    /**
+     * - Function to be ran whenever [CreateElement] attempts to sort the config components
+     * - The object is passed through the function
+     * - (e.g "obj" would be a param so you can then do "obj.text" for its text)
+     * - NOTE: this function should return [-1, 0, 1]
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
     setSortElements(fn) {
         if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setSortElements] ${fn} is not a valid function`)
 
@@ -173,7 +188,7 @@ export default class Settings {
 
         this.handler.draw(this.mainBlock, false)
 
-        if (this.sortCategories) this.config.sort((a, b) => this.sortCategories(a.category, b.category))
+        if (this.sortCategories) this.config.sort(this.sortCategories)
 
         this.config.forEach((obj, index) => {
             const categoryName = obj.category

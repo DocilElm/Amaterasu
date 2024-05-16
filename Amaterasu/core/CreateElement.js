@@ -95,13 +95,7 @@ export default class CreateElement {
 
         const configSettings = configCategory.settings
 
-        // TODO: finish this feature
         if (this.sortElement) configSettings.sort(this.sortElement)
-        // configSettings.sort((a, b) => {
-        //     if (a.text < b.text) return -1
-        //     else if (a.text > b.text) return 1
-        //     return 0
-        // })
 
         configSettings.forEach(obj => {
             switch (obj.type) {
