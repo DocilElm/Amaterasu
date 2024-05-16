@@ -101,5 +101,6 @@ const configName = "testFeature"
 setting.settings[configName];
 
 // This is how you translate your Vigilance settings to Amaterasu
+import {convertToJSON} from "./core/VigilanceSettings"
 import oldSettings from "./oldSettingsPath"
 convertToJSON(oldSettings, "moduleName")
