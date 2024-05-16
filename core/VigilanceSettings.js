@@ -5,14 +5,13 @@ const localDir = "./config/ChatTriggers/modules/"
 
 /**
  * - Converts a vigilance setting into a [JSON] format for this settings gui
- * @param {Object} obj Your Vigilance settings class
- * @param {String} moduleName "Amaterasu"
- * @param {String} path "/data/defaultSettings"
+ * @param {Object} obj 
+ * @param {String} moduleName 
  * @param {Boolean} overWrite Whether it should overwrite the old file if it exists or not (false by default)
  * @returns 
  */
-export const convertToJSON = (instance, moduleName, path, overWrite = false, moduleToConvert = null) => {
-    if (FileLib.exists(`${localDir}${moduleName}${path}`) && !overWrite) return
+export const convertToJSON = (instance, moduleName, overWrite = false, moduleToConvert = null) => {
+    if (FileLib.exists(`${localDir}${moduleName}/data/defaultSettings.json`) && !overWrite) return
     if (moduleToConvert && moduleName !== moduleToConvert) return
 
     const currentInstance = instance.__proto__
@@ -87,7 +86,7 @@ export const convertToJSON = (instance, moduleName, path, overWrite = false, mod
 
     FileLib.write(
         moduleName,
-        path,
+        "/data/defaultSettings.json",
         JSON.stringify(resultObj, null, 4),
         true
     )
