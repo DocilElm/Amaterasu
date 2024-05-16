@@ -1,6 +1,6 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
 import TextInputElement from "../../DocGuiLib/elements/TextInput"
-import { CramSiblingConstraint, ScrollComponent, UIRoundedRectangle } from "../../Elementa"
+import { ScrollComponent, UIRoundedRectangle } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class SearchElement {
