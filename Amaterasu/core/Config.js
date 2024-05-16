@@ -141,6 +141,7 @@ export default class Configs {
                 // Check whether the key [name] exists in the default values
                 if (defaultConfigNames.has(name)) {
                     const confObj = defaultConfigNames.get(name)
+                    const arrCheck = Array.isArray(objConf.defaultValue) && objConf.defaultValue.toString() === confObj.defaultValue.toString()
 
                     // Check if any of these object values changed
                     // from from the main default values
@@ -148,13 +149,14 @@ export default class Configs {
                         objConf.type === confObj.type &&
                         objConf.text === confObj.text &&
                         objConf.description === confObj.description &&
+                        (arrCheck || objConf.defaultValue === confObj.defaultValue) &&
                         objConf.hideFeatureName === confObj.hideFeatureName
                         ) return
 
                     // If they did update this object to have the correct values
                     objConf.type = confObj.type
                     objConf.text = confObj.text
-                    objConf.desc = confObj.desc
+                    objConf.description = confObj.description
                     objConf.defaultValue = confObj.defaultValue
                     objConf.value = objConf.value ?? confObj.value
                     objConf.hideFeatureName = confObj.hideFeatureName
