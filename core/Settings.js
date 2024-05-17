@@ -59,6 +59,9 @@ export default class Settings {
         this.titleText = titleText?.replace("&&", "§") ?? `${this.moduleName} Settings`
         this.sortCategories = null
         this.sortElements = null
+        // Store these so whenever we [apply] we can
+        // add them back to the buttons
+        this._onClickList = new Map()
 
         this.GuiScale = null
 
@@ -181,13 +184,21 @@ export default class Settings {
     }
 
     /**
-     * Applies all changes to the gui, must be set at the end of the method chain
+     * - Applies the changes made to the [SettingsGui]
+     * - (e.g you called #setSize you'd have to call `apply()` at the end)
+     * @returns this for method chaining
      */
     apply() {
         this.handler.getWindow().clearChildren()
         this._init()
 
         if (this.changelogText) this.addChangelog(this.changelogText)
+
+        this._onClickList.forEach(obj => {
+            this.onClick(obj.categoryName, obj.featureName, obj.fn, true)
+        })
+
+        return this
     }
 
     /**
@@ -307,9 +318,17 @@ export default class Settings {
      * @param {Function} fn 
      * @returns this for method chaining
      */
-    onClick(categoryName, featureName, fn) {
+    onClick(categoryName, featureName, fn, _internal = false) {
         this.categories.get(categoryName).createElementClass.buttonsFn.get(featureName).onMouseClickEvent(fn)
         this.searchBar._setClick(featureName, fn)
+
+        if (!_internal) {
+            this._onClickList.set(categoryName, {
+                categoryName,
+                featureName,
+                fn
+            })
+        }
 
         return this
     }
