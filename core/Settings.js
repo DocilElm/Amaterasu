@@ -60,8 +60,23 @@ export default class Settings {
         this.sortCategories = null
         this.sortElements = null
 
+        this.GuiScale = null
+
+        this.handler.registers
+            .onOpen(() => {
+                if (Client.getMinecraft().field_71474_y.field_74335_Z !== 2) {
+                    // Save previous [GuiScale]
+                    this.GuiScale = Client.getMinecraft().field_71474_y.field_74335_Z
+                    // Set [Normal] [GuiScale]
+                    Client.getMinecraft().field_71474_y.field_74335_Z = 2
+                }
+            })
+            .onClose(() => {
+                if (Client.getMinecraft().field_71474_y.field_74335_Z === 2 && this.GuiScale !== 2) Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
+            })
+
         if (sortCategories) {
-            console.warn(`[Amaterasu] Sorting categories parameter has been depricated. since it was found that ${this.moduleName} has set it to true a normal sorting function has been set, change this by adding your own function with the method #setCategorySort`)
+            console.warn(`[Amaterasu] Sorting categories parameter has been deprecated. since it was found that ${this.moduleName} has set it to true a normal sorting function has been set, change this by adding your own function with the method #setCategorySort`)
             this.sortCategories = (a, b) => {
                 if (a.category < b.category) return -1
                 else if (a.category > b.category) return 1
@@ -81,8 +96,14 @@ export default class Settings {
         this.oldCategory = null
 
         // Drawing variables
-        this.bgPos = { x: (20).percent(), y: (20).percent() }
-        this.bgSize = { w: (60).percent(), h: (60).percent() }
+        this.bgPos = {
+            x: (20).percent(),
+            y: (20).percent()
+        }
+        this.bgSize = {
+            width: (60).percent(),
+            height: (50).percent()
+        }
 
         // Init function
         this._init()
@@ -130,7 +151,7 @@ export default class Settings {
     }
 
     /**
-     * - Sets the starting x and y value of the gui
+     * - Sets the starting x and y value of the gui (in percent)
      * @param {Number} x 
      * @param {Number} y 
      * @returns this for method chaining
@@ -143,14 +164,14 @@ export default class Settings {
     }
 
     /**
-     * - Sets the width and height of the gui
-     * @param {Number} w width
-     * @param {Number} h height
+     * - Sets the width and height of the gui (in percent)
+     * @param {Number} width 
+     * @param {Number} height 
      * @returns this for method chaining
      */
-    setSize(w, h) {
-        this.bgSize.w = (w).percent()
-        this.bgSize.h = (h).percent()
+    setSize(width, height) {
+        this.bgSize.width = (width).percent()
+        this.bgSize.height = (height).percent()
         
         return this
     }
@@ -189,8 +210,8 @@ export default class Settings {
         this.mainBlock = new UIRoundedRectangle(5)
             .setX(this.bgPos.x)
             .setY(this.bgPos.y)
-            .setWidth(this.bgSize.w)
-            .setHeight(this.bgSize.h)
+            .setWidth(this.bgSize.width)
+            .setHeight(this.bgSize.height)
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
 
         this.title = new UIText(this.titleText)
