@@ -76,6 +76,7 @@ export default class Settings {
                 if (this.GuiScale === 2) return
 
                 Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
+                this.GuiScale = null
             })
 
         if (sortCategories) {
