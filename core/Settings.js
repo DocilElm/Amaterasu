@@ -72,7 +72,7 @@ export default class Settings {
                 }
             })
             .onClose(() => {
-                if (Client.getMinecraft().field_71474_y.field_74335_Z === 2 && this.GuiScale !== 2) Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
+                if (Client.getMinecraft().field_71474_y.field_74335_Z === 2 && this.GuiScale && this.GuiScale !== 2) Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
             })
 
         if (sortCategories) {
