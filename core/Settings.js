@@ -64,15 +64,18 @@ export default class Settings {
 
         this.handler.registers
             .onOpen(() => {
-                if (Client.getMinecraft().field_71474_y.field_74335_Z !== 2) {
-                    // Save previous [GuiScale]
-                    this.GuiScale = Client.getMinecraft().field_71474_y.field_74335_Z
-                    // Set [Normal] [GuiScale]
-                    Client.getMinecraft().field_71474_y.field_74335_Z = 2
-                }
+                if (Client.getMinecraft().field_71474_y.field_74335_Z === 2) return
+
+                // Save previous [GuiScale]
+                this.GuiScale = Client.getMinecraft().field_71474_y.field_74335_Z
+                // Set [Normal] [GuiScale]
+                Client.getMinecraft().field_71474_y.field_74335_Z = 2
             })
             .onClose(() => {
-                if (Client.getMinecraft().field_71474_y.field_74335_Z === 2 && this.GuiScale && this.GuiScale !== 2) Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
+                if (Client.getMinecraft().field_71474_y.field_74335_Z !== 2 || this.GuiScale == null) return
+                if (this.GuiScale === 2) return
+
+                Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
             })
 
         if (sortCategories) {
