@@ -20,7 +20,7 @@ export default class SearchElement {
         this.selected = false
         this.sliderAdded = false
         this.matches = null
-        this.matchesAmount = 0
+        this.hasSearched = false
         this.clickFn = new Map()
 
         this.rightBlock = new ScrollComponent("no elements found", 5.0)
@@ -40,7 +40,8 @@ export default class SearchElement {
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
         this.rightBlock.hide()
 
-        this.searchBar = new TextInputElement("Search...", 73.3, 2, 15, 5)
+        this.searchBar = new TextInputElement("", 73.3, 2, 15, 5)
+            .setPlaceHolder("Search...")
             .onMouseClickEvent(() => this.selected = true)
             .onKeyTypeEvent(this._onKeyType.bind(this))
 
@@ -59,14 +60,11 @@ export default class SearchElement {
     }
 
     _onKeyType(string) {
-        // Make the text empty if the user deletes 2 chars
-        if (/^Search[\.]+$/.test(string)) return this.searchBar.textInput.setText("")
-
         // Return & reset if the focus has been lost
         if (!this.selected) return this._reset()
 
         // Return & reset if the string is empty and the user has searched before
-        if (!string && this.matchesAmount) return this._reset()
+        if (!string && this.hasSearched) return this._reset()
 
         // Return if the string is empty so it doesn't try to search for ""
         if (!string) return
@@ -97,8 +95,7 @@ export default class SearchElement {
         })
 
         // Add the current match length so we can use it on the reset values
-        const mLength = this.matches[0].settings.length
-        if (mLength) this.matchesAmount = mLength
+        this.hasSearched = true
 
         this.parentClass._hideAll()
         this.rightBlock.unhide(true)
@@ -115,7 +112,7 @@ export default class SearchElement {
     _reset() {
         this.rightBlock.hide()
         this.parentClass._unhideAll()
-        this.matchesAmount = 0
+        this.hasSearched = false
 
         return this
     }
