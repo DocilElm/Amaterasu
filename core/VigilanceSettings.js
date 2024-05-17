@@ -47,7 +47,7 @@ export const convertToJSON = (instance, moduleName, overWrite = false, moduleToC
                 break
         
             case PropertyType.TEXT:
-                resultObj[category].push([key, name, description, ConfigTypes.TEXTINPUT, placeholder])
+                resultObj[category].push([key, name, description, ConfigTypes.TEXTINPUT, placeholder, null, placeholder])
                 break
 
             case PropertyType.SLIDER:

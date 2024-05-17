@@ -20,7 +20,7 @@ export default class Configs {
      * @returns this for method chaining
      */
     _makeSettings(category, array = [], overWrite = false) {
-        const [ name, text, description, type, defaultValues, value, hideFeatureName ] = array
+        const [ name, text, description, type, defaultValues, value, hideFeatureName, placeHolder ] = array
 
         const obj = this.config.find(names => names.category === category)
 
@@ -33,7 +33,8 @@ export default class Configs {
                     type: type,
                     defaultValue: defaultValues,
                     value: value ?? defaultValues,
-                    hideFeatureName: hideFeatureName
+                    hideFeatureName: hideFeatureName,
+                    placeHolder: placeHolder ?? defaultValues
                 }
             ] })
             
@@ -50,7 +51,8 @@ export default class Configs {
             type: type,
             defaultValue: defaultValues,
             value: value ?? defaultValues,
-            hideFeatureName: hideFeatureName
+            hideFeatureName: hideFeatureName,
+            placeHolder: placeHolder ?? defaultValues
         })
 
         return this
@@ -110,7 +112,7 @@ export default class Configs {
 
             // Loop through all the config elements
             this.defaultConfig[categoryName].forEach(arr => {
-                const [ name, text, description, type, defaultValues, value, hideFeatureName ] = arr
+                const [ name, text, description, type, defaultValues, value, hideFeatureName, placeHolder ] = arr
 
                 // Making a config object so we can use it as check
                 const confObj = {
@@ -120,7 +122,8 @@ export default class Configs {
                     type: type,
                     defaultValue: defaultValues,
                     value: value ?? defaultValues,
-                    hideFeatureName: hideFeatureName
+                    hideFeatureName: hideFeatureName,
+                    placeHolder: placeHolder ?? defaultValues
                 }
 
                 // Add it to the [Map] so we can use it outside of this loop
@@ -150,7 +153,8 @@ export default class Configs {
                         objConf.text === confObj.text &&
                         objConf.description === confObj.description &&
                         (arrCheck || objConf.defaultValue === confObj.defaultValue) &&
-                        objConf.hideFeatureName === confObj.hideFeatureName
+                        objConf.hideFeatureName === confObj.hideFeatureName &&
+                        objConf.placeHolder === confObj.placeHolder
                         ) return
 
                     // If they did update this object to have the correct values
@@ -160,6 +164,7 @@ export default class Configs {
                     objConf.defaultValue = confObj.defaultValue
                     objConf.value = objConf.value ?? confObj.value
                     objConf.hideFeatureName = confObj.hideFeatureName
+                    objConf.placeHolder = confObj.placeHolder
 
                     return
                 }

@@ -214,6 +214,7 @@ export default class CreateElement {
         const textDescription = this._makeTextDescription(obj)
 
         new TextInputElement(obj.value, 0, 0, 17, 30)
+            .setPlaceHolder(obj.placeHolder)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
