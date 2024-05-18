@@ -193,7 +193,7 @@ export default class Settings {
         this.handler.getWindow().clearChildren()
         this._init()
 
-        if (this.changelogText) this.addChangelog(this.changelogText)
+        if (this.markdowns) this.markdowns.forEach(md => this.addMarkdown(...md))
 
         this._onClickList.forEach(obj => {
             this.onClick(obj.categoryName, obj.featureName, obj.fn, true)
@@ -428,20 +428,32 @@ export default class Settings {
      * @returns this for method chaining
      */
     addChangelog(text) {
-        if (text instanceof Array) text = text.join("\n")
-        this.changelogText = text
+        this.addMarkdown("Changelog", text)
 
-        const changelogCategory = new Category(this, "Changelog", false, false)
+        return this
+    }
+
+    /**
+     * - Adds a markdown category
+     * @param {String} category
+     * @param {String|String[]} text 
+     * @returns this for method chaining
+     */
+    addMarkdown(category, text) {
+        if (text instanceof Array) text = text.join("\n")
+        this.markdowns = this.markdowns ? [...this.markdowns, [category, text]] : [[category, text]]
+
+        const markdownCategory = new Category(this, category, false, false)
         new MarkdownElement(text, 0, 0, 85, 85)
             ._setPosition(
                 new CenterConstraint(),
                 new CramSiblingConstraint(5)
             )
             ._create(this.handler.getColorScheme())
-            .setChildOf(changelogCategory.rightBlock)
+            .setChildOf(markdownCategory.rightBlock)
 
-        this.categories.set("Changelog", changelogCategory)
+        this.categories.set(category, markdownCategory)
 
         return this
-    }
+    }    
 }
