@@ -45,8 +45,16 @@ export const convertToJSON = (instance, moduleName, overWrite = false, moduleToC
             case PropertyType.SWITCH:
                 resultObj[category].push([key, name, description, ConfigTypes.TOGGLE, false])
                 break
+            
+            case PropertyType.CHECKBOX:
+                resultObj[category].push([key, name, description, ConfigTypes.TOGGLE, false])
+                break
         
             case PropertyType.TEXT:
+                resultObj[category].push([key, name, description, ConfigTypes.TEXTINPUT, placeholder, null, placeholder])
+                break
+            
+            case PropertyType.PARAGRAPH:
                 resultObj[category].push([key, name, description, ConfigTypes.TEXTINPUT, placeholder, null, placeholder])
                 break
 

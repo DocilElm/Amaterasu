@@ -119,10 +119,11 @@ export default class Settings {
     /**
      * - Sets the command to open this gui
      * @param {String} name 
+     * @param {String[]} aliases
      * @returns this for method chaining
      */
-    setCommand(name) {
-        this.handler.setCommand(name)
+    setCommand(name, aliases = []) {
+        this.handler.setCommand(name, aliases)
 
         return this
     }
