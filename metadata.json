@@ -3,5 +3,6 @@
   "creator": "DocilElm",
   "description": "doc is the best.",
   "version": "1.17.3",
-  "requires": ["Elementa", "DocGuiLib"]
+  "entry": "amaterasu.js",
+  "requires": ["DocGuiLib"]
 }

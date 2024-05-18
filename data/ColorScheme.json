@@ -1,73 +1,320 @@
 {
     "Button": {
-        "backgroundBox": [0, 0, 0, 80],
-        "backgroundBox1": [0, 0, 0, 0],
-        "lines": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255],
-        "textColorSelected": [19, 117, 141, 255],
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "backgroundBox1": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "lines": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "textColorSelected": [
+            19,
+            117,
+            141,
+            255
+        ],
         "textScale": 1,
-        "mouseClick": [255, 255, 255, 80],
-        "mouseEnter": [0, 0, 0, 80],
-        "mouseLeave": [0, 0, 0, 0]
+        "mouseClick": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            0,
+            0,
+            0,
+            0
+        ]
     },
     "TextInput": {
-        "backgroundBox": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255],
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
         "textScale": 1,
-        "mouseEnter": [0, 0, 0, 80],
-        "mouseLeave": [255, 255, 255, 255]
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            255,
+            255,
+            255,
+            255
+        ]
     },
     "Checkbox": {
-        "enabled": [255, 255, 255, 80],
-        "disabled": [0, 0, 0, 80]
+        "enabled": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "disabled": [
+            0,
+            0,
+            0,
+            80
+        ]
     },
     "Switch": {
-        "backgroundBox": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255],
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
         "textScale": 1,
-        "enabled": [255, 255, 255, 80],
-        "disabled": [0, 0, 0, 80]
+        "enabled": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "disabled": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "switchBoxEnabled": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "switchBoxDisabled": [
+            0,
+            0,
+            0,
+            80
+        ]
     },
     "Slider": {
-        "backgroundBar": [0, 0, 0, 0],
-        "backgroundBox": [255, 255, 255, 80],
-        "sliderBox": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255],
+        "backgroundBar": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "backgroundBox": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "sliderBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
         "textScale": 1,
-        "mouseEnter": [0, 0, 0, 80],
-        "mouseLeave": [255, 255, 255, 80]
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            255,
+            255,
+            255,
+            80
+        ]
     },
     "Selection": {
-        "backgroundBar": [0, 0, 0, 80],
+        "backgroundBar": [
+            0,
+            0,
+            0,
+            80
+        ],
         "leftArrow": "<",
         "rightArrow": ">",
-        "textColor": [255, 255, 255, 255],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
         "textScale": 1,
-        "mouseEnter": [0, 0, 0, 80],
-        "mouseLeave": [255, 255, 255, 255]
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            255,
+            255,
+            255,
+            255
+        ]
     },
     "ColorPicker": {
-        "backgroundBox": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255],
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
         "textScale": 1,
-        "mouseEnter": [0, 0, 0, 80],
-        "mouseLeave": [255, 255, 255, 255]
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            255,
+            255,
+            255,
+            255
+        ]
     },
     "Text": {
         "textScale": 1,
-        "textColor": [255, 255, 255, 255]
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ]
     },
     "Amaterasu": {
-        "backgroundBox": [0, 0, 0, 80],
-        "textDescriptionBg": [0, 0, 0, 80],
-        "mainBgBoxOutline": [255, 255, 255, 80],
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textDescriptionBg": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mainBgBoxOutline": [
+            255,
+            255,
+            255,
+            80
+        ],
         "mainBgBoxOutlineThickness": 0.5,
-        "elementsDescriptionOutline": [255, 255, 255, 80],
+        "elementsDescriptionOutline": [
+            255,
+            255,
+            255,
+            80
+        ],
         "elementsDescriptionOutlineThickness": 0.5,
-        "topLine": [255, 255, 255, 80],
+        "topLine": [
+            255,
+            255,
+            255,
+            80
+        ],
         "topLinePixels": 2,
-        "leftPanelBg": [0, 0, 0, 0],
-        "rightPanelBg": [0, 0, 0, 0],
-        "scrollbar": [255, 255, 255, 80]
+        "leftPanelBg": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "rightPanelBg": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "scrollbar": [
+            255,
+            255,
+            255,
+            80
+        ]
+    },
+    "Divider": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "line": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "textScale": 1,
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ]
+    },
+    "Markdown": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textScale": 1
     }
 }
