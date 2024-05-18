@@ -237,6 +237,14 @@ export default class Settings {
             .setY((3).percent())
             .setChildOf(this.mainBlock)
 
+        this.searchBarBg = new UIRoundedRectangle(3)
+            .setX((69.4).percent())
+            .setY((1.5).percent())
+            .setWidth((15).percent())
+            .setHeight((5).percent())
+            .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
+            .setChildOf(this.mainBlock)
+
         this.topLine = new UIRoundedRectangle(3)
             .setX((1).pixel())
             .setY(new CramSiblingConstraint(5))
@@ -332,7 +340,7 @@ export default class Settings {
     onClick(categoryName, featureName, fn, _internal = false) {
         const categoryList = this.categories.get(categoryName)
         if (!categoryList) throw new Error(`${categoryName} is not a valid category name.`)
-        
+
         const btnList = categoryList.createElementClass.buttonsFn.get(featureName)
         if (!btnList) throw new Error(`${featureName} is not a valid feature name.`)
 

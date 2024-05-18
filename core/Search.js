@@ -40,7 +40,7 @@ export default class SearchElement {
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
         this.rightBlock.hide()
 
-        this.searchBar = new TextInputElement("", 73.3, 2, 15, 5)
+        this.searchBar = new TextInputElement("", 0, 0, 100, 100)
             .setPlaceHolder("Search...")
             .onMouseClickEvent(() => this.selected = true)
             .onKeyTypeEvent(this._onKeyType.bind(this))
@@ -56,7 +56,7 @@ export default class SearchElement {
 
         this.searchBar
             ._create(this.handler.colorScheme)
-            .setChildOf(this.mainBlock)
+            .setChildOf(this.parentClass.searchBarBg)
     }
 
     _onKeyType(string) {
