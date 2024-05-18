@@ -194,7 +194,7 @@ export default class Settings {
         this.handler.getWindow().clearChildren()
         this._init()
 
-        this.markdowns.forEach(md => this.addMarkdown(...md))
+        this.markdowns.forEach(md => this.addMarkdown(...md, true))
 
         this._onClickList.forEach(obj => {
             this.onClick(obj.categoryName, obj.featureName, obj.fn, true)
@@ -439,9 +439,10 @@ export default class Settings {
      * @param {String|String[]} text 
      * @returns this for method chaining
      */
-    addMarkdown(category, text) {
+    addMarkdown(category, text, _internal = false) {
         if (text instanceof Array) text = text.join("\n")
-        this.markdowns.push([category, text])
+
+        if (!_internal) this.markdowns.push([category, text])
 
         const markdownCategory = new Category(this, category, false, false)
         new MarkdownElement(text, 0, 0, 85, 85)
