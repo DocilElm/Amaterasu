@@ -191,14 +191,13 @@ export default class Settings {
      * @returns this for method chaining
      */
     apply() {
+        this.oldCategory = null
+        this.categories.forEach(value => value._setSelected(false))
         this.handler.getWindow().clearChildren()
         this._init()
 
-        this.markdowns.forEach(md => this.addMarkdown(...md, true))
-
-        this._onClickList.forEach(obj => {
-            this.onClick(obj.categoryName, obj.featureName, obj.fn, true)
-        })
+        if (this.markdowns.length) this.markdowns.forEach(md => this.addMarkdown(...md, true))
+        this._onClickList.forEach(obj => this.onClick(obj.categoryName, obj.featureName, obj.fn, true))
 
         return this
     }

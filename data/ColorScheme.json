@@ -48,7 +48,16 @@
             0,
             0,
             0
-        ]
+        ],
+        "mouseClickAnimation": "OUT_EXP",
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0.5
     },
     "TextInput": {
         "backgroundBox": [
@@ -75,7 +84,9 @@
             255,
             255,
             255
-        ]
+        ],
+        "mouseAnimation": "OUT_EXP",
+        "animationTime": 0.5
     },
     "Checkbox": {
         "enabled": [
@@ -89,7 +100,18 @@
             0,
             0,
             80
-        ]
+        ],
+        "enabledCheck": "§l✓",
+        "disabledCheck": "",
+        "mouseClickAnimation": "OUT_EXP",
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0.5
     },
     "Switch": {
         "backgroundBox": [
@@ -128,7 +150,16 @@
             0,
             0,
             80
-        ]
+        ],
+        "mouseClickAnimation": "OUT_EXP",
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0.5
     },
     "Slider": {
         "backgroundBar": [
@@ -167,7 +198,16 @@
             255,
             255,
             80
-        ]
+        ],
+        "mouseAnimation": "OUT_EXP",
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0.5
     },
     "Selection": {
         "backgroundBar": [
@@ -196,7 +236,9 @@
             255,
             255,
             255
-        ]
+        ],
+        "arrowClickAnimation": "OUT_EXP",
+        "animationTime": 0.5
     },
     "ColorPicker": {
         "backgroundBox": [
@@ -223,7 +265,9 @@
             255,
             255,
             255
-        ]
+        ],
+        "mouseAnimation": "OUT_EXP",
+        "animationTime": 0.5
     },
     "Text": {
         "textScale": 1,
