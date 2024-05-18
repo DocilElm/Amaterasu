@@ -56,7 +56,7 @@ export default class Settings {
 
         //
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
-        this.titleText = titleText?.replace("&&", "§") ?? `${this.moduleName} Settings`
+        this.titleText = titleText?.addColor() ?? `${this.moduleName} Settings`
         this.sortCategories = null
         this.sortElements = null
         // Store these so whenever we [apply] we can
@@ -230,7 +230,7 @@ export default class Settings {
             .setWidth(this.bgSize.width)
             .setHeight(this.bgSize.height)
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 80]), 0.5))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.mainBgBoxOutline), this.handler.getColorScheme().Amaterasu.mainBgBoxOutlineThickness))
 
         this.title = new UIText(this.titleText)
             .setX(new CenterConstraint())
@@ -241,8 +241,8 @@ export default class Settings {
             .setX((1).pixel())
             .setY(new CramSiblingConstraint(5))
             .setWidth((99.5).percent())
-            .setHeight((2).pixel())
-            .setColor(ElementUtils.getJavaColor([255, 255, 255, 80]))
+            .setHeight((this.handler.getColorScheme().Amaterasu.topLinePixels).pixel())
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.topLine))
             .setChildOf(this.mainBlock)
 
         this.leftBlockBg = new UIRoundedRectangle(3)
@@ -250,7 +250,7 @@ export default class Settings {
             .setY(new CramSiblingConstraint(5))
             .setWidth((18).percent())
             .setHeight((93).percent())
-            .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.leftPanelBg))
             .setChildOf(this.mainBlock)
 
         this.leftBlock = new ScrollComponent("no elements", 5.0)
@@ -265,7 +265,7 @@ export default class Settings {
             .setY(new CramSiblingConstraint(5))
             .setWidth((70).percent())
             .setHeight((87).percent())
-            .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.rightPanelBg))
             .setChildOf(this.mainBlock)
 
         this.searchBar = new SearchElement(this)

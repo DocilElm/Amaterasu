@@ -1,7 +1,7 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
 import Button1Element from "../../DocGuiLib/elements/Button1"
 import DividerElement from "../../DocGuiLib/elements/Divider"
-import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, SiblingConstraint, UIRoundedRectangle } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, ScrollComponent, SiblingConstraint, UIRoundedRectangle } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class Category {
@@ -34,7 +34,7 @@ export default class Category {
             .setY((5).pixels())
             .setHeight((5).pixels())
             .setWidth((5).pixels())
-            .setColor(ElementUtils.getJavaColor([255, 255, 255, 80]))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
 

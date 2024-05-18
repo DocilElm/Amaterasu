@@ -43,7 +43,7 @@ export default class CreateElement {
             .setWidth((85).percent())
             .setHeight((20).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.textDescriptionBg))
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 80]), 0.5))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.elementsDescriptionOutline), this.handler.getColorScheme().Amaterasu.elementsDescriptionOutlineThickness))
             .setChildOf(this.rightBlock)
 
         const descElement = new TextDescriptionElement(obj.text, obj.description, false, 0, 0, 80, 75)

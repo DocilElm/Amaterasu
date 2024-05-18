@@ -35,7 +35,7 @@ export default class SearchElement {
             .setY((5).pixels())
             .setHeight((5).pixels())
             .setWidth((5).pixels())
-            .setColor(ElementUtils.getJavaColor([255, 255, 255, 80]))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
         this.rightBlock.hide()
