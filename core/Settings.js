@@ -101,6 +101,7 @@ export default class Settings {
         this.categories = new Map()
         this.currentCategory = null
         this.oldCategory = null
+        this.markdowns = []
 
         // Drawing variables
         this.bgPos = {
@@ -193,7 +194,7 @@ export default class Settings {
         this.handler.getWindow().clearChildren()
         this._init()
 
-        if (this.markdowns) this.markdowns.forEach(md => this.addMarkdown(...md))
+        this.markdowns.forEach(md => this.addMarkdown(...md))
 
         this._onClickList.forEach(obj => {
             this.onClick(obj.categoryName, obj.featureName, obj.fn, true)
@@ -424,13 +425,12 @@ export default class Settings {
 
     /**
      * - Adds a [Changelog] section with the given string
+     * - Equivalent to `.addMarkdown("Changelog", text)`
      * @param {String} text 
      * @returns this for method chaining
      */
     addChangelog(text) {
-        this.addMarkdown("Changelog", text)
-
-        return this
+        return this.addMarkdown("Changelog", text)
     }
 
     /**
@@ -441,7 +441,7 @@ export default class Settings {
      */
     addMarkdown(category, text) {
         if (text instanceof Array) text = text.join("\n")
-        this.markdowns = this.markdowns ? [...this.markdowns, [category, text]] : [[category, text]]
+        this.markdowns.push([category, text])
 
         const markdownCategory = new Category(this, category, false, false)
         new MarkdownElement(text, 0, 0, 85, 85)
