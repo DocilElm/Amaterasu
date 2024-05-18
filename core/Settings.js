@@ -2,7 +2,7 @@ import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
 import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
-import { CenterConstraint, CramSiblingConstraint, ScrollComponent, UIRoundedRectangle, UIText, UIWrappedText } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText, UIWrappedText } from "../../Elementa"
 import Category from "./Category"
 import Configs from "./Config"
 
@@ -138,7 +138,7 @@ export default class Settings {
      * @returns this for method chaining
      */
     setCategorySort(fn) {
-        if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setCategorySort] ${fn} is not a valid function`)
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
         this.sortCategories = fn
 
         return this
@@ -153,7 +153,7 @@ export default class Settings {
      * @returns this for method chaining
      */
     setSortElements(fn) {
-        if (typeof(fn) !== "function") throw new Error(`[Amaterasu - #setSortElements] ${fn} is not a valid function`)
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
         this.sortElements = fn
 
         return this
@@ -230,17 +230,26 @@ export default class Settings {
             .setWidth(this.bgSize.width)
             .setHeight(this.bgSize.height)
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 80]), 0.5))
 
         this.title = new UIText(this.titleText)
             .setX(new CenterConstraint())
             .setY((3).percent())
             .setChildOf(this.mainBlock)
 
+        this.topLine = new UIRoundedRectangle(3)
+            .setX((1).pixel())
+            .setY(new CramSiblingConstraint(5))
+            .setWidth((99.5).percent())
+            .setHeight((2).pixel())
+            .setColor(ElementUtils.getJavaColor([255, 255, 255, 80]))
+            .setChildOf(this.mainBlock)
+
         this.leftBlockBg = new UIRoundedRectangle(3)
             .setX((3).pixel())
-            .setY((7).percent())
+            .setY(new CramSiblingConstraint(5))
             .setWidth((18).percent())
-            .setHeight((90).percent())
+            .setHeight((93).percent())
             .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             .setChildOf(this.mainBlock)
 
@@ -248,14 +257,14 @@ export default class Settings {
             .setX((1).pixel())
             .setY((1).percent())
             .setWidth((100).percent())
-            .setHeight((100).percent())
+            .setHeight((90).percent())
             .setChildOf(this.leftBlockBg)
 
         this.mainRightBlock = new UIRoundedRectangle(3)
             .setX(new CramSiblingConstraint(5))
-            .setY((7).percent())
+            .setY(new CramSiblingConstraint(5))
             .setWidth((70).percent())
-            .setHeight((90).percent())
+            .setHeight((87).percent())
             .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             .setChildOf(this.mainBlock)
 
@@ -321,7 +330,10 @@ export default class Settings {
      * @returns this for method chaining
      */
     onClick(categoryName, featureName, fn, _internal = false) {
-        this.categories.get(categoryName).createElementClass.buttonsFn.get(featureName).onMouseClickEvent(fn)
+        const btnList = this.categories.get(categoryName).createElementClass.buttonsFn.get(featureName)
+        if (!btnList) throw new Error(`${featureName} is not a valid feature name.`)
+
+        btnList.onMouseClickEvent(fn)
         this.searchBar._setClick(featureName, fn)
 
         if (!_internal) {

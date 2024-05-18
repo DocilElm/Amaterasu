@@ -1,7 +1,7 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
 import Button1Element from "../../DocGuiLib/elements/Button1"
 import DividerElement from "../../DocGuiLib/elements/Divider"
-import { CenterConstraint, CramSiblingConstraint, ScrollComponent, SiblingConstraint, UIRoundedRectangle } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, SiblingConstraint, UIRoundedRectangle } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class Category {

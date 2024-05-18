@@ -7,7 +7,7 @@ import TextDescriptionElement from "../../DocGuiLib/elements/TextDescription"
 import TextInputElement from "../../DocGuiLib/elements/TextInput"
 import ColorPickerElement from "../../DocGuiLib/elements/ColorPicker"
 import SwitchElement from "../../DocGuiLib/elements/Switch"
-import { CenterConstraint, CramSiblingConstraint, UIRoundedRectangle } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, OutlineEffect, UIRoundedRectangle } from "../../Elementa"
 import ConfigTypes from "./ConfigTypes"
 
 export default class CreateElement {
@@ -43,6 +43,7 @@ export default class CreateElement {
             .setWidth((85).percent())
             .setHeight((20).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.textDescriptionBg))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 80]), 0.5))
             .setChildOf(this.rightBlock)
 
         const descElement = new TextDescriptionElement(obj.text, obj.description, false, 0, 0, 80, 75)
