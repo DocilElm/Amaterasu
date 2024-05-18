@@ -56,7 +56,7 @@ export default class Settings {
 
         //
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
-        this.titleText = titleText?.addColor() ?? `${this.moduleName} Settings`
+        this.titleText = titleText?.addColor() ?? `${this.moduleName.addColor()} Settings`
         this.sortCategories = null
         this.sortElements = null
         // Store these so whenever we [apply] we can
@@ -330,7 +330,10 @@ export default class Settings {
      * @returns this for method chaining
      */
     onClick(categoryName, featureName, fn, _internal = false) {
-        const btnList = this.categories.get(categoryName).createElementClass.buttonsFn.get(featureName)
+        const categoryList = this.categories.get(categoryName)
+        if (!categoryList) throw new Error(`${categoryName} is not a valid category name.`)
+        
+        const btnList = categoryList.createElementClass.buttonsFn.get(featureName)
         if (!btnList) throw new Error(`${featureName} is not a valid feature name.`)
 
         btnList.onMouseClickEvent(fn)
