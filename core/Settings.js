@@ -196,8 +196,21 @@ export default class Settings {
         this.handler.getWindow().clearChildren()
         this._init()
 
-        if (this.markdowns.length) this.markdowns.forEach(md => this.addMarkdown(...md, true))
+        this.markdowns.forEach(md => this.addMarkdown(...md, true))
         this._onClickList.forEach(obj => this.onClick(obj.categoryName, obj.featureName, obj.fn, true))
+
+        return this
+    }
+
+    /**
+     * @param {String} colorSchemePath 
+     * @returns this for method chaining
+     */
+    changeScheme(newPath) {
+        this.colorSchemePath = newPath
+
+        this.colorScheme = this._checkScheme(this.colorSchemePath)
+        this.handler._setColorScheme(this.colorScheme)
 
         return this
     }
@@ -256,7 +269,7 @@ export default class Settings {
             .setX((3).pixel())
             .setY(new CramSiblingConstraint(5))
             .setWidth((18).percent())
-            .setHeight((93).percent())
+            .setHeight((87).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.leftPanelBg))
             .setChildOf(this.mainBlock)
 
@@ -264,8 +277,18 @@ export default class Settings {
             .setX((1).pixel())
             .setY((1).percent())
             .setWidth((100).percent())
-            .setHeight((90).percent())
+            .setHeight((100).percent())
             .setChildOf(this.leftBlockBg)
+
+        this.leftBlockScrollbar = new UIRoundedRectangle(3)
+            .setX((3).pixels(true))
+            .setY((5).pixels())
+            .setHeight((5).pixels())
+            .setWidth((5).pixels())
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
+            .setChildOf(this.leftBlockBg)
+
+        this.leftBlock.setScrollBarComponent(this.leftBlockScrollbar, true, false)
 
         this.mainRightBlock = new UIRoundedRectangle(3)
             .setX(new CramSiblingConstraint(5))

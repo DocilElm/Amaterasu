@@ -12,6 +12,17 @@
     ],
     "GUI": [
         [
+            "scheme",
+            "Change My Scheme!",
+            "Select which scheme you want from these presets (needs apply after)",
+            3,
+            [
+                "Default",
+                "Pink"
+            ],
+            0
+        ],
+        [
             "apply",
             "Apply Changes",
             "Need to click this for window to reload with selected changes",
