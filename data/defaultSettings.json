@@ -18,7 +18,8 @@
             3,
             [
                 "Default",
-                "Pink"
+                "Pink",
+                "Vigil"
             ],
             0
         ],
@@ -38,7 +39,7 @@
             1,
             [
                 0,
-                100
+                75
             ],
             20
         ],
@@ -49,7 +50,7 @@
             1,
             [
                 0,
-                100
+                75
             ],
             20
         ],
@@ -59,7 +60,7 @@
             "Changes the width of the GUI (in percent)",
             1,
             [
-                0,
+                25,
                 100
             ],
             60
@@ -70,7 +71,7 @@
             "Changes the height of the GUI (in percent)",
             1,
             [
-                0,
+                25,
                 100
             ],
             50
