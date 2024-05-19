@@ -7,7 +7,7 @@ const changelog = `# §6Amaterasu-v${ version }\n` + FileLib.read("Amaterasu", "
 const readme = FileLib.read("Amaterasu", "README.md")
 const defaultConfig = JSON.parse(FileLib.read("Amaterasu", "data/defaultSettings.json"))
 
-const schemes = ["data/ColorScheme.json", "data/scheme-Pink.json"]
+const schemes = ["data/ColorScheme.json", "data/scheme-Pink.json", "data/scheme-vigil.json"]
 
 const config = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme.json", defaultConfig)
     .setCommand("amaterasu", ["amat"])
@@ -27,5 +27,7 @@ const config = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme
     .addMarkdown("README", readme)
 
 config
+    .setPos(config.settings.x, config.settings.y)
+    .setSize(config.settings.width, config.settings.height)
     .changeScheme(schemes[config.settings.scheme])
     .apply()
