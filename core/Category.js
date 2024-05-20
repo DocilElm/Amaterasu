@@ -25,14 +25,12 @@ export default class Category {
         this.rightBlock = new ScrollComponent("", 5.0)
             .setX((1).pixel())
             .setY((1).pixel())
-            .setWidth((100).percent())
-            .setHeight((100).percent())
+            .setWidth((98).percent())
+            .setHeight((98).percent())
             .setChildOf(this.mainRightBlock)
 
         this.elementsSlider = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
-            .setY((5).pixels())
-            .setHeight((5).pixels())
             .setWidth((5).pixels())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
 

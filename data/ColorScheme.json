@@ -311,7 +311,7 @@
             255,
             80
         ],
-        "topLinePixels": 2,
+        "topLineSize": 0.5,
         "leftPanelBg": [
             0,
             0,

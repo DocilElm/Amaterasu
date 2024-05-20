@@ -283,7 +283,7 @@
             24,
             24,
             24,
-            255
+            80
         ],
         "textDescriptionBg": [
             24,
@@ -329,7 +329,8 @@
             255,
             255,
             80
-        ]
+        ],
+        "topLineSize": 0.5
     },
     "Divider": {
         "backgroundBox": [
