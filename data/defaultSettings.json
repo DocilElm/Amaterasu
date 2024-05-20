@@ -8,6 +8,15 @@
             0,
             0,
             0
+        ],
+        [
+            "redirect",
+            "Redirect Test",
+            "Opens the GUI category",
+            2,
+            0,
+            0,
+            0
         ]
     ],
     "GUI": [
@@ -33,8 +42,19 @@
             0
         ],
         [
+            "alpha",
+            "Change Background Alpha",
+            "Changes the alpha of the background",
+            1,
+            [
+                0,
+                255
+            ],
+            80
+        ],
+        [
             "x",
-            "X Coordinate",
+            "Change X",
             "Changes the starting X coordinate of the GUI (in percent)",
             1,
             [
@@ -45,7 +65,7 @@
         ],
         [
             "y",
-            "Y Coordinate",
+            "Change Y",
             "Changes the starting Y coordinate of the GUI (in percent)",
             1,
             [
@@ -56,7 +76,7 @@
         ],
         [
             "width",
-            "Width",
+            "Change Width",
             "Changes the width of the GUI (in percent)",
             1,
             [
@@ -67,7 +87,7 @@
         ],
         [
             "height",
-            "Height",
+            "Change Height",
             "Changes the height of the GUI (in percent)",
             1,
             [

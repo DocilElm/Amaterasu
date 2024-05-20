@@ -502,4 +502,28 @@ export default class Settings {
 
         return this
     }    
+
+    /**
+     * - Failed attempt, come back to this later
+     * @param {String} categoryName 
+     * @param {String?} featureName 
+     * @returns this for method chaining
+     */
+    redirect(categoryName, featureName = null) {
+        this.oldCategory = null
+        this.currentCategory = categoryName
+        this._hideAll()
+        this._unhideAll()
+
+        if (featureName) {
+            const categoryInstance = this.categories.get(categoryName)
+            if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
+
+            const compTop = categoryInstance.createElementClass.elements.get(featureName).component.getTop()
+
+            categoryInstance.rightBlock.scrollTo(0, compTop, true)
+        }
+
+        return this
+    }
 }
