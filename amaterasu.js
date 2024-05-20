@@ -1,5 +1,3 @@
-// wth a lib with an entry???
-
 import Settings from "./core/Settings"
 
 const version = JSON.parse(FileLib.read("Amaterasu", "metadata.json")).version
@@ -15,19 +13,28 @@ const config = new Settings("Amaterasu", "data/settings.json", "data/ColorScheme
         ChatLib.command("ct copy https://discord.gg/SK9UDzquEN", true)
         ChatLib.chat("&6Copied Discord Link!")
     })
-    .onClick("GUI", "apply", () => {
-        config
-        .setPos(config.settings.x, config.settings.y)
-        .setSize(config.settings.width, config.settings.height)
-        .changeScheme(schemes[config.settings.scheme])
-        .apply()
-    })
+    .onClick("GUI", "apply", apply)
+    .onClick("General", "redirect", () => config.redirect("GUI", "height"))
 
     .addMarkdown("Changelog", changelog)
     .addMarkdown("README", readme)
 
-config
-    .setPos(config.settings.x, config.settings.y)
-    .setSize(config.settings.width, config.settings.height)
-    .changeScheme(schemes[config.settings.scheme])
-    .apply()
+function apply() {
+    const conf = config.settings
+    const currScheme = schemes[conf.scheme]
+
+    let scheme = JSON.parse(FileLib.read("Amaterasu", currScheme));
+    scheme.Amaterasu.backgroundBox[3] = conf.alpha
+
+    FileLib.write("Amaterasu", currScheme, JSON.stringify(scheme, null, 4))
+
+    config
+        .setPos(conf.x, conf.y)
+        .setSize(conf.width, conf.height)
+        .changeScheme(schemes[conf.scheme])
+        .apply()
+    
+}
+apply()
+
+export default () => config.settings
