@@ -13,9 +13,9 @@
             80
         ],
         "lines": [
-            0,
-            0,
-            0,
+            200,
+            200,
+            200,
             80
         ],
         "textColor": [
@@ -25,10 +25,10 @@
             255
         ],
         "textColorSelected": [
-            234,
-            166,
-            210,
-            80
+            35,
+            130,
+            219,
+            255
         ],
         "textScale": 1,
         "mouseClick": [
@@ -55,7 +55,7 @@
             255,
             255,
             255,
-            80
+            255
         ],
         "outlineThickness": 0.5
     },
@@ -280,9 +280,9 @@
     },
     "Amaterasu": {
         "backgroundBox": [
-            234,
-            166,
-            210,
+            100,
+            100,
+            100,
             80
         ],
         "textDescriptionBg": [
@@ -292,26 +292,26 @@
             80
         ],
         "mainBgBoxOutline": [
-            234,
-            166,
-            210,
+            255,
+            255,
+            255,
             80
         ],
-        "mainBgBoxOutlineThickness": 1,
+        "mainBgBoxOutlineThickness": 0.5,
         "elementsDescriptionOutline": [
-            234,
-            166,
-            210,
+            255,
+            255,
+            255,
             80
         ],
         "elementsDescriptionOutlineThickness": 0.5,
         "topLine": [
-            234,
-            166,
-            210,
+            255,
+            255,
+            255,
             80
         ],
-        "topLinePixels": 2,
+        "topLineSize": 0.5,
         "leftPanelBg": [
             0,
             0,
@@ -328,6 +328,12 @@
             255,
             255,
             255,
+            80
+        ],
+        "backGroundBox": [
+            0,
+            0,
+            0,
             80
         ]
     },
