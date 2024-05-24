@@ -46,7 +46,7 @@ export default class CreateElement {
             .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.elementsDescriptionOutline), this.handler.getColorScheme().Amaterasu.elementsDescriptionOutlineThickness))
             .setChildOf(this.rightBlock)
 
-        const descElement = new TextDescriptionElement(obj.text, obj.description, false, 0, 0, 80, 75)
+        const descElement = new TextDescriptionElement(obj.text, obj.description, false, 0, 0, obj.type === ConfigTypes.COLORPICKER ? 75 : 80, 75)
             ._setPosition(
                 (3).pixel(),
                 new CenterConstraint()
