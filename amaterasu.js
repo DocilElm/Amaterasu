@@ -13,7 +13,7 @@ const schemes = ["data/ColorScheme.json", "data/scheme-vigil.json", "data/scheme
 const meinConf = new DefaultConfig("Amaterasu", "data/settings.json")
 meinConf
     .addButton({
-        categoryName: "General",
+        category: "General",
         configName: "MyDiscord",
         title: "Discord Server",
         description: "Join if you want to report a bug or want to make a suggestion",
@@ -24,14 +24,14 @@ meinConf
         }
     })
     .addSelection({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "scheme",
         title: "Change My Scheme!",
         description: "Select which scheme you want from these presets (needs apply after)",
         options: ["Default", "Vigil", "nwjn"]
     })
     .addButton({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "apply",
         title: "Apply Changes",
         description: "Need to click this for window to reload with selected changes",
@@ -40,7 +40,7 @@ meinConf
         }
     })
     .addSlider({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "alpha",
         title: "Change Background Alpha",
         description: "Changes the alpha of the background",
@@ -48,7 +48,7 @@ meinConf
         value: 80
     })
     .addSlider({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "x",
         title: "Change X",
         description: "Changes the starting X coordinate of the GUI (in percent)",
@@ -56,7 +56,7 @@ meinConf
         value: 20
     })
     .addSlider({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "y",
         title: "Change Y",
         description: "Changes the starting Y coordinate of the GUI (in percent)",
@@ -64,7 +64,7 @@ meinConf
         value: 20
     })
     .addSlider({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "width",
         title: "Change Width",
         description: "Changes the width of the GUI (in percent)",
@@ -72,7 +72,7 @@ meinConf
         value: 60
     })
     .addSlider({
-        categoryName: "GUI",
+        category: "GUI",
         configName: "height",
         title: "Change Height",
         description: "Changes the height of the GUI (in percent)",

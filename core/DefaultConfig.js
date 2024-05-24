@@ -57,13 +57,13 @@ export default class DefaultConfig {
      * @returns {String} the category name itself
      */
     _checkCategory(categoryName, configName) {
-        if (!categoryName && !this.lastCategory) throw new Error(`${categoryName} is not a valid categoryName.`)
+        if (!categoryName && !this.lastCategory) throw new Error(`${categoryName} is not a valid Category Name.`)
 
         // Gets the prevous category name if [categoryName] is [null]
         categoryName = categoryName ?? this.lastCategory
 
-        if (!categoryName) throw new Error(`${categoryName} is not a valid category name`)
-        if (!configName) throw new Error(`${configName} is not a valid ConfigName.`)
+        if (!categoryName) throw new Error(`${categoryName} is not a valid Category Name`)
+        if (!configName) throw new Error(`${configName} is not a valid Confi gName.`)
 
         // Create category data if it does not exist.
         if (!this.categories.has(categoryName)) {
@@ -81,8 +81,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addButton({ categoryName = null, configName = null, title, description, placeHolder = "Click", onClick, shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addButton({ category = null, configName = null, title, description, placeHolder = "Click", onClick, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.BUTTON,
             name: configName,
             text: title,
@@ -102,8 +102,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addToggle({ categoryName = null, configName = null, title, description, value = false, shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addToggle({ category = null, configName = null, title, description, value = false, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.TOGGLE,
             name: configName,
             text: title,
@@ -122,8 +122,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addSwitch({ categoryName = null, configName = null, title, description, value = false, shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addSwitch({ category = null, configName = null, title, description, value = false, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.SWITCH,
             name: configName,
             text: title,
@@ -142,8 +142,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addTextInput({ categoryName = null, configName = null, title, description, value = "", placeHolder, shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addTextInput({ category = null, configName = null, title, description, value = "", placeHolder, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.TEXTINPUT,
             name: configName,
             text: title,
@@ -163,8 +163,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addSlider({ categoryName = null, configName = null, title, description, options = [ 0, 10 ], value = 1, shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addSlider({ category = null, configName = null, title, description, options = [ 0, 10 ], value = 1, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.SLIDER,
             name: configName,
             text: title,
@@ -184,8 +184,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addSelection({ categoryName = null, configName = null, title, description, options = [ "Test 1", "Test 2" ], value = 0, shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addSelection({ category = null, configName = null, title, description, options = [ "Test 1", "Test 2" ], value = 0, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.SELECTION,
             name: configName,
             text: title,
@@ -205,8 +205,8 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addColorPicker({ categoryName = null, configName = null, title, description, value = [ 255, 255, 255, 255 ], shouldShow, subcategory = null, tags = [] }) {
-        this._makeObj(categoryName, configName, {
+    addColorPicker({ category = null, configName = null, title, description, value = [ 255, 255, 255, 255 ], shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
             type: ConfigTypes.COLORPICKER,
             name: configName,
             text: title,
