@@ -28,6 +28,10 @@ export default class CreateElement {
         // This map holds all of the buttons created
         // this is to ensure the user can use their own function for the click method
         this.buttonsFn = new Map()
+
+        // Stores all the created [subcategories]
+        // maybe later on we store the actual settings of each
+        this.subcategories = new Set()
     }
 
     /**
@@ -37,6 +41,13 @@ export default class CreateElement {
      * @returns
      */
     _makeTextDescription(obj) {
+        const subcategory = obj.subcategory ?? this.categoryClass.categoryName
+
+        if (!this.subcategories.has(subcategory)) {
+            this.categoryClass?._createDivider(subcategory)
+            this.subcategories.add(subcategory)
+        }
+
         const bgBox = new UIRoundedRectangle(5)
             .setX(new CenterConstraint())
             .setY(new CramSiblingConstraint(5))
@@ -152,9 +163,6 @@ export default class CreateElement {
                         obj.value = !obj.value
                         this.categoryClass._reBuildConfig()
                     })
-                    break
-            
-                default:
                     break
             }
         })

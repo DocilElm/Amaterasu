@@ -1,6 +1,7 @@
 import ElementUtils from "../../DocGuiLib/core/Element"
+import DividerElement from "../../DocGuiLib/elements/Divider"
 import TextInputElement from "../../DocGuiLib/elements/TextInput"
-import { ScrollComponent, UIRoundedRectangle } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, ScrollComponent, UIRoundedRectangle } from "../../Elementa"
 import CreateElement from "./CreateElement"
 
 export default class SearchElement {
@@ -15,7 +16,7 @@ export default class SearchElement {
         this.mainBlock = this.parentClass.mainBlock
         this.oldConfig = this.parentClass.config
         this.config = {}
-        this.categoryName = "SearchBar"
+        this.categoryName = "Search Bar"
 
         this.selected = false
         this.sliderAdded = false
@@ -74,7 +75,7 @@ export default class SearchElement {
 
         this.matches = [
             {
-                "category": "SearchBar",
+                "category": "Search Bar",
                 "settings": []
             }
         ]
@@ -194,5 +195,23 @@ export default class SearchElement {
 
         this.mainRightBlock.removeChild(this.elementsSlider)
         this.sliderAdded = false
+    }
+
+    /**
+     * - Creates a divider with a string in the middle
+     * @param {String} string 
+     * @returns this for method chaining
+     */
+    _createDivider(string) {
+        if (!string) return
+        new DividerElement(string, 0, 0, 85, 5)
+            ._setPosition(
+                new CenterConstraint(),
+                new CramSiblingConstraint(5)
+            )
+            ._create(this.handler.getColorScheme())
+            .setChildOf(this.rightBlock)
+
+        return this
     }
 }

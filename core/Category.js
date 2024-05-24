@@ -36,13 +36,7 @@ export default class Category {
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
 
-        new DividerElement(this.categoryName, 0, 0, 85, 5)
-            ._setPosition(
-                new CenterConstraint(),
-                new CramSiblingConstraint(5)
-            )
-            ._create(this.handler.getColorScheme())
-            .setChildOf(this.rightBlock)
+        // 
 
         // Adding side button with the category name into the sidebar
         this.sidebarButton = new Button1Element(this.categoryName, 0, 0, 80, 8)
@@ -106,6 +100,23 @@ export default class Category {
     _reBuildConfig() {
         this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
         this.createElementClass._hideElement(this.parentClass.settings)
+
+        return this
+    }
+
+    /**
+     * - Creates a divider with a string in the middle
+     * @param {String} string 
+     * @returns this for method chaining
+     */
+    _createDivider(string) {
+        new DividerElement(string, 0, 0, 85, 5)
+            ._setPosition(
+                new CenterConstraint(),
+                new CramSiblingConstraint(5)
+            )
+            ._create(this.handler.getColorScheme())
+            .setChildOf(this.rightBlock)
 
         return this
     }

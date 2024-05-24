@@ -31,6 +31,8 @@ export default class DefaultConfig {
     _makeObj(categoryName, configName, newObj) {        
         categoryName = this._checkCategory(categoryName, configName)
 
+        if (newObj.subcategory === "") newObj.subcategory = null
+
         const obj = this.savedConfig?.find(it => it.category === categoryName)?.settings?.find(currObj => currObj.name === configName)
         if (!obj) return this[categoryName].push(newObj)
 
