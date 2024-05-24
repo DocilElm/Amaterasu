@@ -105,7 +105,7 @@ export default class Category {
      */
     _reBuildConfig() {
         this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
-        this.createElementClass._hideElement()
+        this.createElementClass._hideElement(this.parentClass.settings)
 
         return this
     }

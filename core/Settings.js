@@ -47,10 +47,10 @@ const customAssignObject = (obj1, obj2) => {
 }
 
 export default class Settings {
-    constructor(moduleName, configPath, colorSchemePath, defaultConfig, titleText, sortCategories) {
+    constructor(moduleName, defaultConfig, colorSchemePath, titleText) {
         // Module variables
         this.moduleName = moduleName
-        this.configPath = configPath
+        // this.configPath = configPath
         this.defaultConfig = defaultConfig
         this.colorScheme = this._checkScheme(colorSchemePath)
 
@@ -82,18 +82,8 @@ export default class Settings {
                 this.GuiScale = null
             })
 
-        if (sortCategories) {
-            console.warn(`[Amaterasu] Sorting categories parameter has been deprecated. since it was found that ${this.moduleName} has set it to true a normal sorting function has been set, change this by adding your own function with the method #setCategorySort`)
-            this.sortCategories = (a, b) => {
-                if (a.category < b.category) return -1
-                else if (a.category > b.category) return 1
-                
-                return 0
-            }
-        }
-
         // Config variables
-        this.configsClass = new Configs(this.moduleName, this.configPath, this.defaultConfig)
+        this.configsClass = new Configs(this.defaultConfig)
         this.config = this.configsClass.config
         this.settings = this.configsClass._normalizeSettings()
 
@@ -450,6 +440,8 @@ export default class Settings {
 
         this.searchBar.searchBar.textInput.releaseWindowFocus()
         this.searchBar._removeSlider()
+
+        this.apply()
     }
 
     /**

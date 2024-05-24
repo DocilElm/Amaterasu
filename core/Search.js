@@ -84,8 +84,15 @@ export default class SearchElement {
             mainObj.settings.forEach(obj => {
                 if (this.matches[0].settings.some(someObj => someObj.name.toLowerCase() === obj.name.toLowerCase())) return
 
-                const matched = obj.text.toLowerCase().includes(string) || obj.description.toLowerCase().includes(string)
-                if (!matched) return
+                const text = obj.text.toLowerCase()
+                const description = obj.description.toLowerCase()
+                const tags = obj.tags
+
+                if (!(
+                    text.includes(string.toLowerCase()) ||
+                    description.includes(string.toLowerCase()) ||
+                    (tags?.length && tags.some(it => it.toLowerCase().includes(string.toLowerCase())))
+                )) return
 
                 this.matches[0].settings.push(obj)
             })
@@ -121,7 +128,7 @@ export default class SearchElement {
      */
     _reBuildConfig() {
         this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
-        this.createElementClass._hideElement()
+        this.createElementClass._hideElement(this.parentClass.settings)
 
         return this
     }

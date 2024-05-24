@@ -160,7 +160,7 @@ export default class CreateElement {
         })
 
         // Trigger the hide/unhide of elements
-        this._hideElement()
+        this._hideElement(this.categoryClass.parentClass.settings)
 
         // Return the parent class for main method chaining
         return this.categoryClass
@@ -184,7 +184,7 @@ export default class CreateElement {
     _addSlider(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new SliderElement(obj.defaultValue, obj.value, 0, 0, 15, 30)
+        new SliderElement(obj.options, obj.value, 0, 0, 15, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -199,7 +199,7 @@ export default class CreateElement {
     _addSelection(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new SelectionElement(obj.defaultValue, obj.value, 0, 0, 17, 30)
+        new SelectionElement(obj.options, obj.value, 0, 0, 17, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -257,6 +257,8 @@ export default class CreateElement {
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
 
+        if (obj.onClick) button.onMouseClickEvent(() => obj.onClick(this.categoryClass.parentClass))
+
         // Adding this button to the map so the user can use [onClick] method
         this.buttonsFn.set(obj.name, button)
 
@@ -281,15 +283,16 @@ export default class CreateElement {
     /**
      * - Hides/Unhides the element depending on the Hide Feature's Name param
      */
-    _hideElement() {
+    _hideElement(data) {
         this.elements.forEach(obj => {
-            if (!obj.configObj.hideFeatureName) return
+            if (!obj.configObj.shouldShow) return
 
-            const hideFeatureName = obj.configObj.hideFeatureName
-            const isEnabled = this.categoryClass.parentClass.settings[hideFeatureName]
+            // const hideFeatureName = obj.configObj.hideFeatureName
+            // const isEnabled = this.categoryClass.parentClass.settings[hideFeatureName]
+            const isEnabled = obj.configObj.shouldShow(data)
             const component = obj.component
 
-            if (typeof(isEnabled) !== "boolean") return
+            if (typeof(isEnabled) !== "boolean") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
 
             if (!isEnabled) return component.hide()
 
