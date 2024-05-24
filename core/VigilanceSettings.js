@@ -43,35 +43,35 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
 
         switch (type) {
             case PropertyType.SWITCH:
-                str += `\n.addSwitch({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addSwitch({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    subcategory: "${subcategory}"\n})`
                 break
             
             case PropertyType.CHECKBOX:
-                str += `\n.addToggle({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addToggle({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    subcategory: "${subcategory}"\n})`
                 break
         
             case PropertyType.TEXT:
-                str += `\n.addTextInput({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    value: "${placeholder}",\n    placeHolder: "${placeholder}",\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addTextInput({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    value: "${placeholder}",\n    placeHolder: "${placeholder}",\n    subcategory: "${subcategory}"\n})`
                 break
             
             case PropertyType.PARAGRAPH:
-                str += `\n.addTextInput({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    value: "${placeholder}",\n    placeHolder: "${placeholder}",\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addTextInput({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    value: "${placeholder}",\n    placeHolder: "${placeholder}",\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.SLIDER:
-                str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    options: [${min}, ${max}],\n    value: ${min},\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: [${min}, ${max}],\n    value: ${min},\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.DECIMAL_SLIDER:
-                str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    options: [${minF}, ${maxF}],\n    value: ${minF},\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: [${minF}, ${maxF}],\n    value: ${minF},\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.SELECTOR:
-                str += `\n.addSelection({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    options: ${JSON.stringify(Object.values(options))},\n    value: 0,\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addSelection({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: ${JSON.stringify(Object.values(options))},\n    value: 0,\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.COLOR:
-                str += `\n.addColorPicker({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    value: [255, 255, 255, 255],\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addColorPicker({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    value: [255, 255, 255, 255],\n    subcategory: "${subcategory}"\n})`
                 break
         }
     })
@@ -84,7 +84,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
 
         if (type !== PropertyType.BUTTON) return
 
-        str += `\n.addButton({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    subcategory: "${subcategory}",\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
+        str += `\n.addButton({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    subcategory: "${subcategory}",\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
     })
 
     str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
