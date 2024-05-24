@@ -50,7 +50,7 @@
             0
         ],
         "mouseClickAnimation": "OUT_EXP",
-        "animationTime": 0.5,
+        "animationTime": 0.2,
         "outlineColor": [
             255,
             255,
@@ -335,7 +335,7 @@
             0,
             0,
             0,
-            82
+            80
         ],
         "textDescriptionBg": [
             0,
@@ -412,5 +412,64 @@
             80
         ],
         "textScale": 1
+    },
+    "Button1": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "lines": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "textColorSelected": [
+            19,
+            117,
+            141,
+            255
+        ],
+        "textScale": 1,
+        "mouseClick": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "mouseClickAnimation": "OUT_EXP",
+        "mouseClickAnimationTime": 0.2,
+        "mouseEnterAnimation": "OUT_EXP",
+        "mouseEnterAnimationTime": 0.5,
+        "mouseLeaveAnimation": "OUT_EXP",
+        "mouseLeaveAnimationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0,
+        "centered": false
     }
 }

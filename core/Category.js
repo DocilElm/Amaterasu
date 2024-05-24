@@ -48,7 +48,7 @@ export default class Category {
         this.sidebarButton = new Button1Element(this.categoryName, 0, 0, 80, 8)
             ._setPosition(
                 (1).pixel(),
-                new SiblingConstraint(1)
+                new SiblingConstraint(3)
             )
             .onMouseClickEvent(() => {
                 // Avoid hiding this element incase it's the only one being shown
