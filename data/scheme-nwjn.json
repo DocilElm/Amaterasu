@@ -267,7 +267,59 @@
             255
         ],
         "mouseAnimation": "OUT_EXP",
-        "animationTime": 0.5
+        "animationTime": 0.25,
+        "generalBackgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "arrowTextScale": 3,
+        "hideArrowText": "§l↓",
+        "unhideArrowText": "§l↑",
+        "colorPickerBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "gradientPointerOutlineColor": [
+            255,
+            255,
+            255
+        ],
+        "gradientPointerOutlineThickness": 1,
+        "huePointerOutlineColor": [
+            255,
+            255,
+            255
+        ],
+        "huePointerOutlineThickness": 1,
+        "heightAnimationIn": "IN_SIN",
+        "heightAnimationInTime": 0.25,
+        "heightAnimationOut": "OUT_SIN",
+        "heightAnimationOutTime": 0.25,
+        "colorPickerBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "colorPickerBackgroundBoxOutlineThickness": 0.5,
+        "gradientBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "gradientBackgroundBoxOutlineThickness": 0,
+        "hueBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "hueBackgroundBoxOutlineThickness": 0
     },
     "Text": {
         "textScale": 1,
@@ -283,7 +335,7 @@
             100,
             100,
             100,
-            80
+            150
         ],
         "textDescriptionBg": [
             0,
