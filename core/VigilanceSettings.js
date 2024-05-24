@@ -1,24 +1,26 @@
-import ConfigTypes from "./ConfigTypes"
-
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType")
 const localDir = "./config/ChatTriggers/modules/"
 
 /**
- * - Converts a vigilance setting into a [JSON] format for this settings gui
- * @param {Object} obj 
- * @param {String} moduleName 
- * @param {Boolean} overWrite Whether it should overwrite the old file if it exists or not (false by default)
+ * - Helps migrating data from Vigilance to Amaterasu.
+ * @param {Vigilance} instance The vigilance instance.
+ * @param {String} moduleName The module name that vigilance is currently processing
+ * @param {String} moduleToConvert The module name to migrate the settings from Vigilance to Amaterasu
+ * @param {String} configPath The config path for the migrated data to be created at. default: `/data/config.js`
+ * @param {String} overwrite Whether it should overwrite the file if it has been detected as existing
  * @returns 
  */
-export const convertToJSON = (instance, moduleName, overWrite = false, moduleToConvert = null) => {
-    if (FileLib.exists(`${localDir}${moduleName}/data/defaultSettings.json`) && !overWrite) return
+export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null, configPath = null, overwrite = false) => {
+    configPath = configPath ?? `/data/config.js`
+
+    if (FileLib.exists(`${localDir}/${moduleName}/${configPath}`) && !overwrite) return
     if (moduleToConvert && moduleName !== moduleToConvert) return
 
     const currentInstance = instance.__proto__
     const obj = currentInstance.__config_props__
     const objFn = currentInstance.__config_functions__
-    
-    let resultObj = {}
+
+    let str = `import Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
 
     Object.keys(obj).forEach(key => {
         const attributes = obj[key]
@@ -39,42 +41,37 @@ export const convertToJSON = (instance, moduleName, overWrite = false, moduleToC
             placeholder
         } = attributes
 
-        if (!resultObj[category]) resultObj[category] = []
-
         switch (type) {
             case PropertyType.SWITCH:
-                resultObj[category].push([key, name, description, ConfigTypes.TOGGLE, false])
+                str += `\n.addSwitch({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    subcategory: "${subcategory}"\n})`
                 break
             
             case PropertyType.CHECKBOX:
-                resultObj[category].push([key, name, description, ConfigTypes.TOGGLE, false])
+                str += `\n.addToggle({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    subcategory: "${subcategory}"\n})`
                 break
         
             case PropertyType.TEXT:
-                resultObj[category].push([key, name, description, ConfigTypes.TEXTINPUT, placeholder, null, placeholder])
+                str += `\n.addTextInput({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    value: "${placeholder}",\n    placeHolder: "${placeholder}",\n    subcategory: "${subcategory}"\n})`
                 break
             
             case PropertyType.PARAGRAPH:
-                resultObj[category].push([key, name, description, ConfigTypes.TEXTINPUT, placeholder, null, placeholder])
+                str += `\n.addTextInput({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    value: "${placeholder}",\n    placeHolder: "${placeholder}",\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.SLIDER:
-                resultObj[category].push([key, name, description, ConfigTypes.SLIDER, [min, max], min])
+                str += `\n.addSlider({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    options: [${min}, ${max}],\n    value: ${min},\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.DECIMAL_SLIDER:
-                resultObj[category].push([key, name, description, ConfigTypes.SLIDER, [minF, maxF], minF])
+                str += `\n.addSlider({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    options: [${minF}, ${maxF}],\n    value: ${minF},\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.SELECTOR:
-                resultObj[category].push([key, name, description, ConfigTypes.SELECTION, Object.values(options), 0])
+                str += `\n.addSelection({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    options: ${JSON.stringify(Object.values(options))},\n    value: 0,\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.COLOR:
-                resultObj[category].push([key, name, description, ConfigTypes.COLORPICKER, [255, 255, 255]])
-                break
-
-            default:
+                str += `\n.addColorPicker({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    value: [255, 255, 255, 255],\n    subcategory: "${subcategory}"\n})`
                 break
         }
     })
@@ -87,15 +84,17 @@ export const convertToJSON = (instance, moduleName, overWrite = false, moduleToC
 
         if (type !== PropertyType.BUTTON) return
 
-        if (!resultObj[category]) resultObj[category] = []
-
-        resultObj[category].push([key, name, description, ConfigTypes.BUTTON, 0])
+        str += `\n.addButton({\n    categoryName: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: "${description}",\n    subcategory: "${subcategory}",\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
     })
+
+    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
 
     FileLib.write(
         moduleName,
-        "/data/defaultSettings.json",
-        JSON.stringify(resultObj, null, 4),
+        configPath,
+        str,
         true
     )
+
+    console.log(`[Amaterasu - ${moduleName}] successfully created config file at ${configPath}.`)
 }
