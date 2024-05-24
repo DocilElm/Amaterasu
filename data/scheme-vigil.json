@@ -267,7 +267,59 @@
             255
         ],
         "mouseAnimation": "OUT_EXP",
-        "animationTime": 0.5
+        "animationTime": 0.5,
+        "generalBackgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "unhideArrowText": "⬍",
+        "hideArrowText": "⬍",
+        "arrowTextScale": 1.5,
+        "colorPickerBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "gradientPointerOutlineColor": [
+            255,
+            255,
+            255
+        ],
+        "gradientPointerOutlineThickness": 0.5,
+        "huePointerOutlineColor": [
+            255,
+            255,
+            255
+        ],
+        "huePointerOutlineThickness": 0.5,
+        "heightAnimationIn": "IN_SIN",
+        "heightAnimationInTime": 0.5,
+        "heightAnimationOut": "OUT_SIN",
+        "heightAnimationOutTime": 0.5,
+        "colorPickerBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "colorPickerBackgroundBoxOutlineThickness": 0.5,
+        "gradientBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "gradientBackgroundBoxOutlineThickness": 0,
+        "hueBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "hueBackgroundBoxOutlineThickness": 0
     },
     "Text": {
         "textScale": 1,
