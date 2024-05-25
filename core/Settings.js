@@ -59,9 +59,6 @@ export default class Settings {
         this.titleText = titleText?.addColor() ?? `${this.moduleName.addColor()} Settings`
         this.sortCategories = null
         this.sortElements = null
-        // Store these so whenever we [apply] we can
-        // add them back to the buttons
-        this._onClickList = new Map()
 
         this.GuiScale = null
 
@@ -187,7 +184,6 @@ export default class Settings {
         this._init()
 
         this.markdowns.forEach(md => this.addMarkdown(...md, true))
-        this._onClickList.forEach(obj => this.onClick(obj.categoryName, obj.featureName, obj.fn, true))
 
         return this
     }
@@ -340,85 +336,6 @@ export default class Settings {
             // Reset to default values
             selectedAmount = 0
         })
-    }
-
-    /**
-     * - Triggers this function whenever the given button's feature is clicked
-     * @param {String} categoryName 
-     * @param {String} featureName 
-     * @param {Function} fn 
-     * @returns this for method chaining
-     */
-    onClick(categoryName, featureName, fn, _internal = false) {
-        const categoryList = this.categories.get(categoryName)
-        if (!categoryList) throw new Error(`${categoryName} is not a valid category name.`)
-
-        const btnList = categoryList.createElementClass.buttonsFn.get(featureName)
-        if (!btnList) throw new Error(`${featureName} is not a valid feature name.`)
-
-        btnList.onMouseClickEvent(fn)
-        this.searchBar._setClick(featureName, fn)
-
-        if (!_internal) {
-            this._onClickList.set(categoryName, {
-                categoryName,
-                featureName,
-                fn
-            })
-        }
-
-        return this
-    }
-
-    /**
-     * - Creates and adds an element with the given params into the [JSON] file
-     * @param {String} categoryName 
-     * @param {String} configName The config name to use for settings
-     * @param {String} text The text to display for this element
-     * @param {String} description The description to display for this element
-     * @param {ConfigType} type The config type of this element
-     * @param {*} defaultValue 
-     * @param {*} value 
-     * @param {String} hideFeatureName The feature name that should be enabled for this element to unhide
-     * @param {Boolean} overWrite Whether it should overwrite the setting if it's found in the [JSON] or not (false by default)
-     * @returns this for method chaining
-     */
-    addElement(categoryName, configName, text, description, type, defaultValue, value = null, hideFeatureName = null, overWrite = false) {
-        const categoryObj = this.config.find(obj => obj.category === categoryName)
-
-        if (!categoryObj || !overWrite && categoryObj.settings.some(obj => obj.name === configName)) return this
-
-        categoryObj.settings.push({
-            name: configName,
-            text: text,
-            description: description,
-            type: type,
-            defaultValue: defaultValue,
-            value: value ?? defaultValue,
-            hideFeatureName: hideFeatureName
-        })
-
-        return this
-    }
-
-    /**
-     * - Removes an element that matches the given params
-     * @param {String} categoryName 
-     * @param {String} configName 
-     * @returns this for method chaining
-     */
-    removeElement(categoryName, configName) {
-        const categoryObj = this.config.find(obj => obj.category === categoryName)
-
-        if (!categoryObj || !categoryObj.settings.some(obj => obj.name === configName)) return this
-
-        categoryObj.settings.forEach((obj, index) => {
-            if (obj.name !== configName) return
-
-            categoryObj.settings.splice(index, 1)
-        })
-
-        return this
     }
 
     /**

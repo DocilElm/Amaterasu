@@ -25,9 +25,6 @@ export default class CreateElement {
 
         // This map holds all of the elements
         this.elements = new Map()
-        // This map holds all of the buttons created
-        // this is to ensure the user can use their own function for the click method
-        this.buttonsFn = new Map()
 
         // Stores all the created [subcategories]
         // maybe later on we store the actual settings of each
@@ -266,9 +263,6 @@ export default class CreateElement {
             .setChildOf(textDescription)
 
         if (obj.onClick) button.onMouseClickEvent(() => obj.onClick(this.categoryClass.parentClass))
-
-        // Adding this button to the map so the user can use [onClick] method
-        this.buttonsFn.set(obj.name, button)
 
         return this
     }
