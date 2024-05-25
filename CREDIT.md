@@ -9,11 +9,11 @@
 
 ## Contributors
 * Name: nwjn
-  * Contributions: something something
+  * Contributions: Helped shape the gui to something better (main reason why _scheme_ and position/size is changeable)
   * Links: §nhttps://github.com/nwjn
 
 * Name: Squagward
-  * Contributions: cool guy
+  * Contributions: Helped shape the gui to something better
   * Links: §nhttps://github.com/camnwalter
 
 ## Inspirations

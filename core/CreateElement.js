@@ -250,9 +250,8 @@ export default class CreateElement {
     _addButton(obj) {
         const textDescription = this._makeTextDescription(obj)
 
-        // Making a variable for it so we can further more change this element
-        // and also add it to the [Map]
-        const button = new ButtonElement("Click", 0, 0, 15, 30, true)
+        // Making a variable for it so we can set the [onMouseClickEvent] later on
+        const button = new ButtonElement(obj.placeHolder, 0, 0, 15, 30, true)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()

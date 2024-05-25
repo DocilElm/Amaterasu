@@ -1,13 +1,8 @@
-- §aAdded: Scrollable
-- §aAdded: Category/Element sorting
-- §aAdded: Customizable size/pos for gui (use apply method after changing these)
-- §aAdded: Markdowns
+- §aAdded: This
+- §aAdded: Is
+- §aAdded: An
+- §aAdded: Example!
  
-- §eImproved: ColorPicker alpha property
-- §eImproved: Gui customability
-- §eImproved: Rounded rectangles
-- §eImproved: TextInput system
-- §eImproved: Aliases on setCommand
-- §eImproved: Vigilance conversions
+- §eImproved: I wonder what was improved...
  
-- §cFixed: Gui scale changes on gui open (back to normal on gui close)
+- §cRemoved: Wow something was removed!
