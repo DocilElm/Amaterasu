@@ -222,4 +222,25 @@ export default class DefaultConfig {
 
         return this
     }
+
+    /**
+     * - Creates a new drop down with the given params and pushes it into the config
+     * @param {Object} param0 
+     * @returns this for method chaining
+     */
+    addDropDown({ category = null, configName = null, title, description, options = [ "Test 1", "Test 2" ], value = 0, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
+            type: ConfigTypes.DROPDOWN,
+            name: configName,
+            text: title,
+            description,
+            options,
+            value,
+            shouldShow,
+            subcategory,
+            tags
+        })
+
+        return this
+    }
 }

@@ -7,6 +7,7 @@ import TextDescriptionElement from "../../DocGuiLib/elements/TextDescription"
 import TextInputElement from "../../DocGuiLib/elements/TextInput"
 import ColorPickerElement from "../../DocGuiLib/elements/ColorPicker"
 import SwitchElement from "../../DocGuiLib/elements/Switch"
+import DropDown from "../../DocGuiLib/elements/DropDown"
 import { CenterConstraint, CramSiblingConstraint, OutlineEffect, UIRoundedRectangle } from "../../Elementa"
 import ConfigTypes from "./ConfigTypes"
 
@@ -161,6 +162,13 @@ export default class CreateElement {
                         this.categoryClass._reBuildConfig()
                     })
                     break
+
+                case ConfigTypes.DROPDOWN:
+                    this._addDropDown(obj, (value) => {
+                        obj.value = value
+                        this.categoryClass._reBuildConfig()
+                    })
+                    break
             }
         })
 
@@ -277,6 +285,35 @@ export default class CreateElement {
             .onMouseClickEvent(fn)
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+
+        return this
+    }
+
+    _addDropDown(obj, fn) {
+        const textDescription = this._makeTextDescription(obj)
+            
+        const component = new DropDown(obj.options, obj.value, 0, 0, 20, 35)
+            ._setPosition(
+                (5).pixel(true),
+                new CenterConstraint()
+            )
+            .onMouseClickEvent(fn)
+
+        component
+            ._create(this.handler.getColorScheme())
+            .setChildOf(textDescription)
+
+        textDescription.parent
+            .onMouseScroll(() => {
+                if (component.hidden) return
+
+                component._hideDropDown()
+            })
+            .onMouseClick(() => {
+                if (component.hidden) return
+
+                component._hideDropDown()
+            })
 
         return this
     }
