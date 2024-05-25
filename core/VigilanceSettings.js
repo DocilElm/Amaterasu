@@ -67,7 +67,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
                 break
 
             case PropertyType.SELECTOR:
-                str += `\n.addSelection({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: ${JSON.stringify(Object.values(options))},\n    value: 0,\n    subcategory: "${subcategory}"\n})`
+                str += `\n.addDropDown({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: ${JSON.stringify(Object.values(options))},\n    value: 0,\n    subcategory: "${subcategory}"\n})`
                 break
 
             case PropertyType.COLOR:
