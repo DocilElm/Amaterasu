@@ -381,9 +381,37 @@
             255,
             255,
             80
-        ]
+        ],
+        "mainTitleTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "mainTitleTextScale": 1
     },
     "Divider": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "line": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "textScale": 1,
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ]
+    },
+    "DividerSubcategory": {
         "backgroundBox": [
             0,
             0,

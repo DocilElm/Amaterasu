@@ -44,8 +44,8 @@ export default class CreateElement {
         const subcategory = obj.subcategory ?? this.categoryClass.categoryName
 
         if (!this.subcategories.has(subcategory)) {
-            this.categoryClass?._createDivider(subcategory)
             this.subcategories.add(subcategory)
+            this.categoryClass?._createDivider(subcategory, this.subcategories.size > 1)
         }
 
         const bgBox = new UIRoundedRectangle(5)
@@ -295,8 +295,6 @@ export default class CreateElement {
         this.elements.forEach(obj => {
             if (!obj.configObj.shouldShow) return
 
-            // const hideFeatureName = obj.configObj.hideFeatureName
-            // const isEnabled = this.categoryClass.parentClass.settings[hideFeatureName]
             const isEnabled = obj.configObj.shouldShow(data)
             const component = obj.component
 

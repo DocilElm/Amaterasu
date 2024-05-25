@@ -109,13 +109,13 @@ export default class Category {
      * @param {String} string 
      * @returns this for method chaining
      */
-    _createDivider(string) {
+    _createDivider(string, isSubCategory = false) {
         new DividerElement(string, 0, 0, 85, 5)
             ._setPosition(
                 new CenterConstraint(),
                 new CramSiblingConstraint(5)
             )
-            ._create(this.handler.getColorScheme())
+            ._create(this.handler.getColorScheme(), isSubCategory ? "DividerSubcategory" : "Divider")
             .setChildOf(this.rightBlock)
 
         return this

@@ -237,6 +237,8 @@ export default class Settings {
         this.title = new UIText(this.titleText)
             .setX(new CenterConstraint())
             .setY((3).percent())
+            .setTextScale((this.handler.getColorScheme().Amaterasu.mainTitleTextScale).pixels())
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.mainTitleTextColor))
             .setChildOf(this.mainBlock)
 
         this.searchBarBg = new UIRoundedRectangle(3)
