@@ -303,7 +303,7 @@ export default class CreateElement {
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
 
-        textDescription.parent
+        this.rightBlock
             .onMouseScroll(() => {
                 if (component.hidden) return
 
