@@ -1,3 +1,5 @@
+import ConfigTypes from "./ConfigTypes"
+
 export default class Config {
     /**
      * - This class handles most parts of the config system for Amaterasu
@@ -40,6 +42,13 @@ export default class Config {
 
         this.config.forEach(obj => {
             obj.settings.forEach(settingsObj => {
+                if (settingsObj.type === ConfigTypes.MULTICHECKBOX) {
+                    settingsObj.options.forEach(opts => {
+                        settings[opts.configName] = opts.value
+                    })
+                    return
+                }
+
                 settings[settingsObj.name] = settingsObj.value
             })
         })
@@ -55,6 +64,9 @@ export default class Config {
 
         const data = this.config.map(it => {
             return { category: it.category, settings: it.settings.map(it2 => {
+                // Perfection.
+                if (it2.type === ConfigTypes.MULTICHECKBOX) return { type: it2.type, name: it2.name, options: it2.options.map(opts => { return { name: opts.configName, value: opts.value } }) }
+
                 return { type: it2.type, name: it2.name, value: it2.value }
             }) }
         })

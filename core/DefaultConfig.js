@@ -1,6 +1,6 @@
 import ConfigTypes from "./ConfigTypes"
 
-const defaultValues = [ false, 1, undefined, 0, "", [ 255, 255, 255, 255 ], false ]
+const defaultValues = [ false, 1, undefined, 0, "", [ 255, 255, 255, 255 ], false, 0, 0 ]
 
 export default class DefaultConfig {
     /**
@@ -41,6 +41,20 @@ export default class DefaultConfig {
 
             this[categoryName].push(newObj)
             console.warn(`[Amaterasu - ${this.moduleName}] config type for ${configName} was changed from ${obj.type} to ${newObj.type}. therefor the object was re-created to fit these changes`)
+
+            return
+        }
+
+        // Handle MultiCheckBox savings
+        if (obj.type === ConfigTypes.MULTICHECKBOX) {
+            obj.options.forEach(opts => {
+                const nObj = newObj.options.find(op => op.configName === opts.name)
+                if (!nObj) return
+
+                nObj.value = opts.value
+            })
+
+            this[categoryName].push(newObj)
 
             return
         }
@@ -237,6 +251,27 @@ export default class DefaultConfig {
             options,
             value,
             shouldShow,
+            subcategory,
+            tags
+        })
+
+        return this
+    }
+
+    /**
+     * - Creates a new multi checkbox with the given params and pushes it into the config
+     * @param {Object} param0 
+     * @returns this for method chaining
+     */
+    addMultiCheckbox({ category = null, configName = null, title, description, options = [], placeHolder = "Click", shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
+            type: ConfigTypes.MULTICHECKBOX,
+            name: configName,
+            text: title,
+            description,
+            options,
+            shouldShow,
+            placeHolder,
             subcategory,
             tags
         })

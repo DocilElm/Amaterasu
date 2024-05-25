@@ -36,8 +36,6 @@ export default class Category {
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
 
-        // 
-
         // Adding side button with the category name into the sidebar
         this.sidebarButton = new Button1Element(this.categoryName, 0, 0, 80, 8)
             ._setPosition(

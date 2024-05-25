@@ -8,5 +8,6 @@ export default {
     TEXTINPUT: index++,
     COLORPICKER: index++,
     SWITCH: index++,
-    DROPDOWN: index++
+    DROPDOWN: index++,
+    MULTICHECKBOX: index++
 }
