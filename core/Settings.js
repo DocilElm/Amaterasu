@@ -494,24 +494,35 @@ export default class Settings {
     }    
 
     /**
-     * - Failed attempt, come back to this later
+     * - Redirects the current category to the given one
+     * - if a `featureName` was given it will try to find it and scroll towards it
      * @param {String} categoryName 
      * @param {String?} featureName 
      * @returns this for method chaining
      */
     redirect(categoryName, featureName = null) {
+        const categoryInstance = this.categories.get(categoryName)
+        if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
+        
+        // Reset the state of all the categories
+        this.categories.forEach(value => value._setSelected(false))
+
+        // Set the new category's state
         this.oldCategory = null
         this.currentCategory = categoryName
-        this._hideAll()
-        this._unhideAll()
+
+        // Update the state of the given categoryName
+        this.categories.get(this.currentCategory)._setSelected(true)
 
         if (featureName) {
-            const categoryInstance = this.categories.get(categoryName)
-            if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
+            Client.scheduleTask(2, () => {
+                const rightBlock = categoryInstance.rightBlock
+                const comp = categoryInstance.createElementClass.elements.get(featureName)?.component
+                if (!comp) return
 
-            const compTop = categoryInstance.createElementClass.elements.get(featureName).component.getTop()
-
-            categoryInstance.rightBlock.scrollTo(0, compTop, true)
+                const newY = rightBlock.getTop() - comp.getTop()
+                categoryInstance.rightBlock.scrollTo(0, newY, true)
+            })
         }
 
         return this
