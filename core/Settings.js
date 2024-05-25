@@ -240,7 +240,7 @@ export default class Settings {
             .setChildOf(this.mainBlock)
 
         this.searchBarBg = new UIRoundedRectangle(3)
-            .setX((69.4).percent())
+            .setX((68.4).percent())
             .setY((1.5).percent())
             .setWidth((15).percent())
             .setHeight((5).percent())
