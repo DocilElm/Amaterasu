@@ -56,7 +56,13 @@ export default class CreateElement {
             .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.elementsDescriptionOutline), this.handler.getColorScheme().Amaterasu.elementsDescriptionOutlineThickness))
             .setChildOf(this.rightBlock)
 
-        const descElement = new TextDescriptionElement(obj.text, obj.description, false, 0, 0, obj.type === ConfigTypes.COLORPICKER ? 75 : 80, 75)
+        const textWidth = obj.type === ConfigTypes.COLORPICKER
+            ? 75
+            : obj.type === ConfigTypes.TEXTPARAGRAPH
+                ? 98
+                : 80
+
+        const descElement = new TextDescriptionElement(obj.text, obj.description, obj.centered ?? false, 0, 0, textWidth, 75)
             ._setPosition(
                 (3).pixel(),
                 new CenterConstraint()
@@ -179,6 +185,11 @@ export default class CreateElement {
                         obj.options[idx].value = value
                         this.categoryClass._reBuildConfig()
                     })
+
+                    break
+
+                case ConfigTypes.TEXTPARAGRAPH:
+                    this._makeTextDescription(obj)
 
                     break
             }

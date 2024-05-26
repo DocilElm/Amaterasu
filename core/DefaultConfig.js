@@ -278,4 +278,24 @@ export default class DefaultConfig {
 
         return this
     }
+
+    /**
+     * - Creates a new text paragraph with the given params and pushes it into the config
+     * @param {Object} param0 
+     * @returns this for method chaining
+     */
+    addTextParagraph({ category = null, configName = null, title, description, centered = false, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
+            type: ConfigTypes.TEXTPARAGRAPH,
+            name: configName,
+            text: title,
+            centered,
+            description,
+            shouldShow,
+            subcategory,
+            tags
+        })
+
+        return this
+    }
 }
