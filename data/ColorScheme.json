@@ -696,5 +696,28 @@
             255
         ],
         "outlineThickness": 0.5
+    },
+    "Keybind": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "backgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "backgroundBoxOutlineThickness": 0,
+        "keyTextScale": 1,
+        "keyTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "enabledText": "§l****"
     }
 }

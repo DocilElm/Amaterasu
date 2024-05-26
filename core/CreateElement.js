@@ -9,6 +9,7 @@ import ColorPickerElement from "../../DocGuiLib/elements/ColorPicker"
 import SwitchElement from "../../DocGuiLib/elements/Switch"
 import DropDown from "../../DocGuiLib/elements/DropDown"
 import MultiCheckbox from "../../DocGuiLib/elements/MultiCheckbox"
+import Keybind from "../../DocGuiLib/elements/Keybind"
 import { CenterConstraint, CramSiblingConstraint, OutlineEffect, UIRoundedRectangle } from "../../Elementa"
 import ConfigTypes from "./ConfigTypes"
 
@@ -192,6 +193,14 @@ export default class CreateElement {
                     this._makeTextDescription(obj)
 
                     break
+
+                case ConfigTypes.KEYBIND:
+                    this._addKeybind(obj, (value) => {
+                        obj.value = value
+                        this.categoryClass._reBuildConfig()
+                    })
+
+                    break
             }
         })
 
@@ -366,6 +375,21 @@ export default class CreateElement {
 
                 component._hideDropDown()
             })
+
+        return this
+    }
+
+    _addKeybind(obj, fn) {
+        const textDescription = this._makeTextDescription(obj)
+
+        new Keybind(obj.value, 0, 0, 15, 30)
+            ._setPosition(
+                (5).pixel(true),
+                new CenterConstraint()
+            )
+            .onKeyTypeEvent(fn)
+            ._create(this.handler.getColorScheme())
+            .setChildOf(textDescription)
 
         return this
     }

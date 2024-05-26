@@ -10,5 +10,6 @@ export default {
     SWITCH: index++,
     DROPDOWN: index++,
     MULTICHECKBOX: index++,
-    TEXTPARAGRAPH: index++
+    TEXTPARAGRAPH: index++,
+    KEYBIND: index++
 }

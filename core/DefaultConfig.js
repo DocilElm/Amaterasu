@@ -298,4 +298,24 @@ export default class DefaultConfig {
 
         return this
     }
+
+    /**
+     * - Creates a new keybind with the given params and pushes it into the config
+     * @param {Object} param0 
+     * @returns this for method chaining
+     */
+    addKeybind({ category = null, configName = null, title, description, value = 0, shouldShow, subcategory = null, tags = [] }) {
+        this._makeObj(category, configName, {
+            type: ConfigTypes.KEYBIND,
+            name: configName,
+            text: title,
+            value,
+            description,
+            shouldShow,
+            subcategory,
+            tags
+        })
+
+        return this
+    }
 }
