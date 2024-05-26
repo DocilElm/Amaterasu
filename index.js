@@ -146,6 +146,69 @@ defaultConf
             return data.testingSwitch
         }
     })
+    .addButton({
+        category: null,
+        configName: "redirectButtonTest",
+        title: "Redirect Button Test",
+        description: "This is a redirect button testing example",
+        subcategory: null,
+        onClick(setting) {
+            // You can redirect to a [category] and a [configName] on the click of a button
+            // if you do not set a [configName] it will redirect to the category only
+            // This will change the current [category] to the set [category]
+            // and scroll down to the [configName] assigned
+            setting.redirect("GUI", "apply")
+        }
+    })
+    .addMultiCheckbox({
+        category: null,
+        subcategory: null,
+        configName: "multiCheckBoxTest",
+        // ^ this will be used to store the configType and the config values to have actual config saving
+    
+        title: "Multi check box test",
+        description: "Testing multi checkbox component!",
+        placeHolder: "Click", // This is the text that will be display on the dropdown component
+        options: [
+            {
+                title: "Multi Checkbox Test",
+                configName: "multi1",
+                value: false
+            },
+            {
+                title: "Multi Checkbox Test",
+                configName: "multi2",
+                value: false
+            },
+            {
+                title: "Multi Checkbox Test",
+                configName: "multi3",
+                value: true
+            },
+            {
+                title: "Multi Checkbox Test",
+                configName: "multi4",
+                value: false
+            }
+        ]
+    })
+    .addTextParagraph({
+        category: null,
+        subcategory: null,
+        configName: "textParagraph", // This is required due to how we check for ConfigTypes change in the backend
+        title: "Testing Paragraph",
+        description: "This is a text paragraph example. you can go over the regular component's width limit in here, giving you a little bit more space",
+        centered: true // Whether the [title] and [description] should be centered
+    })
+    .addKeybind({
+        category: null,
+        subcategory: null,
+        configName: "testingKeybind",
+        title: "Testing Keybind",
+        description: "Testing new keybind config type",
+        value: 0 // this is the initial keyCode
+        // ^ beware that the Mouse Button keyCode starts with negative values. e.g -100
+    })
 
 // Here we create our [Settings] instance.
 // passing through our [ModuleName], [DefaultConfig] and [ColorSchemePath]
