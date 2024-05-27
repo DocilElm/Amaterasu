@@ -482,4 +482,22 @@ export default class Settings {
 
         return this
     }
+
+    /**
+     * - Runs the given function whenever the configName changes value
+     * - the function will recieve the args `(previousValue, newValue)`
+     * @param {String} configName 
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    registerListener(configName, fn) {
+        if (!configName) throw new Error(`${configName} is not a valid config name.`)
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+
+        if (!this._configListeners.has(configName)) this._configListeners.set(configName, [])
+
+        this._configListeners.get(configName).push(fn)
+
+        return this
+    }
 }

@@ -97,7 +97,17 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addButton({ category = null, configName = null, title, description, placeHolder = "Click", onClick, shouldShow, subcategory = null, tags = [] }) {
+    addButton({
+        category = null,
+        configName = null,
+        title,
+        description,
+        placeHolder = "Click",
+        onClick,
+        shouldShow,
+        subcategory = null,
+        tags = []
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.BUTTON,
             name: configName,
@@ -118,7 +128,17 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addToggle({ category = null, configName = null, title, description, value = false, shouldShow, subcategory = null, tags = [] }) {
+    addToggle({
+        category = null,
+        configName = null,
+        title,
+        description,
+        value = false,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.TOGGLE,
             name: configName,
@@ -127,7 +147,8 @@ export default class DefaultConfig {
             value,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -138,7 +159,17 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addSwitch({ category = null, configName = null, title, description, value = false, shouldShow, subcategory = null, tags = [] }) {
+    addSwitch({
+        category = null,
+        configName = null,
+        title,
+        description,
+        value = false,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.SWITCH,
             name: configName,
@@ -147,7 +178,8 @@ export default class DefaultConfig {
             value,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -158,7 +190,18 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addTextInput({ category = null, configName = null, title, description, value = "", placeHolder, shouldShow, subcategory = null, tags = [] }) {
+    addTextInput({
+        category = null,
+        configName = null,
+        title,
+        description,
+        value = "",
+        placeHolder,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.TEXTINPUT,
             name: configName,
@@ -168,7 +211,8 @@ export default class DefaultConfig {
             placeHolder,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -179,7 +223,18 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addSlider({ category = null, configName = null, title, description, options = [ 0, 10 ], value = 1, shouldShow, subcategory = null, tags = [] }) {
+    addSlider({
+        category = null,
+        configName = null,
+        title,
+        description,
+        options = [ 0, 10 ],
+        value = 1,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.SLIDER,
             name: configName,
@@ -189,7 +244,8 @@ export default class DefaultConfig {
             value,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -200,7 +256,18 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addSelection({ category = null, configName = null, title, description, options = [ "Test 1", "Test 2" ], value = 0, shouldShow, subcategory = null, tags = [] }) {
+    addSelection({
+        category = null,
+        configName = null,
+        title,
+        description,
+        options = [ "Test 1", "Test 2" ],
+        value = 0,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener,
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.SELECTION,
             name: configName,
@@ -210,7 +277,8 @@ export default class DefaultConfig {
             value,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -221,7 +289,17 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addColorPicker({ category = null, configName = null, title, description, value = [ 255, 255, 255, 255 ], shouldShow, subcategory = null, tags = [] }) {
+    addColorPicker({
+        category = null,
+        configName = null,
+        title,
+        description,
+        value = [ 255, 255, 255, 255 ],
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.COLORPICKER,
             name: configName,
@@ -231,7 +309,8 @@ export default class DefaultConfig {
             placeHolder: value,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -242,7 +321,18 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addDropDown({ category = null, configName = null, title, description, options = [ "Test 1", "Test 2" ], value = 0, shouldShow, subcategory = null, tags = [] }) {
+    addDropDown({
+        category = null,
+        configName = null,
+        title,
+        description,
+        options = [ "Test 1", "Test 2" ],
+        value = 0,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.DROPDOWN,
             name: configName,
@@ -252,7 +342,8 @@ export default class DefaultConfig {
             value,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
@@ -263,7 +354,17 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addMultiCheckbox({ category = null, configName = null, title, description, options = [], placeHolder = "Click", shouldShow, subcategory = null, tags = [] }) {
+    addMultiCheckbox({
+        category = null,
+        configName = null,
+        title,
+        description,
+        options = [],
+        placeHolder = "Click",
+        shouldShow,
+        subcategory = null,
+        tags = []
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.MULTICHECKBOX,
             name: configName,
@@ -284,7 +385,16 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addTextParagraph({ category = null, configName = null, title, description, centered = false, shouldShow, subcategory = null, tags = [] }) {
+    addTextParagraph({
+        category = null,
+        configName = null,
+        title,
+        description,
+        centered = false,
+        shouldShow,
+        subcategory = null,
+        tags = []
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.TEXTPARAGRAPH,
             name: configName,
@@ -304,7 +414,17 @@ export default class DefaultConfig {
      * @param {Object} param0 
      * @returns this for method chaining
      */
-    addKeybind({ category = null, configName = null, title, description, value = 0, shouldShow, subcategory = null, tags = [] }) {
+    addKeybind({
+        category = null,
+        configName = null,
+        title,
+        description,
+        value = 0,
+        shouldShow,
+        subcategory = null,
+        tags = [],
+        registerListener
+    }) {
         this._makeObj(category, configName, {
             type: ConfigTypes.KEYBIND,
             name: configName,
@@ -313,7 +433,8 @@ export default class DefaultConfig {
             description,
             shouldShow,
             subcategory,
-            tags
+            tags,
+            registerListener
         })
 
         return this
