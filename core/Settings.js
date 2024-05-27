@@ -59,11 +59,18 @@ export default class Settings {
         this.titleText = titleText?.addColor() ?? `${this.moduleName.addColor()} Settings`
         this.sortCategories = null
         this.sortElements = null
-
         this.GuiScale = null
+
+        // Listeners
+        this._onOpenGui = []
+        this._onCloseGui = []
+        this._configListeners = new Map()
 
         this.handler.registers
             .onOpen(() => {
+                // Trigger listeners
+                this._onOpenGui.forEach(it => it())
+
                 if (Client.getMinecraft().field_71474_y.field_74335_Z === 2) return
 
                 // Save previous [GuiScale]
@@ -72,6 +79,9 @@ export default class Settings {
                 Client.getMinecraft().field_71474_y.field_74335_Z = 2
             })
             .onClose(() => {
+                // Trigger listeners
+                this._onCloseGui.forEach(it => it())
+
                 if (Client.getMinecraft().field_71474_y.field_74335_Z !== 2 || this.GuiScale == null) return
                 if (this.GuiScale === 2) return
 
@@ -443,6 +453,32 @@ export default class Settings {
                 categoryInstance.rightBlock.scrollTo(0, newY, true)
             })
         }
+
+        return this
+    }
+
+    /**
+     * - Triggers the given function whenever this [GUI] is opened
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    onOpenGui(fn) {
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+
+        this._onOpenGui.push(fn)
+
+        return this
+    }
+
+    /**
+     * - Triggers the given function whenever this [GUI] is closed
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    onCloseGui(fn) {
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+
+        this._onCloseGui.push(fn)
 
         return this
     }
