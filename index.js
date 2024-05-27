@@ -238,6 +238,14 @@ const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
     .registerListener("height", (previousvalue, newvalue) => {
         ChatLib.chat(`previous value: ${previousvalue}\nnew value: ${newvalue}`)
     })
+
+    // We can also register listeners for opening and closing the [Gui]
+    .onOpenGui(() => {
+        ChatLib.chat("config gui has been opened")
+    })
+    .onCloseGui(() => {
+        ChatLib.chat("config gui has been closed")
+    })
     
 // Change the scheme path depending on the value of the [Selector] config
 const currentScheme = schemes[config.settings.scheme]
