@@ -120,7 +120,7 @@ export default class CreateElement {
                 case ConfigTypes.TOGGLE:
                     this._addToggle(obj, () => {
                         // Trigger listeners
-                        this._triggerListeners(obj, !obj.value)
+                        this.triggerListeners(obj, !obj.value)
 
                         obj.value = !obj.value
                         this.categoryClass._reBuildConfig()
@@ -131,7 +131,7 @@ export default class CreateElement {
                     this._addSlider(obj, (sliderValue) => {
                         if (typeof(sliderValue) !== "number" || !this.categoryClass.selected) return
                         // Trigger listeners
-                        this._triggerListeners(obj, sliderValue)
+                        if (obj.value !== sliderValue) this.triggerListeners(obj, sliderValue)
         
                         obj.value = sliderValue
                         this.categoryClass._reBuildConfig()
@@ -146,7 +146,7 @@ export default class CreateElement {
                     this._addSelection(obj, (selectionIndex) => {
                         if (typeof(selectionIndex) !== "number" || !this.categoryClass.selected) return
                         // Trigger listeners
-                        this._triggerListeners(obj, selectionIndex)
+                        this.triggerListeners(obj, selectionIndex)
 
                         obj.value = selectionIndex
                         this.categoryClass._reBuildConfig()
@@ -157,7 +157,7 @@ export default class CreateElement {
                     this._addTextInput(obj, (inputText) => {
                         if (!this.categoryClass.selected) return
                         // Trigger listeners
-                        this._triggerListeners(obj, inputText)
+                        this.triggerListeners(obj, inputText)
 
                         obj.value = inputText
                         this.categoryClass._reBuildConfig()
@@ -168,7 +168,7 @@ export default class CreateElement {
                     this._addColorPicker(obj, ([r, g, b, a]) => {
                         if (!this.categoryClass.selected) return
                         // Trigger listeners
-                        this._triggerListeners(obj, [r, g, b, a])
+                        this.triggerListeners(obj, [r, g, b, a])
 
                         obj.value = [r, g, b, a]
                         this.categoryClass._reBuildConfig()
@@ -178,7 +178,7 @@ export default class CreateElement {
                 case ConfigTypes.SWITCH:
                     this._addSwitch(obj, () => {
                         // Trigger listeners
-                        this._triggerListeners(obj, !obj.value)
+                        this.triggerListeners(obj, !obj.value)
 
                         obj.value = !obj.value
                         this.categoryClass._reBuildConfig()
@@ -188,7 +188,7 @@ export default class CreateElement {
                 case ConfigTypes.DROPDOWN:
                     this._addDropDown(obj, (value) => {
                         // Trigger listeners
-                        this._triggerListeners(obj, value)
+                        this.triggerListeners(obj, value)
 
                         obj.value = value
                         this.categoryClass._reBuildConfig()
@@ -200,7 +200,7 @@ export default class CreateElement {
                         const idx = obj.options.findIndex(it => it.configName === configName)
                         if (idx === -1) return
                         // Trigger listeners
-                        this._triggerListeners(obj.options[idx], value)
+                        this.triggerListeners(obj.options[idx], value)
 
                         obj.options[idx].value = value
                         this.categoryClass._reBuildConfig()
@@ -216,7 +216,7 @@ export default class CreateElement {
                 case ConfigTypes.KEYBIND:
                     this._addKeybind(obj, (value) => {
                         // Trigger listeners
-                        this._triggerListeners(obj, value)
+                        this.triggerListeners(obj, value)
 
                         obj.value = value
                         this.categoryClass._reBuildConfig()
@@ -233,7 +233,7 @@ export default class CreateElement {
         return this.categoryClass
     }
 
-    _triggerListeners(obj, newvalue) {
+    triggerListeners(obj, newvalue) {
         const _configListeners = this.categoryClass.parentClass._configListeners
 
         _configListeners.get(obj.name)?.forEach(it => it(obj.value, newvalue))

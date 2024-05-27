@@ -122,7 +122,12 @@ defaultConf
         configName: "testingSwitch",
         title: "Testing switch",
         description: "this is a testing switch",
-        subcategory: "Test"
+        subcategory: "Test",
+        // This is how we register a listener from inside our config
+        // this wil run whenever this specific config's value is changed
+        registerListener(previousvalue, newvalue) {
+            ChatLib.chat(`previous value: ${previousvalue}\nnew value: ${newvalue}`)
+        }
     })
     .addButton({
         category: null,
@@ -173,7 +178,11 @@ defaultConf
             {
                 title: "Multi Checkbox Test",
                 configName: "multi1",
-                value: false
+                value: false,
+                // This is how we register a listener inside a multi checkbox component
+                registerListener(previousvalue, newvalue) {
+                    ChatLib.chat(`previous value: ${previousvalue}\nnew value: ${newvalue}`)
+                }
             },
             {
                 title: "Multi Checkbox Test",
@@ -223,6 +232,12 @@ const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
     // second one should be the markdown itself
     .addMarkdown("Changelog", CHANGELOG)
     .addMarkdown("Credits", CREDITS)
+
+    // We can also use the #registerListener from our [Settings] instance
+    // for example listening to whenever the value of the [height] slider gets changed
+    .registerListener("height", (previousvalue, newvalue) => {
+        ChatLib.chat(`previous value: ${previousvalue}\nnew value: ${newvalue}`)
+    })
     
 // Change the scheme path depending on the value of the [Selector] config
 const currentScheme = schemes[config.settings.scheme]
