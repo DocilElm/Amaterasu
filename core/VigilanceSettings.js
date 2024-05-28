@@ -1,3 +1,5 @@
+import ConfigTypes from "./ConfigTypes"
+
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType")
 const localDir = "./config/ChatTriggers/modules/"
 
@@ -20,7 +22,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
     const obj = currentInstance.__config_props__
     const objFn = currentInstance.__config_functions__
 
-    let str = `import Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
+    let str = `// Make sure these go to the right directory import Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
 
     Object.keys(obj).forEach(key => {
         const attributes = obj[key]
@@ -85,6 +87,72 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
         if (type !== PropertyType.BUTTON) return
 
         str += `\n.addButton({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    subcategory: "${subcategory}",\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
+    })
+
+    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
+
+    FileLib.write(
+        moduleName,
+        configPath,
+        str,
+        true
+    )
+
+    console.log(`[Amaterasu - ${moduleName}] successfully created config file at ${configPath}.`)
+}
+
+/**
+ * - Helps migrating data from previous Amaterasu config system to new Amaterasu config system.
+ * @param {[{}]} obj The config object.
+ * @param {String} moduleName The module name to migrate to.
+ * @param {String} configPath The config path for the migrated data to be created at. default: `/data/config.js`
+ * @param {String} overwrite Whether it should overwrite the file if it has been detected as existing
+ * @returns 
+ */
+export const convertObjToAmateras = (obj, moduleName = null, configPath = null, overwrite = false) => {
+    configPath = configPath ?? `/data/config.js`
+
+    if (FileLib.exists(`${localDir}/${moduleName}/${configPath}`) && !overwrite) return
+
+    let str = `// Make sure these go to the right directory \nimport Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
+
+    Object.keys(obj).forEach(category => {
+        const settings = obj[category]
+
+        settings.forEach(configArray => {
+            const [ configName, text, description, type, defaultValue, value, hideFeatureName ] = configArray
+
+            switch (type) {
+                case ConfigTypes.SWITCH:
+                    str += `\n.addSwitch({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    subcategory: null\n})`
+                    break
+                
+                case ConfigTypes.TOGGLE:
+                    str += `\n.addToggle({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    subcategory: null\n})`
+                    break
+            
+                case ConfigTypes.TEXTINPUT:
+                    str += `\n.addTextInput({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    value: "${defaultValue}",\n    placeHolder: "${defaultValue}",\n    subcategory: null\n})`
+                    break
+                
+                case ConfigTypes.SLIDER:
+                    str += `\n.addSlider({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    options: [${defaultValue[0]}, ${defaultValue[1]}],\n    value: ${defaultValue[0]},\n    subcategory: null\n})`
+                    break
+    
+                case ConfigTypes.SELECTION:
+                    str += `\n.addDropDown({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    options: ${JSON.stringify(Object.values(defaultValue))},\n    value: 0,\n    subcategory: null\n})`
+                    break
+    
+                case ConfigTypes.COLORPICKER:
+                    str += `\n.addColorPicker({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    value: [255, 255, 255, 255],\n    subcategory: null\n})`
+                    break
+                
+                case ConfigTypes.BUTTON:
+                    str += `\n.addButton({\n    category: "${category}",\n    configName: "${configName}",\n    title: "${text}",\n    description: ${JSON.stringify(description)},\n    subcategory: null,\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
+                    break
+            }
+        })
+
     })
 
     str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
