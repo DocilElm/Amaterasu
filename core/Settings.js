@@ -149,7 +149,7 @@ export default class Settings {
      * @param {Function} fn 
      * @returns this for method chaining
      */
-    setSortElements(fn) {
+    setElementSort(fn) {
         if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
         this.sortElements = fn
 
