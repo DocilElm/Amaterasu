@@ -239,7 +239,7 @@ const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
         ChatLib.chat(`previous value: ${previousvalue}\nnew value: ${newvalue}`)
     })
 
-    // We can also register listeners for opening and closing the [Gui]
+    // We can also register listeners for whenever we open and/or close the [Gui]
     .onOpenGui(() => {
         ChatLib.chat("config gui has been opened")
     })

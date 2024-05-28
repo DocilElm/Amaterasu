@@ -146,7 +146,7 @@ export default class CreateElement {
                     this._addSelection(obj, (selectionIndex) => {
                         if (typeof(selectionIndex) !== "number" || !this.categoryClass.selected) return
                         // Trigger listeners
-                        this.triggerListeners(obj, selectionIndex)
+                        if (obj.value !== selectionIndex) this.triggerListeners(obj, selectionIndex)
 
                         obj.value = selectionIndex
                         this.categoryClass._reBuildConfig()
@@ -188,7 +188,7 @@ export default class CreateElement {
                 case ConfigTypes.DROPDOWN:
                     this._addDropDown(obj, (value) => {
                         // Trigger listeners
-                        this.triggerListeners(obj, value)
+                        if (obj.value !== value) this.triggerListeners(obj, value)
 
                         obj.value = value
                         this.categoryClass._reBuildConfig()
