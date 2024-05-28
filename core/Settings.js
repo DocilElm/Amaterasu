@@ -182,6 +182,121 @@ export default class Settings {
         return this
     }
 
+        /**
+     * - Adds a [Changelog] section with the given string
+     * - Equivalent to `.addMarkdown("Changelog", text)`
+     * @param {String} text 
+     * @returns this for method chaining
+     */
+    addChangelog(text) {
+        return this.addMarkdown("Changelog", text)
+    }
+
+    /**
+     * - Adds a markdown category
+     * @param {String} category
+     * @param {String|String[]} text 
+     * @returns this for method chaining
+     */
+    addMarkdown(category, text, _internal = false) {
+        if (text instanceof Array) text = text.join("\n")
+
+        if (!_internal) this.markdowns.push([category, text])
+
+        const markdownCategory = new Category(this, category, false, false)
+        new MarkdownElement(text, 0, 0, 85, 85)
+            ._setPosition(
+                new CenterConstraint(),
+                new CramSiblingConstraint(5)
+            )
+            ._create(this.handler.getColorScheme())
+            .setChildOf(markdownCategory.rightBlock)
+
+        this.categories.set(category, markdownCategory)
+
+        return this
+    }
+
+    /**
+     * - Triggers the given function whenever this [GUI] is opened
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    onOpenGui(fn) {
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+
+        this._onOpenGui.push(fn)
+
+        return this
+    }
+
+    /**
+     * - Triggers the given function whenever this [GUI] is closed
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    onCloseGui(fn) {
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+
+        this._onCloseGui.push(fn)
+
+        return this
+    }
+
+    /**
+     * - Runs the given function whenever the configName changes value
+     * - the function will recieve the args `(previousValue, newValue)`
+     * @param {String} configName 
+     * @param {Function} fn 
+     * @returns this for method chaining
+     */
+    registerListener(configName, fn) {
+        if (!configName) throw new Error(`${configName} is not a valid config name.`)
+        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+
+        if (!this._configListeners.has(configName)) this._configListeners.set(configName, [])
+
+        this._configListeners.get(configName).push(fn)
+
+        return this
+    }
+    
+    /**
+     * - Redirects the current category to the given one
+     * - if a `featureName` was given it will try to find it and scroll towards it
+     * @param {String} categoryName 
+     * @param {String?} featureName 
+     * @returns this for method chaining
+     */
+    redirect(categoryName, featureName = null) {
+        const categoryInstance = this.categories.get(categoryName)
+        if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
+        
+        // Reset the state of all the categories
+        this.categories.forEach(value => value._setSelected(false))
+
+        // Set the new category's state
+        this.oldCategory = null
+        this.currentCategory = categoryName
+
+        // Update the state of the given categoryName
+        this.categories.get(this.currentCategory)._setSelected(true)
+
+        if (featureName) {
+            Client.scheduleTask(2, () => {
+                const rightBlock = categoryInstance.rightBlock
+                const comp = categoryInstance.createElementClass.elements.get(featureName)?.component
+                if (!comp) return
+
+                const newY = rightBlock.getTop() - comp.getTop()
+                categoryInstance.rightBlock.scrollTo(0, newY, true)
+            })
+        }
+
+        return this
+    }
+
+
     /**
      * - Applies the changes made to the [SettingsGui]
      * - (e.g you called #setSize you'd have to call `apply()` at the end)
@@ -202,33 +317,13 @@ export default class Settings {
      * @param {String} colorSchemePath 
      * @returns this for method chaining
      */
-    changeScheme(newPath) {
+    changeScheme(newPath) { // should've named this `#setScheme` >:(
         this.colorSchemePath = newPath
 
         this.colorScheme = this._checkScheme(this.colorSchemePath)
         this.handler._setColorScheme(this.colorScheme)
 
         return this
-    }
-
-    /**
-     * - Checks whether the color scheme exists and if it doesnt it creates
-     * a new one using the path and the default color scheme from the module
-     * @param {String} moduleName 
-     * @param {String} path 
-     * @returns {Object}
-     */
-    _checkScheme(path) {
-        let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
-        const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
-        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
-
-        defaultScheme = customAssignObject(defaultScheme, mainDefaultScheme)
-        colorScheme = customAssignObject(colorScheme, defaultScheme)
-        
-        this._saveScheme(path, colorScheme)
-
-        return colorScheme
     }
 
     _init() {
@@ -309,16 +404,38 @@ export default class Settings {
                 )
         })
 
-        this.hoverText = new UIWrappedText("")
-            .setX(new CenterConstraint())
-            .setY(new CenterConstraint())
-            .setChildOf(this.handler.getWindow())
-            .onMouseScroll(() => {
-                this.hoverText.setText("")
-                this.hoverText
-                    .setX((-1).pixels())
-                    .setY((-1).pixels())
-            })
+        // See `CreateElement.js` line 75.
+        
+        // this.hoverText = new UIWrappedText("")
+        //     .setX(new CenterConstraint())
+        //     .setY(new CenterConstraint())
+        //     .setChildOf(this.handler.getWindow())
+        //     .onMouseScroll(() => {
+        //         this.hoverText.setText("")
+        //         this.hoverText
+        //             .setX((-1).pixels())
+        //             .setY((-1).pixels())
+        //     })
+    }
+
+    /**
+     * - Checks whether the color scheme exists and if it doesnt it creates
+     * a new one using the path and the default color scheme from the module
+     * @param {String} moduleName 
+     * @param {String} path 
+     * @returns {Object}
+     */
+    _checkScheme(path) {
+        let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
+        const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
+        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
+
+        defaultScheme = customAssignObject(defaultScheme, mainDefaultScheme)
+        colorScheme = customAssignObject(colorScheme, defaultScheme)
+        
+        this._saveScheme(path, colorScheme)
+
+        return colorScheme
     }
 
     /**
@@ -385,119 +502,5 @@ export default class Settings {
             JSON.stringify(json, null, 4),
             true
         )
-    }
-
-    /**
-     * - Adds a [Changelog] section with the given string
-     * - Equivalent to `.addMarkdown("Changelog", text)`
-     * @param {String} text 
-     * @returns this for method chaining
-     */
-    addChangelog(text) {
-        return this.addMarkdown("Changelog", text)
-    }
-
-    /**
-     * - Adds a markdown category
-     * @param {String} category
-     * @param {String|String[]} text 
-     * @returns this for method chaining
-     */
-    addMarkdown(category, text, _internal = false) {
-        if (text instanceof Array) text = text.join("\n")
-
-        if (!_internal) this.markdowns.push([category, text])
-
-        const markdownCategory = new Category(this, category, false, false)
-        new MarkdownElement(text, 0, 0, 85, 85)
-            ._setPosition(
-                new CenterConstraint(),
-                new CramSiblingConstraint(5)
-            )
-            ._create(this.handler.getColorScheme())
-            .setChildOf(markdownCategory.rightBlock)
-
-        this.categories.set(category, markdownCategory)
-
-        return this
-    }    
-
-    /**
-     * - Redirects the current category to the given one
-     * - if a `featureName` was given it will try to find it and scroll towards it
-     * @param {String} categoryName 
-     * @param {String?} featureName 
-     * @returns this for method chaining
-     */
-    redirect(categoryName, featureName = null) {
-        const categoryInstance = this.categories.get(categoryName)
-        if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
-        
-        // Reset the state of all the categories
-        this.categories.forEach(value => value._setSelected(false))
-
-        // Set the new category's state
-        this.oldCategory = null
-        this.currentCategory = categoryName
-
-        // Update the state of the given categoryName
-        this.categories.get(this.currentCategory)._setSelected(true)
-
-        if (featureName) {
-            Client.scheduleTask(2, () => {
-                const rightBlock = categoryInstance.rightBlock
-                const comp = categoryInstance.createElementClass.elements.get(featureName)?.component
-                if (!comp) return
-
-                const newY = rightBlock.getTop() - comp.getTop()
-                categoryInstance.rightBlock.scrollTo(0, newY, true)
-            })
-        }
-
-        return this
-    }
-
-    /**
-     * - Triggers the given function whenever this [GUI] is opened
-     * @param {Function} fn 
-     * @returns this for method chaining
-     */
-    onOpenGui(fn) {
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
-
-        this._onOpenGui.push(fn)
-
-        return this
-    }
-
-    /**
-     * - Triggers the given function whenever this [GUI] is closed
-     * @param {Function} fn 
-     * @returns this for method chaining
-     */
-    onCloseGui(fn) {
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
-
-        this._onCloseGui.push(fn)
-
-        return this
-    }
-
-    /**
-     * - Runs the given function whenever the configName changes value
-     * - the function will recieve the args `(previousValue, newValue)`
-     * @param {String} configName 
-     * @param {Function} fn 
-     * @returns this for method chaining
-     */
-    registerListener(configName, fn) {
-        if (!configName) throw new Error(`${configName} is not a valid config name.`)
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
-
-        if (!this._configListeners.has(configName)) this._configListeners.set(configName, [])
-
-        this._configListeners.get(configName).push(fn)
-
-        return this
     }
 }

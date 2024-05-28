@@ -29,6 +29,8 @@ export default class Category {
             .setHeight((98).percent())
             .setChildOf(this.mainRightBlock)
 
+        // This one is pretty self explanatory however.
+        // [elementsSlider] here refers to the [scrollbar]
         this.elementsSlider = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
             .setWidth((5).pixels())

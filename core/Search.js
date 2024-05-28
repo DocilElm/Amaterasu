@@ -152,6 +152,7 @@ export default class SearchElement {
 
     /**
      * - Adds the slider element to the current block
+     * - (ps: the `slider` here refers to the `scrollbar`)
      * @returns
      */
     _addSlider() {
@@ -163,6 +164,7 @@ export default class SearchElement {
 
     /**
      * - Removes the slider element to the current block
+     * - (ps: the `slider` here refers to the `scrollbar`)
      * @returns 
      */
     _removeSlider() {

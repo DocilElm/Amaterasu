@@ -57,6 +57,7 @@ export default class CreateElement {
             .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.elementsDescriptionOutline), this.handler.getColorScheme().Amaterasu.elementsDescriptionOutlineThickness))
             .setChildOf(this.rightBlock)
 
+        // Change text width depending on the [ConfigType] of this element
         const textWidth = obj.type === ConfigTypes.COLORPICKER
             ? 75
             : obj.type === ConfigTypes.TEXTPARAGRAPH
@@ -71,32 +72,36 @@ export default class CreateElement {
         descElement
             ._create(this.handler.getColorScheme())
             .setChildOf(bgBox)
-            .onMouseEnter((component) => {
-                // Checks the boundaries of the [rightBlock] to not render
-                // the text once the component is below the scrollable (meaning the hidden ->) area
-                // After this checks whether the text width is above the width
-                // if it is, this means that the text will be wrapped so we can
-                // render wrapped text only as hover values instead of every single description
-                if (!(
-                    component.getLeft() > this.rightBlock.getLeft() &&
-                    component.getRight() < this.rightBlock.getRight() &&
-                    component.getTop() > this.rightBlock.getTop() &&
-                    component.getBottom() < this.rightBlock.getBottom()) ||
-                    Renderer.getStringWidth(descElement.descriptionElement.getText().removeFormatting()) < bgBox.getWidth()
-                ) return
+            // TODO: make an actual good hovering system for wrapped text
+            // this code has been commented out in order to not publish something that
+            // not even i am happy of but i do want to fix it later on maybe
 
-                const hoverText = this.categoryClass.parentClass.hoverText
+            // .onMouseEnter((component) => {
+            //     // Checks the boundaries of the [rightBlock] to not render
+            //     // the text once the component is below the scrollable (meaning the hidden ->) area
+            //     // After this checks whether the text width is above the width
+            //     // if it is, this means that the text will be wrapped so we can
+            //     // render wrapped text only as hover values instead of every single description
+            //     if (!(
+            //         component.getLeft() > this.rightBlock.getLeft() &&
+            //         component.getRight() < this.rightBlock.getRight() &&
+            //         component.getTop() > this.rightBlock.getTop() &&
+            //         component.getBottom() < this.rightBlock.getBottom()) ||
+            //         Renderer.getStringWidth(descElement.descriptionElement.getText().removeFormatting()) < bgBox.getWidth()
+            //     ) return
 
-                hoverText.setText(obj.description)
-                hoverText.setX((component.getLeft()).pixels())
-                hoverText.setY((descElement.descriptionElement.getTop()).pixels())
-                hoverText.setWidth((descElement.descriptionElement.getWidth()).pixels())
-            })
-            .onMouseLeave(() => {
-                const hoverText = this.categoryClass.parentClass.hoverText
+            //     const hoverText = this.categoryClass.parentClass.hoverText
 
-                hoverText.setText("")
-            })
+            //     hoverText.setText(obj.description)
+            //     hoverText.setX((component.getLeft()).pixels())
+            //     hoverText.setY((descElement.descriptionElement.getTop()).pixels())
+            //     hoverText.setWidth((descElement.descriptionElement.getWidth()).pixels())
+            // })
+            // .onMouseLeave(() => {
+            //     const hoverText = this.categoryClass.parentClass.hoverText
+
+            //     hoverText.setText("")
+            // })
 
         this.elements.set(obj.name, {
             component: bgBox,
@@ -106,125 +111,25 @@ export default class CreateElement {
         return bgBox
     }
 
+    /**
+     * - Internal use.
+     * - Loops through each [Category] and the given config objects
+     * - Creates these and adds the elements to the list
+     * @returns {Category}
+     */
     _create() {
         const configCategory = this.categoryClass.config?.find(obj => obj.category === this.categoryName)
-
         if (!configCategory) return
 
         const configSettings = configCategory.settings
-
         if (this.sortElement) configSettings.sort(this.sortElement)
 
-        configSettings.forEach(obj => {
-            switch (obj.type) {
-                case ConfigTypes.TOGGLE:
-                    this._addToggle(obj, () => {
-                        // Trigger listeners
-                        this.triggerListeners(obj, !obj.value)
+        // Start creating the elements based off of the [Object]
+        for (let idx = 0; idx < configSettings.length; idx++) {
+            let obj = configSettings[idx]
 
-                        obj.value = !obj.value
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.SLIDER:
-                    this._addSlider(obj, (sliderValue) => {
-                        if (typeof(sliderValue) !== "number" || !this.categoryClass.selected) return
-                        // Trigger listeners
-                        if (obj.value !== sliderValue) this.triggerListeners(obj, sliderValue)
-        
-                        obj.value = sliderValue
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.BUTTON:
-                    this._addButton(obj)
-                    break
-
-                case ConfigTypes.SELECTION:
-                    this._addSelection(obj, (selectionIndex) => {
-                        if (typeof(selectionIndex) !== "number" || !this.categoryClass.selected) return
-                        // Trigger listeners
-                        if (obj.value !== selectionIndex) this.triggerListeners(obj, selectionIndex)
-
-                        obj.value = selectionIndex
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.TEXTINPUT:
-                    this._addTextInput(obj, (inputText) => {
-                        if (!this.categoryClass.selected) return
-                        // Trigger listeners
-                        this.triggerListeners(obj, inputText)
-
-                        obj.value = inputText
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.COLORPICKER:
-                    this._addColorPicker(obj, ([r, g, b, a]) => {
-                        if (!this.categoryClass.selected) return
-                        // Trigger listeners
-                        this.triggerListeners(obj, [r, g, b, a])
-
-                        obj.value = [r, g, b, a]
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.SWITCH:
-                    this._addSwitch(obj, () => {
-                        // Trigger listeners
-                        this.triggerListeners(obj, !obj.value)
-
-                        obj.value = !obj.value
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.DROPDOWN:
-                    this._addDropDown(obj, (value) => {
-                        // Trigger listeners
-                        if (obj.value !== value) this.triggerListeners(obj, value)
-
-                        obj.value = value
-                        this.categoryClass._reBuildConfig()
-                    })
-                    break
-
-                case ConfigTypes.MULTICHECKBOX:
-                    this._addMultiCheckbox(obj, (configName, value) => {
-                        const idx = obj.options.findIndex(it => it.configName === configName)
-                        if (idx === -1) return
-                        // Trigger listeners
-                        this.triggerListeners(obj.options[idx], value)
-
-                        obj.options[idx].value = value
-                        this.categoryClass._reBuildConfig()
-                    })
-
-                    break
-
-                case ConfigTypes.TEXTPARAGRAPH:
-                    this._makeTextDescription(obj)
-
-                    break
-
-                case ConfigTypes.KEYBIND:
-                    this._addKeybind(obj, (value) => {
-                        // Trigger listeners
-                        this.triggerListeners(obj, value)
-
-                        obj.value = value
-                        this.categoryClass._reBuildConfig()
-                    })
-
-                    break
-            }
-        })
+            this._createFromObj(obj)
+        }
 
         // Trigger the hide/unhide of elements
         this._hideElement(this.categoryClass.parentClass.settings)
@@ -233,12 +138,137 @@ export default class CreateElement {
         return this.categoryClass
     }
 
+    /**
+     * - Internal use.
+     * - Checks the [Object]'s [ConfigType] and based off of those values it creates
+     * - the corresponding element
+     * @param {{}} obj 
+     */
+    _createFromObj(obj) {
+        switch (obj.type) {
+            case ConfigTypes.TOGGLE:
+                this._addToggle(obj, () => {
+                    // Trigger listeners
+                    this.triggerListeners(obj, !obj.value)
+
+                    obj.value = !obj.value
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.SLIDER:
+                this._addSlider(obj, (sliderValue) => {
+                    if (typeof(sliderValue) !== "number" || !this.categoryClass.selected) return
+                    // Trigger listeners
+                    if (obj.value !== sliderValue) this.triggerListeners(obj, sliderValue)
+    
+                    obj.value = sliderValue
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.BUTTON:
+                this._addButton(obj)
+                break
+
+            case ConfigTypes.SELECTION:
+                this._addSelection(obj, (selectionIndex) => {
+                    if (typeof(selectionIndex) !== "number" || !this.categoryClass.selected) return
+                    // Trigger listeners
+                    if (obj.value !== selectionIndex) this.triggerListeners(obj, selectionIndex)
+
+                    obj.value = selectionIndex
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.TEXTINPUT:
+                this._addTextInput(obj, (inputText) => {
+                    if (!this.categoryClass.selected) return
+                    // Trigger listeners
+                    this.triggerListeners(obj, inputText)
+
+                    obj.value = inputText
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.COLORPICKER:
+                this._addColorPicker(obj, ([r, g, b, a]) => {
+                    if (!this.categoryClass.selected) return
+                    // Trigger listeners
+                    this.triggerListeners(obj, [r, g, b, a])
+
+                    obj.value = [r, g, b, a]
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.SWITCH:
+                this._addSwitch(obj, () => {
+                    // Trigger listeners
+                    this.triggerListeners(obj, !obj.value)
+
+                    obj.value = !obj.value
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.DROPDOWN:
+                this._addDropDown(obj, (value) => {
+                    // Trigger listeners
+                    if (obj.value !== value) this.triggerListeners(obj, value)
+
+                    obj.value = value
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.MULTICHECKBOX:
+                this._addMultiCheckbox(obj, (configName, value) => {
+                    const idx = obj.options.findIndex(it => it.configName === configName)
+                    if (idx === -1) return
+                    // Trigger listeners
+                    this.triggerListeners(obj.options[idx], value)
+
+                    obj.options[idx].value = value
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+
+            case ConfigTypes.TEXTPARAGRAPH:
+                this._makeTextDescription(obj)
+                break
+
+            case ConfigTypes.KEYBIND:
+                this._addKeybind(obj, (value) => {
+                    // Trigger listeners
+                    this.triggerListeners(obj, value)
+
+                    obj.value = value
+                    this.categoryClass._reBuildConfig()
+                })
+                break
+        }
+    }
+
+    /**
+     * - Internal use.
+     * - Triggers all the listeners set to the current [Object]'s [configName]
+     * - Passing through `(previousValue, newValue)`
+     * @param {{}} obj 
+     * @param {any} newvalue 
+     */
     triggerListeners(obj, newvalue) {
         const _configListeners = this.categoryClass.parentClass._configListeners
 
         _configListeners.get(obj.name)?.forEach(it => it(obj.value, newvalue))
         if (obj.registerListener) obj.registerListener(obj.value, newvalue)
     }
+
+    // The following methods do not have jsdocs due to the fact that
+    // it's pretty easy to understand what they're doing and pretty much are similar to each other
+    // (and yes these are only internal use methods)
 
     _addToggle(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
@@ -424,7 +454,7 @@ export default class CreateElement {
     }
 
     /**
-     * - Hides/Unhides the element depending on the Hide Feature's Name param
+     * - Hides/Unhides the element depending on the [shouldShow] method result
      */
     _hideElement(data) {
         this.elements.forEach(obj => {
