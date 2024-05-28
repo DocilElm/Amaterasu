@@ -182,7 +182,20 @@ export default class Settings {
         return this
     }
 
-        /**
+    /**
+     * @param {String} colorSchemePath 
+     * @returns this for method chaining
+     */
+    setScheme(newPath) {
+        this.colorSchemePath = newPath
+
+        this.colorScheme = this._checkScheme(this.colorSchemePath)
+        this.handler._setColorScheme(this.colorScheme)
+
+        return this
+    }
+
+    /**
      * - Adds a [Changelog] section with the given string
      * - Equivalent to `.addMarkdown("Changelog", text)`
      * @param {String} text 
@@ -313,19 +326,6 @@ export default class Settings {
         return this
     }
 
-    /**
-     * @param {String} colorSchemePath 
-     * @returns this for method chaining
-     */
-    changeScheme(newPath) { // should've named this `#setScheme` >:(
-        this.colorSchemePath = newPath
-
-        this.colorScheme = this._checkScheme(this.colorSchemePath)
-        this.handler._setColorScheme(this.colorScheme)
-
-        return this
-    }
-
     _init() {
         this.mainBlock = new UIRoundedRectangle(5)
             .setX(this.bgPos.x)
@@ -405,7 +405,7 @@ export default class Settings {
         })
 
         // See `CreateElement.js` line 75.
-        
+
         // this.hoverText = new UIWrappedText("")
         //     .setX(new CenterConstraint())
         //     .setY(new CenterConstraint())

@@ -70,7 +70,7 @@ defaultConf
             config
                 .setPos(config.settings.x, config.settings.y)
                 .setSize(config.settings.width, config.settings.height)
-                .changeScheme(currentScheme)
+                .setScheme(currentScheme)
                 .apply()
         }
     })
@@ -260,7 +260,7 @@ FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
 config
     .setPos(config.settings.x, config.settings.y)
     .setSize(config.settings.width, config.settings.height)
-    .changeScheme(currentScheme)
+    .setScheme(currentScheme)
     .apply()
 
 // Now we export the [config.settings] as a default function
