@@ -22,7 +22,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
     const obj = currentInstance.__config_props__
     const objFn = currentInstance.__config_functions__
 
-    let str = `// Make sure these go to the right directory import Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
+    let str = `// Make sure these go to the right directory \nimport Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
 
     Object.keys(obj).forEach(key => {
         const attributes = obj[key]
