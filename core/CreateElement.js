@@ -406,6 +406,18 @@ export default class CreateElement {
                 component._hideDropDown()
             })
 
+        this.categoryClass.leftBlock
+            .onMouseScroll(() => {
+                if (component.hidden) return
+
+                component._hideDropDown()
+            })
+            .onMouseClick(() => {
+                if (component.hidden) return
+
+                component._hideDropDown()
+            })
+
         return this
     }
 
@@ -424,6 +436,18 @@ export default class CreateElement {
             .setChildOf(textDescription)
 
         this.rightBlock
+            .onMouseScroll(() => {
+                if (component.hidden) return
+
+                component._hideDropDown()
+            })
+            .onMouseClick(() => {
+                if (component.hidden) return
+
+                component._hideDropDown()
+            })
+
+        this.categoryClass.leftBlock
             .onMouseScroll(() => {
                 if (component.hidden) return
 
