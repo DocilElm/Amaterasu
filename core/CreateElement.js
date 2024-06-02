@@ -406,7 +406,7 @@ export default class CreateElement {
                 component._hideDropDown()
             })
 
-        this.categoryClass.leftBlock
+        this.categoryClass.parentClass.leftBlock
             .onMouseScroll(() => {
                 if (component.hidden) return
 
