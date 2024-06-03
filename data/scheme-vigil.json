@@ -145,7 +145,14 @@
             255
         ],
         "mouseAnimation": "OUT_EXP",
-        "animationTime": 0.5
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "Checkbox": {
         "enabled": [
@@ -378,7 +385,14 @@
             255,
             255
         ],
-        "hueBackgroundBoxOutlineThickness": 0
+        "hueBackgroundBoxOutlineThickness": 0,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "Text": {
         "textScale": 1,
@@ -408,7 +422,14 @@
             255,
             255,
             255
-        ]
+        ],
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "Markdown": {
         "backgroundBox": [
@@ -473,7 +494,28 @@
             255,
             255,
             255
-        ]
+        ],
+        "backgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "backgroundBoxOutlineThickness": 0,
+        "dropDownBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "dropDownBackgroundBoxOutlineThickness": 0,
+        "selectionBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "selectionBackgroundBoxOutlineThickness": 0
     },
     "Amaterasu": {
         "backgroundBox": [
@@ -555,6 +597,156 @@
             255,
             255,
             255
-        ]
+        ],
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
+    },
+    "MultiCheckBox": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "backgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "backgroundBoxOutlineThickness": 0,
+        "dropDownBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "dropDownBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "dropDownBackgroundBoxOutlineThickness": 0,
+        "selectionBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "selectionTextScale": 1,
+        "selectionTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "selectionBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "selectionBackgroundBoxOutlineThickness": 0,
+        "arrowTextScale": 1.7,
+        "arrowTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "hideArrowText": "§l↓",
+        "unhideArrowText": "§l↑",
+        "optionsBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "optionsBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "optionsBackgroundBoxOutlineThickness": 0,
+        "optionsTextScale": 1,
+        "optionsTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "textBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "placeholderTextScale": 1,
+        "placeholderTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "textBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "textBackgroundBoxOutlineThickness": 0,
+        "enabled": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "disabled": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "enabledCheck": "§l✓",
+        "disabledCheck": "",
+        "mouseClickAnimation": "OUT_EXP",
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0.5
+    },
+    "Keybind": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "backgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "backgroundBoxOutlineThickness": 0,
+        "keyTextScale": 1,
+        "keyTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "enabledText": "§l****"
     }
 }

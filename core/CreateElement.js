@@ -511,7 +511,7 @@ export default class CreateElement {
      */
     _hideDropDownComps() {
         this.elements.forEach(obj => {
-            if (!("compInstance" in obj)) return
+            if (!obj?.compInstance) return
 
             obj.compInstance._hideDropDown()
         })
