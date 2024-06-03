@@ -6,28 +6,10 @@
             0,
             80
         ],
-        "backgroundBox1": [
-            0,
-            0,
-            0,
-            0
-        ],
-        "lines": [
-            0,
-            0,
-            0,
-            80
-        ],
         "textColor": [
             255,
             255,
             255,
-            255
-        ],
-        "textColorSelected": [
-            19,
-            117,
-            141,
             255
         ],
         "textScale": 1,
@@ -36,18 +18,6 @@
             255,
             255,
             80
-        ],
-        "mouseEnter": [
-            0,
-            0,
-            0,
-            80
-        ],
-        "mouseLeave": [
-            0,
-            0,
-            0,
-            0
         ],
         "mouseClickAnimation": "OUT_EXP",
         "animationTime": 0.2,
@@ -145,7 +115,14 @@
             255
         ],
         "mouseAnimation": "OUT_EXP",
-        "animationTime": 0.5
+        "animationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "Checkbox": {
         "enabled": [
@@ -218,7 +195,7 @@
             255,
             255
         ],
-        "outlineThickness": 0.5
+        "outlineThickness": 0
     },
     "Slider": {
         "backgroundBar": [
@@ -378,7 +355,14 @@
             255,
             255
         ],
-        "hueBackgroundBoxOutlineThickness": 0
+        "hueBackgroundBoxOutlineThickness": 0,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "Text": {
         "textScale": 1,
@@ -408,7 +392,14 @@
             255,
             255,
             255
-        ]
+        ],
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "Markdown": {
         "backgroundBox": [
@@ -575,7 +566,14 @@
             255,
             255,
             255
-        ]
+        ],
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0
     },
     "MultiCheckBox": {
         "backgroundBox": [

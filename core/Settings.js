@@ -50,7 +50,6 @@ export default class Settings {
     constructor(moduleName, defaultConfig, colorSchemePath, titleText) {
         // Module variables
         this.moduleName = moduleName
-        // this.configPath = configPath
         this.defaultConfig = defaultConfig
         this.colorScheme = this._checkScheme(colorSchemePath)
 
@@ -308,7 +307,6 @@ export default class Settings {
 
         return this
     }
-
 
     /**
      * - Applies the changes made to the [SettingsGui]

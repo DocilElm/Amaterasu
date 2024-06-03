@@ -59,6 +59,65 @@
         ],
         "outlineThickness": 0.5
     },
+    "Button1": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "lines": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "textColorSelected": [
+            19,
+            117,
+            141,
+            255
+        ],
+        "textScale": 1,
+        "mouseClick": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "mouseEnter": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "mouseLeave": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "mouseClickAnimation": "OUT_EXP",
+        "mouseClickAnimationTime": 0.2,
+        "mouseEnterAnimation": "OUT_EXP",
+        "mouseEnterAnimationTime": 0.5,
+        "mouseLeaveAnimation": "OUT_EXP",
+        "mouseLeaveAnimationTime": 0.5,
+        "outlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "outlineThickness": 0,
+        "centered": false
+    },
     "TextInput": {
         "backgroundBox": [
             0,
@@ -330,12 +389,98 @@
             255
         ]
     },
+    "Divider": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "line": [
+            255,
+            255,
+            255,
+            0
+        ],
+        "textScale": 2,
+        "textColor": [
+            255,
+            255,
+            255,
+            255
+        ]
+    },
+    "Markdown": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "textScale": 1
+    },
+    "DropDown": {
+        "backgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "dropDownBackgroundBox": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "selectionBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "selectionTextScale": 1,
+        "selectionTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "arrowTextScale": 1.5,
+        "arrowTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "hideArrowText": "§l↓",
+        "unhideArrowText": "§l↑",
+        "optionsBackgroundBox": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "optionsBackgroundBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "optionsBackgroundBoxOutlineThickness": 0,
+        "optionsTextScale": 1,
+        "optionsTextColor": [
+            255,
+            255,
+            255,
+            255
+        ]
+    },
     "Amaterasu": {
         "backgroundBox": [
             100,
             100,
             100,
-            150
+            80
         ],
         "textDescriptionBg": [
             0,
@@ -387,9 +532,16 @@
             0,
             0,
             80
-        ]
+        ],
+        "mainTitleTextColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "mainTitleTextScale": 1
     },
-    "Divider": {
+    "DividerSubcategory": {
         "backgroundBox": [
             0,
             0,
@@ -400,23 +552,14 @@
             255,
             255,
             255,
-            0
+            80
         ],
-        "textScale": 2,
+        "textScale": 1,
         "textColor": [
             255,
             255,
             255,
             255
         ]
-    },
-    "Markdown": {
-        "backgroundBox": [
-            0,
-            0,
-            0,
-            80
-        ],
-        "textScale": 1
     }
 }

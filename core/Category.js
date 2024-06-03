@@ -80,6 +80,7 @@ export default class Category {
             this.rightBlock.loseFocus()
             this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColor"))
             this.mainRightBlock.removeChild(this.elementsSlider)
+            this.createElementClass?._hideDropDownComps()
             
             return
         }

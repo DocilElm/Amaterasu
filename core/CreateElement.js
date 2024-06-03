@@ -418,6 +418,9 @@ export default class CreateElement {
                 component._hideDropDown()
             })
 
+
+        this.elements.get(obj.name).compInstance = component
+
         return this
     }
 
@@ -447,7 +450,7 @@ export default class CreateElement {
                 component._hideDropDown()
             })
 
-        this.categoryClass.leftBlock
+        this.categoryClass.parentClass.leftBlock
             .onMouseScroll(() => {
                 if (component.hidden) return
 
@@ -458,6 +461,8 @@ export default class CreateElement {
 
                 component._hideDropDown()
             })
+
+        this.elements.get(obj.name).compInstance = component
 
         return this
     }
@@ -489,9 +494,26 @@ export default class CreateElement {
 
             if (typeof(isEnabled) !== "boolean") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
 
-            if (!isEnabled) return component.hide()
+            if (!isEnabled) {
+                component.hide(true)
+                if (obj.compInstance && !obj.compInstance.hidden) obj.compInstance._hideDropDown()
+
+                return
+            }
 
             component.unhide(true)
+        })
+    }
+
+    /**
+     * - Internal use.
+     * - Hides all the [DropDown] components if they're currently shown.
+     */
+    _hideDropDownComps() {
+        this.elements.forEach(obj => {
+            if (!("compInstance" in obj)) return
+
+            obj.compInstance._hideDropDown()
         })
     }
 }
