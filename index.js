@@ -61,7 +61,7 @@ defaultConf
             const currentScheme = schemes[config.settings.scheme]
             const scheme = JSON.parse(FileLib.read("Amaterasu", currentScheme))
             // Setting the alpha
-            scheme.Amaterasu.backgroundBox[3] = config.settings.alpha
+            scheme.Amaterasu.backgroundBox = config.settings.bgColor
 
             // Now we save the [currentScheme] with the [alpha] set in the [Slider]
             FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
@@ -74,13 +74,12 @@ defaultConf
                 .apply()
         }
     })
-    .addSlider({
+    .addColorPicker({
         category: "GUI",
-        configName: "alpha",
-        title: "Change Background Alpha",
-        description: "Changes the alpha of the background",
-        options: [0, 255],
-        value: 80 // This is how we set a default value if we don't want the one provided by [Amaterasu]'s system
+        configName: "bgColor",
+        title: "Change Background Color",
+        description: "Changes the color and alpha of the background",
+        value: [0, 0, 0, 80] // This is how we set a default value if we don't want the one provided by [Amaterasu]'s system
     })
     .addSlider({
         category: "GUI",
@@ -251,7 +250,7 @@ const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
 const currentScheme = schemes[config.settings.scheme]
 const scheme = JSON.parse(FileLib.read("Amaterasu", currentScheme))
 // Setting the alpha
-scheme.Amaterasu.backgroundBox[3] = config.settings.alpha
+scheme.Amaterasu.backgroundBox = config.settings.bgColor
 
 // Now we save the [currentScheme] with the [alpha] set in the [Slider]
 FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
