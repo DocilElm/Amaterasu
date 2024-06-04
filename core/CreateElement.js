@@ -495,7 +495,7 @@ export default class CreateElement {
             if (typeof(isEnabled) !== "boolean") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
 
             if (!isEnabled) {
-                component.hide(true)
+                component.hide(false)
                 if (obj.compInstance && !obj.compInstance.hidden) obj.compInstance._hideDropDown()
 
                 return

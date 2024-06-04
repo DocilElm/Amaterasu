@@ -27,7 +27,22 @@
             255,
             255
         ],
-        "outlineThickness": 0.5
+        "outlineThickness": 0.5,
+        "background": {
+            "boxColor": [
+                0,
+                0,
+                0,
+                80
+            ],
+            "outlineColor": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "outlineSize": 0
+        }
     },
     "Button1": {
         "backgroundBox": [
@@ -243,7 +258,33 @@
             255,
             255
         ],
-        "outlineThickness": 0.5
+        "outlineThickness": 0.5,
+        "enabledBar": [
+            0,
+            0,
+            0,
+            80
+        ],
+        "disabledBar": [
+            255,
+            255,
+            255,
+            80
+        ],
+        "sliderBarOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "sliderBarOutlineThickness": 0,
+        "sliderBoxOutlineColor": [
+            255,
+            255,
+            255,
+            255
+        ],
+        "sliderBoxOutlineThickness": 0
     },
     "Selection": {
         "backgroundBar": [

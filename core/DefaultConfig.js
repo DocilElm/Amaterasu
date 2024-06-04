@@ -79,7 +79,7 @@ export default class DefaultConfig {
         categoryName = categoryName ?? this.lastCategory
 
         if (!categoryName) throw new Error(`${categoryName} is not a valid Category Name`)
-        if (!configName) throw new Error(`${configName} is not a valid Confi gName.`)
+        if (!configName) throw new Error(`${configName} is not a valid Config Name.`)
 
         // Create category data if it does not exist.
         if (!this.categories.has(categoryName)) {
