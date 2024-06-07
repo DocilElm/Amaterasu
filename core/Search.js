@@ -16,7 +16,7 @@ export default class SearchElement {
         this.mainBlock = this.parentClass.mainBlock
         this.oldConfig = this.parentClass.config
         this.config = {}
-        this.categoryName = "Search Bar"
+        this.categoryName = "Search Results"
 
         this.selected = false
         this.sliderAdded = false
@@ -68,6 +68,7 @@ export default class SearchElement {
         if (!string) return
 
         this.config = {}
+        this.createElementClass.subcategories.clear()
         this.createElementClass?._hideDropDownComps()
         this.createElementClass.elements.clear()
         this.createElementClass._create()
@@ -75,7 +76,7 @@ export default class SearchElement {
 
         this.matches = [
             {
-                "category": "Search Bar",
+                "category": this.categoryName,
                 "settings": []
             }
         ]
