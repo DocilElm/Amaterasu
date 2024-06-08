@@ -61,7 +61,7 @@ defaultConf
             const currentScheme = schemes[config.settings.scheme]
             const scheme = JSON.parse(FileLib.read("Amaterasu", currentScheme))
             // Setting the alpha
-            // scheme.Amaterasu.backgroundBox = config.settings.bgColor
+            scheme.Amaterasu.background.color = config.settings.bgColor
 
             // Now we save the [currentScheme] with the [alpha] set in the [Slider]
             FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
@@ -250,7 +250,7 @@ const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
 const currentScheme = schemes[config.settings.scheme]
 const scheme = JSON.parse(FileLib.read("Amaterasu", currentScheme))
 // Setting the alpha
-// scheme.Amaterasu.backgroundBox = config.settings.bgColor
+scheme.Amaterasu.background.color = config.settings.bgColor
 
 // Now we save the [currentScheme] with the [alpha] set in the [Slider]
 FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
