@@ -2,30 +2,12 @@ import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
 import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
-import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText, UIWrappedText } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 import Category from "./Category"
 import Configs from "./Config"
 
-// I know this is a very bad solution but
-// honestly i don't want to further more bother
-// with this dumb thing
+// TODO: make a update version of this method to support the new changes to the scheme system
 const customAssignObject = (obj1, obj2) => {
-    /**
-     specifically made for an object like this:
-     {
-        "Button": {
-            "backgroundBox": [0, 0, 0, 80],
-            "backgroundBox1": [0, 0, 0, 0],
-            "lines": [0, 0, 0, 80],
-            "textColor": [255, 255, 255, 255],
-            "textColorSelected": [19, 117, 141, 255],
-            "textScale": 1,
-            "mouseClick": [255, 255, 255, 80],
-            "mouseEnter": [0, 0, 0, 80],
-            "mouseLeave": [0, 0, 0, 0]
-        }
-    }
-     */
     Object.keys(obj2).forEach(key => {
         // If the [key] doesn't exist in the first object
         // we assign an object into it
@@ -325,19 +307,19 @@ export default class Settings {
     }
 
     _init() {
-        this.mainBlock = new UIRoundedRectangle(5)
+        this.mainBlock = new UIRoundedRectangle(this.handler.getColorScheme().Amaterasu.background.roundness)
             .setX(this.bgPos.x)
             .setY(this.bgPos.y)
             .setWidth(this.bgSize.width)
             .setHeight(this.bgSize.height)
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.backgroundBox))
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.mainBgBoxOutline), this.handler.getColorScheme().Amaterasu.mainBgBoxOutlineThickness))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.background.color))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.background.outlineColor), this.handler.getColorScheme().Amaterasu.background.outlineSize))
 
         this.title = new UIText(this.titleText)
             .setX(new CenterConstraint())
             .setY((3).percent())
-            .setTextScale((this.handler.getColorScheme().Amaterasu.mainTitleTextScale).pixels())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.mainTitleTextColor))
+            .setTextScale((this.handler.getColorScheme().Amaterasu.title.scale).pixels())
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.title.color))
             .setChildOf(this.mainBlock)
 
         this.searchBarBg = new UIRoundedRectangle(3)
@@ -352,8 +334,9 @@ export default class Settings {
             .setX((0.5).percent())
             .setY(new CramSiblingConstraint(5))
             .setWidth((99).percent())
-            .setHeight((this.handler.getColorScheme().Amaterasu.topLineSize).percent())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.topLine))
+            .setHeight((this.handler.getColorScheme().Amaterasu.line.size).percent())
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.line.color))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.line.outlineColor), this.handler.getColorScheme().Amaterasu.line.outlineSize))
             .setChildOf(this.mainBlock)
 
         this.leftBlockBg = new UIRoundedRectangle(3)
@@ -361,7 +344,7 @@ export default class Settings {
             .setY(new CramSiblingConstraint(5))
             .setWidth((18).percent())
             .setHeight((87).percent())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.leftPanelBg))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.panel.leftColor))
             .setChildOf(this.mainBlock)
 
         this.leftBlock = new ScrollComponent("no elements", 5.0)
@@ -374,7 +357,7 @@ export default class Settings {
         this.leftBlockScrollbar = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
             .setWidth((5).pixels())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar.color))
             .setChildOf(this.leftBlockBg)
 
         this.leftBlock.setScrollBarComponent(this.leftBlockScrollbar, true, false)
@@ -384,7 +367,7 @@ export default class Settings {
             .setY(new CramSiblingConstraint(5))
             .setWidth((70).percent())
             .setHeight((87).percent())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.rightPanelBg))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.panel.rightColor))
             .setChildOf(this.mainBlock)
 
         this.searchBar = new SearchElement(this)
@@ -424,16 +407,19 @@ export default class Settings {
      * @returns {Object}
      */
     _checkScheme(path) {
-        let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
-        const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
-        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
-
-        defaultScheme = customAssignObject(defaultScheme, mainDefaultScheme)
-        colorScheme = customAssignObject(colorScheme, defaultScheme)
+        return JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
         
-        this._saveScheme(path, colorScheme)
+        // TODO: update this to new scheme system
+        // let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
+        // const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
+        // let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
 
-        return colorScheme
+        // defaultScheme = customAssignObject(defaultScheme, mainDefaultScheme)
+        // colorScheme = customAssignObject(colorScheme, defaultScheme)
+        
+        // this._saveScheme(path, colorScheme)
+
+        // return colorScheme
     }
 
     /**
@@ -494,11 +480,11 @@ export default class Settings {
      * @param {Object} json 
      */
     _saveScheme(path, json) {
-        FileLib.write(
-            this.moduleName,
-            path,
-            JSON.stringify(json, null, 4),
-            true
-        )
+        // FileLib.write(
+        //     this.moduleName,
+        //     path,
+        //     JSON.stringify(json, null, 4),
+        //     true
+        // )
     }
 }

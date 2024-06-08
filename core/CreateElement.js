@@ -53,8 +53,8 @@ export default class CreateElement {
             .setY(new CramSiblingConstraint(5))
             .setWidth((85).percent())
             .setHeight((20).percent())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.textDescriptionBg))
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.elementsDescriptionOutline), this.handler.getColorScheme().Amaterasu.elementsDescriptionOutlineThickness))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.descriptionbackground.color))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.descriptionbackground.outlineColor), this.handler.getColorScheme().Amaterasu.descriptionbackground.outlineSize))
             .setChildOf(this.rightBlock)
 
         // Change text width depending on the [ConfigType] of this element
@@ -70,7 +70,7 @@ export default class CreateElement {
                 new CenterConstraint()
             )
         descElement
-            ._create(this.handler.getColorScheme())
+            ._create(this.handler.getColorScheme().Amaterasu)
             .setChildOf(bgBox)
             // TODO: make an actual good hovering system for wrapped text
             // this code has been commented out in order to not publish something that

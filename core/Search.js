@@ -33,7 +33,7 @@ export default class SearchElement {
         this.elementsSlider = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
             .setWidth((5).pixels())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar.color))
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
         this.rightBlock.hide()

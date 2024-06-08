@@ -34,7 +34,7 @@ export default class Category {
         this.elementsSlider = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
             .setWidth((5).pixels())
-            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar))
+            .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar.color))
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
 
@@ -78,7 +78,7 @@ export default class Category {
         if (!this.selected) {
             this.rightBlock.hide(true)
             this.rightBlock.loseFocus()
-            this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColor"))
+            this.sidebarButton.text.setColor(this.sidebarButton._getColor("text", "color"))
             this.mainRightBlock.removeChild(this.elementsSlider)
             this.createElementClass?._hideDropDownComps()
             
@@ -87,7 +87,7 @@ export default class Category {
 
         this.rightBlock.unhide(true)
         this.rightBlock.scrollToTop(true)
-        this.sidebarButton.text.setColor(this.sidebarButton._getColor("textColorSelected"))
+        this.sidebarButton.text.setColor(this.sidebarButton._getColor("text", "selectedColor"))
         this.mainRightBlock.addChild(this.elementsSlider)
 
         this.parentClass.currentCategory = this.categoryName
