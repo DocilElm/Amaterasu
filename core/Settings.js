@@ -6,26 +6,31 @@ import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent
 import Category from "./Category"
 import Configs from "./Config"
 
-// TODO: make a update version of this method to support the new changes to the scheme system
-const customAssignObject = (obj1, obj2) => {
-    Object.keys(obj2).forEach(key => {
-        // If the [key] doesn't exist in the first object
-        // we assign an object into it
-        if (!obj1[key]) obj1[key] = {}
+// Credits to @unclaimedbloom6 (big thank)
+const mergeObjects = (obj1, obj2, final={}) => {
+    // Add the keys from the first object
+    for (let entry of Object.entries(obj1)) {
+        let [k, v] = entry
+        final[k] = v
+    }
 
-        Object.keys(obj2[key]).forEach(key2 => {
-            // If the [key] exist in the first object
-            // we return
-            if (obj1[key][key2]) return
+    // Add the keys from the second object
+    for (let entry of Object.entries(obj2)) {
+        let [k, v] = entry
+        // Key was already added from the first object
+        if (k in final) {
+            // Go a level deeper if this is an object
+            if (typeof(v) == "object" && !Array.isArray(v)) {
+                final[k] = mergeObjects(obj1[k], v)
+            }
+            continue
+        }
 
-            // Else we add the second object's value into it
-            obj1[key][key2] = obj2[key][key2]
-        })
+        // Key didn't already exist, write it
+        final[k] = v
+    }
 
-    })
-
-    // return the edited object
-    return obj1
+    return final
 }
 
 export default class Settings {
@@ -408,7 +413,7 @@ export default class Settings {
      */
     _checkScheme(path) {
         return JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
-        
+
         // TODO: update this to new scheme system
         // let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
         // const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
