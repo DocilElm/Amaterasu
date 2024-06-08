@@ -412,19 +412,25 @@ export default class Settings {
      * @returns {Object}
      */
     _checkScheme(path) {
-        return JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
+        const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
+        let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/_DefaultScheme.json"))
+        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
 
-        // TODO: update this to new scheme system
-        // let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/ColorScheme.json"))
-        // const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
-        // let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
+        if (colorScheme.Amaterasu.backgroundBox) {
+            const oldSchemePath = `${path.replace(/\.json/, "")}_old.json`
+            console.warn(`[Amaterasu - ${this.moduleName}] old scheme system detected, your old scheme has been saved as ${oldSchemePath}`)
 
-        // defaultScheme = customAssignObject(defaultScheme, mainDefaultScheme)
-        // colorScheme = customAssignObject(colorScheme, defaultScheme)
+            this._saveScheme(oldSchemePath, colorScheme)
+            // Reset values since we need it to be a clean new object
+            colorScheme = {}
+        }
+
+        defaultScheme = mergeObjects(defaultScheme, mainDefaultScheme)
+        colorScheme = mergeObjects(colorScheme, defaultScheme)
         
-        // this._saveScheme(path, colorScheme)
+        this._saveScheme(path, colorScheme)
 
-        // return colorScheme
+        return colorScheme
     }
 
     /**
@@ -485,11 +491,11 @@ export default class Settings {
      * @param {Object} json 
      */
     _saveScheme(path, json) {
-        // FileLib.write(
-        //     this.moduleName,
-        //     path,
-        //     JSON.stringify(json, null, 4),
-        //     true
-        // )
+        FileLib.write(
+            this.moduleName,
+            path,
+            JSON.stringify(json, null, 4),
+            true
+        )
     }
 }
