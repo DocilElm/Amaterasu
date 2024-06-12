@@ -2,6 +2,20 @@ import ConfigTypes from "./ConfigTypes"
 
 const defaultValues = [ false, 1, undefined, 0, "", [ 255, 255, 255, 255 ], false, 0, 0 ]
 
+/**
+ * @typedef {Object} DefaultObject
+ * @prop {string?} category The category name for this config component
+ * @prop {string?} configName The config name for this config component (used to get its current value)
+ * @prop {string} title The title to be displayed for this config component
+ * @prop {string} description The description to be displayed for this config component
+ * @prop {string?} placeHolder The placeholder for this component (only if it supports it)
+ * @prop {string|array|number?} value The current config value of this component (only if it supports it)
+ * @prop {function?} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`)
+ * @prop {string?} subcategory The subcategory for this config component
+ * @prop {array?} tags The searching tags for this component (if any is defined these will make the component come up in results whenever searching these strings)
+ * @prop {function?} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
+*/
+
 export default class DefaultConfig {
     /**
      * - This class handles all the data required by the
@@ -94,7 +108,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new button with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addButton({
@@ -125,7 +139,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new toggle with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addToggle({
@@ -156,7 +170,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new switch with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addSwitch({
@@ -187,7 +201,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new textinput with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addTextInput({
@@ -220,7 +234,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new slider with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addSlider({
@@ -253,7 +267,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new selection with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addSelection({
@@ -286,7 +300,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new color picker with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addColorPicker({
@@ -318,7 +332,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new drop down with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addDropDown({
@@ -351,7 +365,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new multi checkbox with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addMultiCheckbox({
@@ -382,7 +396,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new text paragraph with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addTextParagraph({
@@ -411,7 +425,7 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new keybind with the given params and pushes it into the config
-     * @param {Object} param0 
+     * @param {DefaultObject} options
      * @returns this for method chaining
      */
     addKeybind({
