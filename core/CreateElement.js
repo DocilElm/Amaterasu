@@ -59,7 +59,7 @@ export default class CreateElement {
 
         // Change text width depending on the [ConfigType] of this element
         const textWidth = obj.type === ConfigTypes.COLORPICKER
-            ? 75
+            ? 72
             : obj.type === ConfigTypes.TEXTPARAGRAPH
                 ? 98
                 : 80

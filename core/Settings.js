@@ -414,9 +414,9 @@ export default class Settings {
     _checkScheme(path) {
         const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
         let defaultScheme = JSON.parse(FileLib.read("Amaterasu", "data/_DefaultScheme.json"))
-        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? {}
+        let colorScheme = JSON.parse(FileLib.read(this.moduleName, path)) ?? defaultScheme
 
-        if (colorScheme.Amaterasu.backgroundBox) {
+        if (colorScheme?.Amaterasu?.backgroundBox) {
             const oldSchemePath = `${path.replace(/\.json/, "")}_old.json`
             console.warn(`[Amaterasu - ${this.moduleName}] old scheme system detected, your old scheme has been saved as ${oldSchemePath}`)
 
