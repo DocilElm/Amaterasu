@@ -182,6 +182,26 @@ export default class Settings {
     }
 
     /**
+     * - Sets the new config value of the given [configName]
+     * - to the passed [value] then calls the `apply` method to re-build this window
+     * @param {String} category 
+     * @param {String} configName 
+     * @param {*} value 
+     * @returns this for method chaining
+     */
+    setConfigValue(category, configName, value) {
+        if (!category || !configName || !this.categories.has(category)) throw new Error(`category: ${category} or configName: ${configName} are not valid.`)
+
+        let configObj = this.config.find(it => it.category === category)?.settings?.find(it => it.name === configName)
+        if (!configObj) return this
+
+        configObj.value = value
+        this.apply()
+
+        return this
+    }
+
+    /**
      * - Adds a [Changelog] section with the given string
      * - Equivalent to `.addMarkdown("Changelog", text)`
      * @param {String} text 

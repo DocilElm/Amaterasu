@@ -2,7 +2,7 @@
   "name": "Amaterasu",
   "creator": "DocilElm",
   "description": "doc is the best.",
-  "version": "2.5.2",
+  "version": "2.6.2",
   "entry": "index.js",
   "requires": ["DocGuiLib"]
 }
