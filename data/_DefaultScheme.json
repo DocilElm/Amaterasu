@@ -59,16 +59,19 @@
         },
         "text": {
             "color": [255, 255, 255, 255],
+            "placeholderColor": [170, 170, 170, 255],
             "scale": 1,
             "padding": 3
         },
         "mouseEnterAnimation": {
             "color": [0, 0, 0, 80],
+            "placeholderColor": [170, 170, 170, 80],
             "type": "OUT_EXP",
             "time": 0.5
         },
         "mouseLeaveAnimation": {
             "color": [255, 255, 255, 255],
+            "placeholderColor": [170, 170, 170, 255],
             "type": "OUT_EXP",
             "time": 0.5
         }
@@ -230,16 +233,19 @@
             },
             "text": {
                 "color": [255, 255, 255, 255],
+                "placeholderColor": [170, 170, 170, 255],
                 "scale": 1,
                 "padding": 5
             },
             "mouseEnterAnimation": {
                 "color": [0, 0, 0, 80],
+                "placeholderColor": [170, 170, 170, 80],
                 "type": "OUT_EXP",
                 "time": 0.5
             },
             "mouseLeaveAnimation": {
                 "color": [255, 255, 255, 255],
+                "placeholderColor": [170, 170, 170, 255],
                 "type": "OUT_EXP",
                 "time": 0.5
             }
