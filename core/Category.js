@@ -121,4 +121,15 @@ export default class Category {
 
         return this
     }
+
+
+    /**
+     * - Internal use
+     * - Sets unfocus on the main component of this [class] and clears the childrens
+     */
+    _delete() {
+        this._setSelected(false)
+        this.rightBlock.clearChildren()
+        delete this
+    }
 }

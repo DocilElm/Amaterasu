@@ -304,7 +304,7 @@ export default class Settings {
         if (featureName) {
             Client.scheduleTask(2, () => {
                 const rightBlock = categoryInstance.rightBlock
-                const comp = categoryInstance.createElementClass.elements.get(featureName)?.component
+                const comp = categoryInstance.createElementClass._find(featureName)?.component
                 if (!comp) return
 
                 const newY = rightBlock.getTop() - comp.getTop()
@@ -322,7 +322,7 @@ export default class Settings {
      */
     apply() {
         this.oldCategory = null
-        this.categories.forEach(value => value._setSelected(false))
+        this.categories.forEach(value => value._delete())
         this.handler.getWindow().clearChildren()
         this._init()
 

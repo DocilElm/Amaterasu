@@ -27,7 +27,7 @@ export default class CreateElement {
         this.sortElement = this.categoryClass.parentClass.sortElements
 
         // This map holds all of the elements
-        this.elements = new Map()
+        this.elements = []
 
         // Stores all the created [subcategories]
         // maybe later on we store the actual settings of each
@@ -103,10 +103,7 @@ export default class CreateElement {
             //     hoverText.setText("")
             // })
 
-        this.elements.set(obj.name, {
-            component: bgBox,
-            configObj: obj
-        })
+        this.elements.push({ name: obj.name, component: bgBox, configObj: obj, previousComponent: null })
 
         return bgBox
     }
@@ -419,7 +416,7 @@ export default class CreateElement {
             })
 
 
-        this.elements.get(obj.name).compInstance = component
+        this._find(obj.name).compInstance = component
 
         return this
     }
@@ -462,7 +459,7 @@ export default class CreateElement {
                 component._hideDropDown()
             })
 
-        this.elements.get(obj.name).compInstance = component
+        this._find(obj.name).compInstance = component
 
         return this
     }
@@ -486,8 +483,9 @@ export default class CreateElement {
      * - Hides/Unhides the element depending on the [shouldShow] method result
      */
     _hideElement(data) {
-        this.elements.forEach(obj => {
+        this.elements.forEach((obj, idx) => {
             if (!obj.configObj.shouldShow) return
+            if (idx > 0) obj.previousComponent = this.elements[idx - 1].component
 
             const isEnabled = obj.configObj.shouldShow(data)
             const component = obj.component
@@ -495,13 +493,13 @@ export default class CreateElement {
             if (typeof(isEnabled) !== "boolean") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
 
             if (!isEnabled) {
-                component.hide(false)
+                this._hide(component)
                 if (obj.compInstance && !obj.compInstance.hidden) obj.compInstance._hideDropDown()
 
                 return
             }
 
-            component.unhide(true)
+            this._unhide(component, obj.previousComponent)
         })
     }
 
@@ -515,5 +513,54 @@ export default class CreateElement {
 
             obj.compInstance._hideDropDown()
         })
+    }
+
+    /**
+     * - Internal use
+     * - Fixed version to my needs of Elementa's `#hide` method
+     * @param {*} component 
+     * @returns 
+     */
+    _hide(component) {
+        const parent = component.parent
+        const childrens = parent?.children
+        const compIdx = childrens?.indexOf(component)
+
+        // If the [child] doesn't exist already we return
+        if (compIdx === -1) return
+
+        // Remove the [child] from the [parent]
+        parent.removeChild(component)
+    }
+    
+    /**
+     * - Internal use
+     * - Fixed version to my needs of Elementa's `#unhide` method
+     * @param {*} component 
+     * @param {*} prevcomponent 
+     * @returns 
+     */
+    _unhide(component, prevcomponent) {
+        const parent = prevcomponent.parent
+        const childrens = parent?.children
+        const previousIdx = childrens?.indexOf(prevcomponent)
+        const compIdx = childrens?.indexOf(component)
+
+        // If the [previousChild] doesn't exist we return
+        // or if the [currentChild] is already set we return
+        if (previousIdx === -1 || compIdx !== -1) return
+
+        parent.insertChildAt(component, previousIdx + 1)
+    }
+
+    /**
+     * - Internal use
+     * - Finds the element inside this class's [elements] array
+     * @param {String} name 
+     * @returns {Object|null}
+     */
+    _find(name) {
+        // i promise i'm not lazy i just work smart
+        return this.elements.find(it => it.name === name)
     }
 }

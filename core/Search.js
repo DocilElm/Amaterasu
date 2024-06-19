@@ -68,11 +68,10 @@ export default class SearchElement {
         if (!string) return
 
         this.config = {}
+        this.rightBlock.clearChildren()
         this.createElementClass.subcategories.clear()
         this.createElementClass?._hideDropDownComps()
-        this.createElementClass.elements.clear()
-        this.createElementClass._create()
-        this.rightBlock.clearChildren()
+        this.createElementClass.elements = []
 
         this.matches = [
             {
