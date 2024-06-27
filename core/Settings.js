@@ -237,6 +237,43 @@ export default class Settings {
     }
 
     /**
+     * - Gets this [Settings] CT Gui
+     * @returns {Gui} the CT Gui
+     */
+    getGui() {
+        return this.handler.ctGui
+    }
+
+    /**
+     * - Gets this [Settings] HandleGui
+     * @see "DocGuiLib/core/Gui.js"
+     * @returns {HandleGui} the HandleGui created from DocGuiLib
+     */
+    getHandler() {
+        return this.handler
+    }
+
+    /**
+     * - Opens this [Settings] Gui
+     * @returns this for method chaining
+     */
+    openGui() {
+        this.handler.ctGui.open()
+
+        return this
+    }
+
+    /**
+     * - Closes this [Settings] Gui
+     * @returns this for method chaining
+     */
+    closeGui() {
+        this.handler.ctGui.close()
+
+        return this
+    }
+
+    /**
      * - Triggers the given function whenever this [GUI] is opened
      * @param {Function} fn 
      * @returns this for method chaining
