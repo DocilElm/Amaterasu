@@ -35,9 +35,10 @@ export default class Config {
      * - Makes the current config into an actual dev friendly format
      * e.g instead of [Settings: { name: "configName", text: "config stuff" ...etc }]
      * converts it into { configName: false }
+     * @param {Settings} settingsInstance The settings instance (used to create the `#getConfig` method)
      * @returns {JSON}
      */
-    _normalizeSettings() {
+    _normalizeSettings(settingsInstance) {
         let settings = {}
 
         this.config.forEach(obj => {
@@ -52,6 +53,8 @@ export default class Config {
                 settings[settingsObj.name] = settingsObj.value
             })
         })
+
+        settings.getConfig = () => settingsInstance
 
         return settings
     }

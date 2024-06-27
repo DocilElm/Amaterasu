@@ -88,6 +88,7 @@ export default class DefaultConfig {
      */
     _checkCategory(categoryName, configName) {
         if (!categoryName && !this.lastCategory) throw new Error(`${categoryName} is not a valid Category Name.`)
+        if (configName === "getConfig") throw new Error(`[Amaterasu - ${this.moduleName}] you cannot overwrite a built in function. attempting to create config with configName: ${configName}. failed please change this configName`)
 
         // Gets the prevous category name if [categoryName] is [null]
         categoryName = categoryName ?? this.lastCategory

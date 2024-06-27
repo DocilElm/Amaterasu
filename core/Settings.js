@@ -78,7 +78,7 @@ export default class Settings {
         // Config variables
         this.configsClass = new Configs(this.defaultConfig)
         this.config = this.configsClass.config
-        this.settings = this.configsClass._normalizeSettings()
+        this.settings = this.configsClass._normalizeSettings(this)
 
         // Categories variables
         this.categories = new Map()
