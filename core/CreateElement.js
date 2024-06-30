@@ -522,7 +522,9 @@ export default class CreateElement {
      * @returns 
      */
     _hide(component) {
-        const parent = component?.parent
+        if (!component) return
+
+        const parent = component.parent
         const childrens = parent?.children
         const compIdx = childrens?.indexOf(component)
 
@@ -541,7 +543,9 @@ export default class CreateElement {
      * @returns 
      */
     _unhide(component, prevcomponent) {
-        const parent = prevcomponent?.parent
+        if (!component || !prevcomponent) return
+
+        const parent = prevcomponent.parent
         const childrens = parent?.children
         const previousIdx = childrens?.indexOf(prevcomponent)
         const compIdx = childrens?.indexOf(component)
