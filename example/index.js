@@ -12,7 +12,6 @@ const CREDITS = FileLib.read("Amaterasu", "CREDIT.md")
 
 // Here we define a list of our color scheme paths
 // this is later used to change the color scheme via a configuration
-// ColorScheme.json is our custom color scheme defined by our example module; scheme-vigil.json and scheme-nwjn.json are defined by Amaterasu
 const schemes = ["data/ColorScheme.json", "data/scheme-vigil.json", "data/scheme-nwjn.json"]
 
 // We create our [DefaultConfig] instance
