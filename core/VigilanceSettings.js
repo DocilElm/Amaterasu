@@ -1,7 +1,6 @@
 import ConfigTypes from "./ConfigTypes"
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType")
-const localDir = "./config/ChatTriggers/modules/"
 
 function getColorSchemePath(configPath) {
     const paths = configPath.split("/")
@@ -42,7 +41,7 @@ function saveAmaterasuSettings(moduleName, configPath, str) {
 export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null, configPath = null, overwrite = false) => {
     configPath = configPath ?? `/data/config.js`
     
-    if (FileLib.exists(`${localDir}/${moduleName}/${configPath}`) && !overwrite) return
+    if (!overwrite && FileLib.exists(moduleName, configPath)) return
     if (moduleToConvert && moduleName !== moduleToConvert) return
 
     const currentInstance = instance.__proto__
@@ -132,7 +131,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
 export const convertObjToAmateras = (obj, moduleName = null, configPath = null, overwrite = false) => {
     configPath = configPath ?? `/data/config.js`
 
-    if (FileLib.exists(`${localDir}/${moduleName}/${configPath}`) && !overwrite) return
+    if (!overwrite && FileLib.exists(moduleName, configPath)) return
 
     let str = `// Make sure these go to the right directory \nimport Settings from "../../Amaterasu/core/Settings"\nimport DefaultConfig from "../../Amaterasu/core/DefaultConfig"\nconst config = new DefaultConfig("${moduleName}", "data/settings.json")\n\nconfig`
 
