@@ -217,7 +217,6 @@ export default class Settings {
      * - Equivalent to `.addMarkdown("Changelog", text)`
      * @param {string} text 
      * @returns this for method chaining
-     * @see this.{@link apply}()
      */
     addChangelog(text) {
         return this.addMarkdown("Changelog", text)
@@ -228,7 +227,6 @@ export default class Settings {
      * @param {string} category
      * @param {string|string[]} text 
      * @returns this for method chaining
-     * @see this.{@link apply}()
      */
     addMarkdown(category, text, _internal = false) {
         if (Array.isArray(text)) text = text.join("\n")
