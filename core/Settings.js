@@ -231,7 +231,7 @@ export default class Settings {
      * @see this.{@link apply}()
      */
     addMarkdown(category, text, _internal = false) {
-        if (text instanceof Array) text = text.join("\n")
+        if (Array.isArray(text)) text = text.join("\n")
 
         if (!_internal) this.markdowns.push([category, text])
 
