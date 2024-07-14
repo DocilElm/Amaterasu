@@ -2,11 +2,6 @@ import ConfigTypes from "./ConfigTypes"
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType")
 
-function getColorSchemePath(configPath) {
-    const paths = configPath.split("/")
-    paths[paths.length - 1] = "ColorScheme.json"
-    return paths.join("/")
-}
 function saveAmaterasuSettings(moduleName, configPath, str) {
     FileLib.write(
         moduleName,
@@ -17,15 +12,14 @@ function saveAmaterasuSettings(moduleName, configPath, str) {
 
     console.log(`[Amaterasu - ${moduleName}] successfully created config file at ${configPath}.`)
 
-    const colorSchemePath = getColorSchemePath(configPath)
     FileLib.write(
         moduleName,
-        colorSchemePath,
+        "data/ColorScheme.json",
         "{}",
         true
     )
 
-    console.log(`[Amaterasu - ${moduleName}] successfully created color scheme file at ${colorSchemePath}.`)
+    console.log(`[Amaterasu - ${moduleName}] successfully created color scheme file at "data/ColorScheme.json".`)
 }
 
 
