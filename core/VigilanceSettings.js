@@ -3,6 +3,33 @@ import ConfigTypes from "./ConfigTypes"
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType")
 const localDir = "./config/ChatTriggers/modules/"
 
+function getColorSchemePath(configPath) {
+    const paths = configPath.split("/")
+    paths[paths.length - 1] = "ColorScheme.json"
+    return paths.join("/")
+}
+function saveAmaterasuSettings(moduleName, configPath, str) {
+    FileLib.write(
+        moduleName,
+        configPath,
+        str,
+        true
+    )
+
+    console.log(`[Amaterasu - ${moduleName}] successfully created config file at ${configPath}.`)
+
+    const colorSchemePath = getColorSchemePath(configPath)
+    FileLib.write(
+        moduleName,
+        colorSchemePath,
+        "{}",
+        true
+    )
+
+    console.log(`[Amaterasu - ${moduleName}] successfully created color scheme file at ${colorSchemePath}.`)
+}
+
+
 /**
  * - Helps migrating data from Vigilance to Amaterasu.
  * @param {Vigilance} instance The vigilance instance.
@@ -14,7 +41,7 @@ const localDir = "./config/ChatTriggers/modules/"
  */
 export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null, configPath = null, overwrite = false) => {
     configPath = configPath ?? `/data/config.js`
-
+    
     if (FileLib.exists(`${localDir}/${moduleName}/${configPath}`) && !overwrite) return
     if (moduleToConvert && moduleName !== moduleToConvert) return
 
@@ -91,14 +118,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
 
     str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
 
-    FileLib.write(
-        moduleName,
-        configPath,
-        str,
-        true
-    )
-
-    console.log(`[Amaterasu - ${moduleName}] successfully created config file at ${configPath}.`)
+    saveAmaterasuSettings(moduleName, configPath, str)
 }
 
 /**
@@ -157,12 +177,5 @@ export const convertObjToAmateras = (obj, moduleName = null, configPath = null, 
 
     str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
 
-    FileLib.write(
-        moduleName,
-        configPath,
-        str,
-        true
-    )
-
-    console.log(`[Amaterasu - ${moduleName}] successfully created config file at ${configPath}.`)
+    saveAmaterasuSettings(moduleName, configPath, str)
 }
