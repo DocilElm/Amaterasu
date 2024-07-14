@@ -34,6 +34,12 @@ const mergeObjects = (obj1, obj2, final={}) => {
 }
 
 export default class Settings {
+    /**
+     * @param {string} moduleName 
+     * @param {import('./DefaultConfig').default} defaultConfig 
+     * @param {string} colorSchemePath 
+     * @param {string?} titleText 
+     */
     constructor(moduleName, defaultConfig, colorSchemePath, titleText) {
         // Module variables
         this.moduleName = moduleName
@@ -102,8 +108,8 @@ export default class Settings {
 
     /**
      * - Sets the command to open this gui
-     * @param {String} name 
-     * @param {String[]} aliases
+     * @param {string} name 
+     * @param {string[]} aliases
      * @returns this for method chaining
      */
     setCommand(name, aliases = []) {
@@ -117,8 +123,9 @@ export default class Settings {
      * - The object is passed through the function
      * - (e.g "obj" would be a param so you can then do "obj.category" for its category name)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {Function} fn 
+     * @param {(a: { category: string }, b: { category: string }) => number} fn 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setCategorySort(fn) {
         if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
@@ -130,10 +137,11 @@ export default class Settings {
     /**
      * - Function to be ran whenever [CreateElement] attempts to sort the config components
      * - The object is passed through the function
-     * - (e.g "obj" would be a param so you can then do "obj.text" for its text)
+     * - (e.g "obj" would be a param so you can then do "obj.value" for its value)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {Function} fn 
+     * @param {(a: import('./DefaultConfig').DefaultObject, b: import('./DefaultConfig').DefaultObject) => number} fn 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setElementSort(fn) {
         if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
@@ -144,9 +152,10 @@ export default class Settings {
 
     /**
      * - Sets the starting x and y value of the gui (in percent)
-     * @param {Number} x 
-     * @param {Number} y 
+     * @param {number} x 
+     * @param {number} y 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setPos(x, y) {
         this.bgPos.x = (x).percent()
@@ -157,9 +166,10 @@ export default class Settings {
 
     /**
      * - Sets the width and height of the gui (in percent)
-     * @param {Number} width 
-     * @param {Number} height 
+     * @param {number} width 
+     * @param {number} height 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setSize(width, height) {
         this.bgSize.width = (width).percent()
@@ -169,8 +179,9 @@ export default class Settings {
     }
 
     /**
-     * @param {String} colorSchemePath 
+     * @param {string} colorSchemePath 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setScheme(newPath) {
         this.colorSchemePath = newPath
@@ -184,9 +195,9 @@ export default class Settings {
     /**
      * - Sets the new config value of the given [configName]
      * - to the passed [value] then calls the `apply` method to re-build this window
-     * @param {String} category 
-     * @param {String} configName 
-     * @param {*} value 
+     * @param {string} category 
+     * @param {string} configName 
+     * @param {import('./DefaultConfig').DefaultObjectValue} value 
      * @returns this for method chaining
      */
     setConfigValue(category, configName, value) {
@@ -204,8 +215,9 @@ export default class Settings {
     /**
      * - Adds a [Changelog] section with the given string
      * - Equivalent to `.addMarkdown("Changelog", text)`
-     * @param {String} text 
+     * @param {string} text 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     addChangelog(text) {
         return this.addMarkdown("Changelog", text)
@@ -213,9 +225,10 @@ export default class Settings {
 
     /**
      * - Adds a markdown category
-     * @param {String} category
-     * @param {String|String[]} text 
+     * @param {string} category
+     * @param {string|string[]} text 
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     addMarkdown(category, text, _internal = false) {
         if (text instanceof Array) text = text.join("\n")
@@ -275,7 +288,7 @@ export default class Settings {
 
     /**
      * - Triggers the given function whenever this [GUI] is opened
-     * @param {Function} fn 
+     * @param {() => void} fn 
      * @returns this for method chaining
      */
     onOpenGui(fn) {
@@ -288,7 +301,7 @@ export default class Settings {
 
     /**
      * - Triggers the given function whenever this [GUI] is closed
-     * @param {Function} fn 
+     * @param {() => void} fn 
      * @returns this for method chaining
      */
     onCloseGui(fn) {
@@ -302,8 +315,8 @@ export default class Settings {
     /**
      * - Runs the given function whenever the configName changes value
      * - the function will recieve the args `(previousValue, newValue)`
-     * @param {String} configName 
-     * @param {Function} fn 
+     * @param {string} configName 
+     * @param {(previousValue: import('./DefaultConfig').DefaultObjectValue, newValue: import('./DefaultConfig').DefaultObjectValue) => void} fn 
      * @returns this for method chaining
      */
     registerListener(configName, fn) {
@@ -320,8 +333,8 @@ export default class Settings {
     /**
      * - Redirects the current category to the given one
      * - if a `featureName` was given it will try to find it and scroll towards it
-     * @param {String} categoryName 
-     * @param {String?} featureName 
+     * @param {string} categoryName 
+     * @param {string?} featureName 
      * @returns this for method chaining
      */
     redirect(categoryName, featureName = null) {
@@ -464,9 +477,9 @@ export default class Settings {
     /**
      * - Checks whether the color scheme exists and if it doesnt it creates
      * a new one using the path and the default color scheme from the module
-     * @param {String} moduleName 
-     * @param {String} path 
-     * @returns {Object}
+     * @param {string} moduleName 
+     * @param {string} path 
+     * @returns {object}
      */
     _checkScheme(path) {
         const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
