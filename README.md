@@ -10,21 +10,19 @@ Amaterasu is a ChatTriggers library designed to make creating and using a settin
 - custom sorting
 - no memory leak (sad vigilance noises)
 - markdown support
-- support for many different property types (e.g. Keybind, button to redirect to different config, multiline text inputs, etc)
+- support for many different property types (e.g. Keybind, button to redirect to different config, multicheckbox, etc)
 - flexible "config dependencies"
 - no red squiggly lines
 
 ## Installation:
 
-add `"Amaterasu"` into your `requires` array in `metadata.json`
+Add `"Amaterasu"` into your `requires` array in `metadata.json`
 
-For more info on porting `Vigilance` settings into `Amaterasu` settings, see [How to migrate vigilance settings](https://github.com/DocilElm/Amaterasu/wiki/How-to-migrate-vigilance-settings)
+For more information on porting `Vigilance` settings into `Amaterasu` settings, see [How to migrate vigilance settings](https://github.com/DocilElm/Amaterasu/wiki/How-to-migrate-vigilance-settings)
 
 ## Documentation
 
 If you are coming from `Vigilance` and would prefer a table of equilavent properties, they can be found [here](#vigilance-translations).
-
-HAH YOU THOUGHT IM NOT GETTING PAID FOR THIS
 
 intellisense will carry, jsdocs should be fine (read through code if you need to do anything not covered in [Usage](#usage))
 
@@ -33,9 +31,6 @@ intellisense will carry, jsdocs should be fine (read through code if you need to
 See [Installation](#installation).
 
 ### Basic Usage
-
-im not getting paid fuck this
-
 use intellisense or be blind your choice
 
 `DefaultConfig` and `Settings` are the main 2 things.
@@ -53,14 +48,19 @@ how to use:
 5. using your `DefaultConfig`, create a `Settings`
 6. do things you need to do with your `Settings`
 7. `export default () => mySettings.settings`
-8. (in another file) import your settings e.g. `import settings from './myConfig'`
+8. (in another file) import your settings e.g. `import settings from "./myConfig"`
 9. profit `settings().myProperty`
 
-### Advanced Usage
+### Custom Size & Position
 
-look through code or intellisense idfk gl
+```js
+[Settings]
+    .setSize(width, height)
+    .setPosition(x, y)
+    .apply()
+```
 
-dm tree man or chicken man for help ig
+The `#apply` method needs to be called so it can reload the GUI with the given values
 
 ### Color Schemes
 
@@ -76,26 +76,26 @@ Vigilance
 
 ```js
 @TextProperty({
-    name: 'text',
-    description: 'Example of text input that does not wrap the text',
-    category: 'General',
-    subcategory: 'Category',
-    placeholder: 'Empty... :('
+    name: "text",
+    description: "Example of text input that does not wrap the text",
+    category: "General",
+    subcategory: "Category",
+    placeholder: "Empty... :("
 })
-textInput = ''
+textInput = ""
 ```
 
 Amaterasu
 
 ```js
 .addTextInput({
-    configName: 'textInput',
-    title: 'text',
-    description: 'Example of text input that does not wrap the text',
-    category: 'General',
-    subcategory: 'Category',
-    value: '',
-    placeHolder: 'Empty... :('
+    configName: "textInput",
+    title: "text",
+    description: "Example of text input that does not wrap the text",
+    category: "General",
+    subcategory: "Category",
+    value: "",
+    placeHolder: "Empty... :("
 })
 ```
 
@@ -107,27 +107,19 @@ Vigilance
 
 ```js
 @ParagraphProperty({
-    name: 'paragraph',
-    description: 'Example of text input that does wrap the text',
-    category: 'General',
-    subcategory: 'Category',
-    placeholder: 'Empty... :('
+    name: "paragraph",
+    description: "Example of text input that does wrap the text",
+    category: "General",
+    subcategory: "Category",
+    placeholder: "Empty... :("
 })
-paraInput = ''
+paraInput = ""
 ```
 
 Amaterasu
 
 ```js
-.addTextParagraph({
-    configName: 'paraInput',
-    title: 'paragraph',
-    description: 'Example of text input that does wrap the text',
-    category: 'General',
-    subcategory: 'Category',
-    value: '',
-    placeHolder: 'Empty... :('
-})
+// doesn't exist :(
 ```
 
 ---
@@ -138,10 +130,10 @@ Vigilance
 
 ```js
 @ColorProperty({
-    name: 'Color Picker',
-    description: 'Pick a color! (hopefully...)',
-    category: 'General',
-    subcategory: 'Category'
+    name: "Color Picker",
+    description: "Pick a color! (hopefully...)",
+    category: "General",
+    subcategory: "Category"
 })
 myColor = Color.BLUE
 ```
@@ -150,11 +142,11 @@ Amaterasu
 
 ```js
 .addColorPicker({
-    configName: 'myColor',
-    title: 'Color Picker',
-    description: 'Pick a color! (hopefully...)',
-    category: 'General',
-    subcategory: 'Category',
+    configName: "myColor",
+    title: "Color Picker",
+    description: "Pick a color! (hopefully...)",
+    category: "General",
+    subcategory: "Category",
     value: [0, 0, 255, 255]
 })
 ```
@@ -167,11 +159,11 @@ Vigilance
 
 ```js
 @SwitchProperty({
-    name: 'Do action!!!',
-    description: 'toggle the checkbox in Not general! tab!',
-    category: 'General',
-    subcategory: 'Category',
-    placeholder: 'Activate'
+    name: "Do action!!!",
+    description: "toggle the checkbox in Not general! tab!",
+    category: "General",
+    subcategory: "Category",
+    placeholder: "Activate"
 })
 switch = false
 ```
@@ -180,11 +172,11 @@ Amaterasu
 
 ```js
 .addSwitch({
-    configName: 'switch',
-    title: 'Do action!!!',
-    description: 'toggle the checkbox in Not general! tab!',
-    category: 'General',
-    subcategory: 'Category'
+    configName: "switch",
+    title: "Do action!!!",
+    description: "toggle the checkbox in Not general! tab!",
+    category: "General",
+    subcategory: "Category"
 })
 ```
 
@@ -196,9 +188,9 @@ Vigilance
 
 ```js
 @CheckboxProperty({
-    name: 'Checkbox',
-    description: 'Check this box',
-    category: 'Not general!'
+    name: "Checkbox",
+    description: "Check this box",
+    category: "Not general!"
 })
 myCheckbox = false
 ```
@@ -207,11 +199,11 @@ Amaterasu
 
 ```js
 .addToggle({
-    configName: 'myCheckbox',
-    title: 'Checkbox',
-    description: 'Check this box',
-    category: 'Not general!',
-    subcategory: ''
+    configName: "myCheckbox",
+    title: "Checkbox",
+    description: "Check this box",
+    category: "Not general!",
+    subcategory: null
 })
 ```
 
@@ -223,11 +215,11 @@ Vigilance
 
 ```js
 @SelectorProperty({
-    name: 'Selector',
-    description: 'Select an option',
-    category: 'General',
-    subcategory: 'eeeeee',
-    options: ['opt1', 'opty2', 'third option']
+    name: "Selector",
+    description: "Select an option",
+    category: "General",
+    subcategory: "eeeeee",
+    options: ["one", "two", "three"]
 })
 myOptions = 0
 ```
@@ -236,12 +228,12 @@ Amaterasu
 
 ```js
 .addDropDown({
-    configName: 'myOptions',
-    title: 'Selector',
-    description: 'Select an option',
-    category: 'General',
-    subcategory: 'eeeeee',
-    options: ['opt1', 'opty2', 'third option'],
+    configName: "myOptions",
+    title: "Selector",
+    description: "Select an option",
+    category: "General",
+    subcategory: "eeeeee",
+    options: ["one", "two", "three"],
     value: 0
 })
 ```
@@ -254,10 +246,10 @@ Vigilance
 
 ```js
 @SliderProperty({
-    name: 'Slider',
-    description: 'Select a value',
-    category: 'General',
-    subcategory: 'eeeeee',
+    name: "Slider",
+    description: "Select a value",
+    category: "General",
+    subcategory: "eeeeee",
     min: 0,
     max: 100
 })
@@ -268,11 +260,11 @@ Amaterasu
 
 ```js
 .addSlider({
-    configName: 'slider',
-    title: 'Slider',
-    description: 'Select a value',
-    category: 'General',
-    subcategory: 'eeeeee',
+    configName: "slider",
+    title: "Slider",
+    description: "Select a value",
+    category: "General",
+    subcategory: "eeeeee",
     options: [0, 100],
     value: 0
 })
@@ -286,10 +278,10 @@ Vigilance
 
 ```js
 @DecimalSliderProperty({
-    name: 'Decimal Slider',
-    description: 'Select a value',
-    category: 'General',
-    subcategory: 'eeeeee',
+    name: "Decimal Slider",
+    description: "Select a value",
+    category: "General",
+    subcategory: "eeeeee",
     minF: 0,
     maxF: 100
 })
@@ -300,15 +292,18 @@ Amaterasu
 
 ```js
 .addSlider({
-    configName: 'dSlider',
-    title: 'Decimal Slider',
-    description: 'Select a value',
-    category: 'General',
-    subcategory: 'eeeeee',
-    options: [0, 100],
+    configName: "dSlider",
+    title: "Decimal Slider",
+    description: "Select a value",
+    category: "General",
+    subcategory: "eeeeee",
+    options: [0.01, 100],
     value: 0
 })
 ```
+
+Yeah sadly for the normal developer decimal slider isn't very straight forward (thanks past docilelm).
+you'd need to pass in the minimum (first value) with a decimal point in order for this to go into the "Decimal Slider" mode.
 
 ---
 
@@ -318,10 +313,10 @@ Vigilance
 
 ```js
 @ButtonProperty({
-    name: 'Click me!',
-    description: 'yay',
-    category: 'General',
-    subcategory: 'ooo'
+    name: "Click me!",
+    description: "yay",
+    category: "General",
+    subcategory: "ooo"
 })
 activateSomething() {
 
@@ -332,11 +327,11 @@ Amaterasu
 
 ```js
 .addButton({
-    configName: 'activateSomething',
-    title: 'Click me!',
-    description: 'yay',
-    category: 'General',
-    subcategory: 'ooo',
+    configName: "activateSomething",
+    title: "Click me!",
+    description: "yay",
+    category: "General",
+    subcategory: "ooo",
     onClick() {
 
     }
@@ -350,7 +345,7 @@ Amaterasu
 Vigilance
 
 ```js
-.registerListener('text', newText => {
+.registerListener("text", newText => {
     console.log(`Text changed to ${newText}`)
 })
 ```
@@ -359,7 +354,7 @@ Amaterasu
 
 ```js
 .add____({
-    configName: 'text',
+    configName: "text",
     /*
 
     */
@@ -368,7 +363,7 @@ Amaterasu
     }
 })
 // or
-[Settings].registerListener('text', (oldText, newText) => {
+[Settings].registerListener("text", (oldText, newText) => {
     console.log(`Text changed to ${newText}`)
 })
 ```
@@ -380,18 +375,22 @@ Amaterasu
 Vigilance
 
 ```js
-.addDependency('Checkbox', 'Do action!!!')
+.addDependency("Checkbox", "Do action!!!")
 ```
 
 Amaterasu
 
 ```js
 .add____({
-    title: 'Do action!!!',
+    title: "Do action!!!",
     /*
 
     */
-    shouldShow: data => data.myCheckbox
+    shouldShow: data => data.myCheckbox,
+    // Or for more beginner friendlyness
+    shouldShow(data) {
+        return data.myCheckBox
+    }
 })
 ```
 
@@ -402,13 +401,14 @@ Amaterasu
 Vigilance
 
 ```js
-@Vigilant('Vigilance', 'My Settings Title Example',
+@Vigilant("Vigilance", "My Settings Title Example",
 ```
 
 Amaterasu
 
 ```js
-new Settings('Amaterasu', /**/, /**/, 'My Settings Title Example')
+// Fill in the blank spots!
+new Settings("Amaterasu", /**/, /**/, "My Settings Title Example")
 ```
 
 ---
@@ -429,6 +429,45 @@ Amaterasu
 [Settings].setCategorySort((a, b) => {})
 ```
 
+You need to call the `#apply` method afterwards for these to actually be taken into consideration by the GUI.
+
+---
+
+## [Settings]
+If you're still confused what the `[Settings]` part of this guide is referring to here's an example
+
+### This variable holds the [Settings] instance
+
+```js
+const setting = new Settings("Amaterasu", config, "data/ColorScheme.json")
+```
+
+---
+
+### Here we use it to set a category sort
+
+```js
+setting.setCategorySort((a, b) => {}).apply()
+```
+
+---
+
+### You can also get this instance from the exported function
+
+For example if you have this
+
+```js
+export default () => setting.settings
+```
+
+You can then get the [Settings] instance by doing
+
+```js
+settings().getConfig()
+```
+
+---
+
 ## Things not in Amaterasu (blame Doc):
 
 - Password/Protected Text Inputs
@@ -440,6 +479,4 @@ Amaterasu
 
 # Credits
 
-Tree Man aka. DocilElm (docilelm) <- wrote Amaterasu (poorly)
-
-Chicken Man (chick_is_bored) <- wrote this readme (poorly)
+credits can be found [here](CREDIT.md)
