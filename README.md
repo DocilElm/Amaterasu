@@ -52,9 +52,9 @@ how to use:
 4. populate your `DefaultConfig` using `.add_____` (e.g. `.addButton`)
 5. using your `DefaultConfig`, create a `Settings`
 6. do things you need to do with your `Settings`
-7. `export default () => mySettings.settings;`
-8. (in another file) import your settings e.g. `import settings from './myConfig';`
-9. profit `settings().myProperty;`
+7. `export default () => mySettings.settings`
+8. (in another file) import your settings e.g. `import settings from './myConfig'`
+9. profit `settings().myProperty`
 
 ### Advanced Usage
 
@@ -64,7 +64,7 @@ dm tree man or chicken man for help ig
 
 ### Color Schemes
 
-apply using `.setScheme(/**/).apply();` or `Settings` constructor
+apply using `.setScheme(/**/).apply()` or `Settings` constructor
 
 schema can be found [here](ColorScheme.schema.json)
 
@@ -82,7 +82,7 @@ Vigilance
     subcategory: 'Category',
     placeholder: 'Empty... :('
 })
-textInput = '';
+textInput = ''
 ```
 
 Amaterasu
@@ -113,7 +113,7 @@ Vigilance
     subcategory: 'Category',
     placeholder: 'Empty... :('
 })
-paraInput = '';
+paraInput = ''
 ```
 
 Amaterasu
@@ -143,7 +143,7 @@ Vigilance
     category: 'General',
     subcategory: 'Category'
 })
-myColor = Color.BLUE;
+myColor = Color.BLUE
 ```
 
 Amaterasu
@@ -173,7 +173,7 @@ Vigilance
     subcategory: 'Category',
     placeholder: 'Activate'
 })
-switch = false;
+switch = false
 ```
 
 Amaterasu
@@ -200,7 +200,7 @@ Vigilance
     description: 'Check this box',
     category: 'Not general!'
 })
-myCheckbox = false;
+myCheckbox = false
 ```
 
 Amaterasu
@@ -229,7 +229,7 @@ Vigilance
     subcategory: 'eeeeee',
     options: ['opt1', 'opty2', 'third option']
 })
-myOptions = 0;
+myOptions = 0
 ```
 
 Amaterasu
@@ -261,7 +261,7 @@ Vigilance
     min: 0,
     max: 100
 })
-slider = 0;
+slider = 0
 ```
 
 Amaterasu
@@ -293,7 +293,7 @@ Vigilance
     minF: 0,
     maxF: 100
 })
-dSlider = 0;
+dSlider = 0
 ```
 
 Amaterasu
@@ -351,7 +351,7 @@ Vigilance
 
 ```js
 .registerListener('text', newText => {
-    console.log(`Text changed to ${newText}`);
+    console.log(`Text changed to ${newText}`)
 })
 ```
 
@@ -364,12 +364,12 @@ Amaterasu
 
     */
     registerListener(oldText, newText) {
-        console.log(`Text changed to ${newText}`);
+        console.log(`Text changed to ${newText}`)
     }
 })
 // or
 [Settings].registerListener('text', (oldText, newText) => {
-    console.log(`Text changed to ${newText}`);
+    console.log(`Text changed to ${newText}`)
 })
 ```
 
@@ -425,8 +425,8 @@ getPropertyComparator: () => (a, b) => {}
 Amaterasu
 
 ```js
-[Settings].setElementSort((a, b) => {});
-[Settings].setCategorySort((a, b) => {});
+[Settings].setElementSort((a, b) => {})
+[Settings].setCategorySort((a, b) => {})
 ```
 
 ## Things not in Amaterasu (blame Doc):

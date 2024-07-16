@@ -2,7 +2,7 @@ import ConfigTypes from "./ConfigTypes"
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType")
 
-function saveAmaterasuSettings(moduleName, configPath, str) {
+const saveAmaterasuSettings = (moduleName, configPath, str) => {
     FileLib.write(
         moduleName,
         configPath,
@@ -21,7 +21,6 @@ function saveAmaterasuSettings(moduleName, configPath, str) {
 
     console.log(`[Amaterasu - ${moduleName}] successfully created color scheme file at "data/ColorScheme.json".`)
 }
-
 
 /**
  * - Helps migrating data from Vigilance to Amaterasu.
