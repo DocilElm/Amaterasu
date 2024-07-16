@@ -1,9 +1,9 @@
 // Getting the necessary imports for this [ConfigGui] to work
-import Settings from "../core/Settings"
-import DefaultConfig from "../core/DefaultConfig"
+import Settings from "../Amaterasu/core/Settings"
+import DefaultConfig from "../Amaterasu/core/DefaultConfig"
 
 // Here we get the current [Amaterasu]'s version
-const version = JSON.parse(FileLib.read("Amaterasu", "metadata.json")).version
+const version = JSON.parse(FileLib.read("example", "metadata.json")).version
 
 // Making a markdown like changelog inside our [ConfigGui] with the previously gathered version as title
 const CHANGELOG = `# §bAmaterasu v${version}\n ${FileLib.read("Amaterasu", "changelog.md")}`
@@ -17,7 +17,7 @@ const schemes = ["data/ColorScheme.json", "data/scheme-vigil.json", "data/scheme
 // We create our [DefaultConfig] instance
 // and give it our [ModuleName] this is important since it'll be used to save the data
 // and the [FilePath] this is also important since it'll be used to save the data
-const defaultConf = new DefaultConfig("Amaterasu", "data/settings.json")
+const defaultConf = new DefaultConfig("example", "data/settings.json")
 
 // Now that we have our [DefaultConfig] instance we can start creating our configuration system
 defaultConf
@@ -59,12 +59,12 @@ defaultConf
         onClick(config) {
             // Change the scheme path depending on the value of the [Selector] config
             const currentScheme = schemes[config.settings.scheme]
-            const scheme = JSON.parse(FileLib.read("Amaterasu", currentScheme))
+            const scheme = JSON.parse(FileLib.read("example", currentScheme))
             // Setting the alpha
             scheme.Amaterasu.background.color = config.settings.bgColor
 
             // Now we save the [currentScheme] with the [alpha] set in the [Slider]
-            FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
+            FileLib.write("example", currentScheme, JSON.stringify(scheme, null, 4))
 
             // Now we set the new position, size and colorScheme for our [ConfigGui]
             config
@@ -220,10 +220,10 @@ defaultConf
 
 // Here we create our [Settings] instance.
 // passing through our [ModuleName], [DefaultConfig] and [ColorSchemePath]
-const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
+const config = new Settings("example", defaultConf, "data/ColorScheme.json")
 
     // Here we define a command with aliases to open this [ConfigGui]
-    .setCommand("amaterasu", ["amat"])
+    .setCommand("example", ["amat"])
 
     // This is how we add our markdowns so the [ConfigGui] knows
     // that we want these to be handled and displayed to the player
@@ -248,12 +248,12 @@ const config = new Settings("Amaterasu", defaultConf, "data/ColorScheme.json")
 
 // Change the scheme path depending on the value of the [Selector] config
 const currentScheme = schemes[config.settings.scheme]
-const scheme = JSON.parse(FileLib.read("Amaterasu", currentScheme))
+const scheme = JSON.parse(FileLib.read("example", currentScheme))
 // Setting the alpha
 scheme.Amaterasu.background.color = config.settings.bgColor
 
 // Now we save the [currentScheme] with the [alpha] set in the [Slider]
-FileLib.write("Amaterasu", currentScheme, JSON.stringify(scheme, null, 4))
+FileLib.write("example", currentScheme, JSON.stringify(scheme, null, 4))
 
 // Now we set the new position, size and colorScheme for our [ConfigGui]
 config
