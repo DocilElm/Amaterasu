@@ -1,0 +1,591 @@
+{
+  "$id": "Amaterasu Color Scheme",
+  "title": "Amaterasu Color Scheme",
+  "description": "Schema for validating color schemes for Amaterasu. May be outdated.",
+  "type": "object",
+  "properties": {
+    "Button": {
+      "type": "object",
+      "description": "style of the button component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "mouseClickAnimation": {
+          "$ref": "#/$defs/animation"
+        }
+      }
+    },
+    "Button1": {
+      "type": "object",
+      "description": "style of the category button component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "lines": {
+          "type": "object",
+          "description": "style of the lines in the category buttons",
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "roundness": {
+              "type": "integer",
+              "description": "radius size of the corners"
+            }
+          }
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "mouseClickAnimation": {
+          "$ref": "#/$defs/animation"
+        },
+        "mouseEnterAnimation": {
+          "$ref": "#/$defs/animationC"
+        },
+        "mouseLeaveAnimation": {
+          "$ref": "#/$defs/animationC"
+        }
+      }
+    },
+    "TextInput": {
+      "$ref": "#/$defs/TextInput"
+    },
+    "Checkbox": {
+      "$ref": "#/$defs/Checkbox"
+    },
+    "Slider": {
+      "$ref": "#/$defs/Slider"
+    },
+    "Selection": {
+      "type": "object",
+      "description": "style of the selection component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic",
+          "properties": {
+            "leftArrow": {
+              "type": "string",
+              "description": "style of the left arrow"
+            },
+            "rightArrow": {
+              "type": "string",
+              "description": "style of the right arrow"
+            }
+          }
+        },
+        "mouseEnterAnimation": {
+          "$ref": "#/$defs/animationC"
+        },
+        "mouseLeaveAnimation": {
+          "$ref": "#/$defs/animationC"
+        }
+      }
+    },
+    "ColorPicker": {
+      "type": "object",
+      "description": "style of the color picker component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic",
+          "properties": {
+            "openArrow": {
+              "type": "string",
+              "description": "style of the open arrow"
+            },
+            "closeArrow": {
+              "type": "string",
+              "description": "style of the close arrow"
+            }
+          }
+        },
+        "colorpickerbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "gradientbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "gradientpointer": {
+          "$ref": "#/$defs/pointer"
+        },
+        "huebackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "huepointer": {
+          "$ref": "#/$defs/pointer"
+        },
+        "heightAnimationIn": {
+          "$ref": "#/$defs/animation"
+        },
+        "heightAnimationOut": {
+          "$ref": "#/$defs/animation"
+        },
+        "TextInput": {
+          "$ref": "#/$defs/TextInput"
+        },
+        "Slider": {
+          "$ref": "#/$defs/Slider"
+        }
+      }
+    },
+    "Text": {
+      "$ref": "#/$defs/Text"
+    },
+    "Divider": {
+      "type": "object",
+      "description": "style of the divider component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "line": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic"
+        }
+      }
+    },
+    "DropDown": {
+      "type": "object",
+      "description": "style of the dropdown component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "selectionbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "selectiontext": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic",
+          "properties": {
+            "openArrow": {
+              "type": "string",
+              "description": "style of the open arrow"
+            },
+            "closeArrow": {
+              "type": "string",
+              "description": "style of the close arrow"
+            }
+          }
+        },
+        "dropdownbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "optionsbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "optionstext": {
+          "$ref": "#/$defs/textBasic"
+        }
+      }
+    },
+    "MultiCheckBox": {
+      "type": "object",
+      "description": "style of the multicheckbox component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "selectionbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "selectiontext": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic",
+          "properties": {
+            "openArrow": {
+              "type": "string",
+              "description": "style of the open arrow"
+            },
+            "closeArrow": {
+              "type": "string",
+              "description": "style of the close arrow"
+            }
+          }
+        },
+        "dropdownbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "optionsbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "optionstext": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "placeholderbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "placeholdertext": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "Checkbox": {
+          "$ref": "#/$defs/Checkbox"
+        }
+      }
+    },
+    "Keybind": {
+      "type": "object",
+      "description": "style of the keybind component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic",
+          "properties": {
+            "enabled": {
+              "type": "string",
+              "description": "style of the enabled text component"
+            }
+          }
+        }
+      }
+    },
+    "Amaterasu": {
+      "type": "object",
+      "description": "style of the amaterasu gui",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "line": {
+          "$ref": "#/$defs/guiBackground",
+          "properties": {
+            "size": {
+              "type": "number",
+              "description": "height of the line",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "panel": {
+          "type": "object",
+          "description": "style of the categories and elements panels",
+          "properties": {
+            "leftColor": {
+              "$ref": "#/$defs/color"
+            },
+            "rightColor": {
+              "$ref": "#/$defs/color"
+            }
+          }
+        },
+        "scrollbar": {
+          "type": "object",
+          "description": "style of the scrollbar component",
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/color"
+            }
+          }
+        },
+        "title": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "descriptionbackground": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "Text": {
+          "$ref": "#/$defs/Text"
+        }
+      }
+    },
+    "DividerSubcategory": {
+      "type": "object",
+      "description": "style of the subcategory divider component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "line": {
+          "$ref": "#/$defs/guiBackground",
+          "properties": {
+            "size": {
+              "type": "number",
+              "description": "height of the line",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "color": {
+      "type": "array",
+      "description": "an array of 4 integers from [0, 255] representing a color. rgba",
+      "items": {
+        "type": "integer"
+      },
+      "minLength": 4,
+      "maxLength": 4
+    },
+    "guiBackground": {
+      "type": "object",
+      "description": "style of the background of the gui element",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "outlineColor": {
+          "$ref": "#/$defs/color"
+        },
+        "outlineSize": {
+          "type": "number",
+          "description": "border width of the gui"
+        },
+        "roundness": {
+          "type": "integer",
+          "description": "radius size of the corners"
+        }
+      }
+    },
+    "animation": {
+      "type": "object",
+      "description": "transition between color on event",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "type of easing used",
+          "enum": [
+            "LINEAR",
+            "IN_QUAD",
+            "OUT_QUAD",
+            "IN_OUT_QUAD",
+            "IN_CUBIC",
+            "OUT_CUBIC",
+            "IN_QUART",
+            "OUT_QUART",
+            "IN_OUT_QUART",
+            "IN_QUINT",
+            "OUT_QUINT",
+            "IN_OUT_QUINT",
+            "IN_SIN",
+            "OUT_SIN",
+            "IN_OUT_SIN",
+            "IN_EXP",
+            "OUT_EXP",
+            "IN_OUT_EXP",
+            "IN_CIRCULAR",
+            "OUT_CIRCULAR",
+            "IN_OUT_CIRCULAR",
+            "IN_ELASTIC",
+            "OUT_ELASTIC",
+            "IN_OUT_ELASTIC",
+            "IN_BOUNCE",
+            "OUT_BOUNCE",
+            "IN_OUT_BOUNCE"
+          ]
+        },
+        "time": {
+          "type": "number",
+          "description": "time for transition to complete",
+          "minimum": 0
+        }
+      }
+    },
+    "animationC": {
+      "$ref": "#/$defs/animation",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        }
+      }
+    },
+    "scale": {
+      "type": "number",
+      "description": "size of the element",
+      "exclusiveMinimum": 0
+    },
+    "textBasic": {
+      "type": "object",
+      "description": "style of the text",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "scale": {
+          "$ref": "#/$defs/scale"
+        }
+      }
+    },
+    "text": {
+      "type": "object",
+      "description": "style of the text component",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "scale": {
+          "$ref": "#/$defs/scale"
+        },
+        "format": {
+          "type": "string",
+          "description": "format style for this text (usually used to add §l before the text begins)"
+        },
+        "centered": {
+          "type": "boolean",
+          "description": "whether the text component should be centered or not"
+        },
+        "selectedColor": {
+          "$ref": "#/$defs/color",
+          "description": "the selected category color"
+        }
+      }
+    },
+    "textInput": {
+      "type": "object",
+      "description": "style of the text input component",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "placeholderColor": {
+          "$ref": "#/$defs/color",
+          "description": "style of the placeholder text color"
+        },
+        "scale": {
+          "$ref": "#/$defs/scale"
+        },
+        "padding": {
+          "type": "number",
+          "description": "style of the padding in text input component",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "Slider": {
+      "type": "object",
+      "description": "style of the slider component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "bar": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "completionbar": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "sliderbox": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textBasic"
+        },
+        "mouseEnterAnimation": {
+          "$ref": "#/$defs/animationC"
+        },
+        "mouseLeaveAnimation": {
+          "$ref": "#/$defs/animationC"
+        }
+      }
+    },
+    "TextInput": {
+      "type": "object",
+      "description": "style of the textinput component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/guiBackground"
+        },
+        "text": {
+          "$ref": "#/$defs/textInput"
+        },
+        "mouseEnterAnimation": {
+          "$ref": "#/$defs/animationC"
+        },
+        "mouseLeaveAnimation": {
+          "$ref": "#/$defs/animationC"
+        }
+      }
+    },
+    "pointer": {
+      "type": "object",
+      "description": "style of the pointer component",
+      "properties": {
+        "outlineColor": {
+          "$ref": "#/$defs/color"
+        },
+        "outlineSize": {
+          "type": "number",
+          "description": "border width of the gui"
+        }
+      }
+    },
+    "Checkbox": {
+      "type": "object",
+      "description": "style of the checkbox component",
+      "properties": {
+        "background": {
+          "type": "object",
+          "description": "style of the background checkbox component",
+          "properties": {
+            "enabledColor": {
+              "$ref": "#/$defs/color"
+            },
+            "disabledColor": {
+              "$ref": "#/$defs/color"
+            },
+            "outlineColor": {
+              "$ref": "#/$defs/color"
+            },
+            "outlineSize": {
+              "type": "number",
+              "description": "border width of the gui"
+            },
+            "roundness": {
+              "type": "integer",
+              "description": "radius size of the corners"
+            }
+          }
+        },
+        "check": {
+          "type": "object",
+          "description": "style of the check checkbox component",
+          "properties": {
+            "enabled": {
+              "type": "string",
+              "description": "style of the enabled check"
+            },
+            "disabled": {
+              "type": "string",
+              "description": "style of the disabled check"
+            }
+          }
+        },
+        "mouseClickAnimation": {
+          "$ref": "#/$defs/animation"
+        }
+      }
+    },
+    "Text": {
+      "type": "object",
+      "description": "style of the text component",
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/textBasic"
+        }
+      }
+    }
+  }
+}

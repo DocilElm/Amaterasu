@@ -3,25 +3,32 @@ import ConfigTypes from "./ConfigTypes"
 const defaultValues = [ false, 1, undefined, 0, "", [ 255, 255, 255, 255 ], false, 0, 0 ]
 
 /**
- * @typedef {Object} DefaultObject
+ * @typedef {string|number|number[]} DefaultObjectValue
+ */
+
+/**
+ * @typedef {object} DefaultObject
  * @prop {string?} category The category name for this config component
  * @prop {string?} configName The config name for this config component (used to get its current value)
  * @prop {string} title The title to be displayed for this config component
  * @prop {string} description The description to be displayed for this config component
  * @prop {string?} placeHolder The placeholder for this component (only if it supports it)
- * @prop {string|array|number?} value The current config value of this component (only if it supports it)
- * @prop {function?} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`)
+ * @prop {DefaultObjectValue?} value The current config value of this component (only if it supports it)
+ * @prop {?(data: DefaultConfig) => boolean} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`)
+ * @prop {?(data: DefaultConfig) => void} onClick The function that runs whenever a button is clicked
  * @prop {string?} subcategory The subcategory for this config component
- * @prop {array?} tags The searching tags for this component (if any is defined these will make the component come up in results whenever searching these strings)
- * @prop {function?} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
+ * @prop {string[]?} tags The searching tags for this component (if any is defined these will make the component come up in results whenever searching these strings)
+ * @prop {?(previousValue: DefaultObjectValue, newValue: DefaultObjectValue) => void} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
+ * @prop {?(number|string|DefaultObject)[]} options Usage varies depending on type of setting. [min, max] for slider, options for checkbox/multicheck box (strings in checkbox, nested objects for multi), and probably more. Pay me.
+ * @prop {boolean?} centered Whether the [title] and [description] should be centered
 */
 
 export default class DefaultConfig {
     /**
      * - This class handles all the data required by the
      * - whole [Amaterasu]'s [Config] system
-     * @param {String} moduleName The module name. this is used on the saving data process so make sure to set it correctly.
-     * @param {String} filePath The file path to store the data at. default: `data/settings.json`.
+     * @param {string} moduleName The module name. this is used on the saving data process so make sure to set it correctly.
+     * @param {string} filePath The file path to store the data at. default: `data/settings.json`.
      */
     constructor(moduleName, filePath = "data/settings.json") {
         this.moduleName = moduleName
@@ -37,12 +44,12 @@ export default class DefaultConfig {
      * - Internal use.
      * - Checks whether the saved data has changed from the new data
      * - This will make it so it saves the correct value and changes the [ConfigType] properly
-     * @param {String} categoryName 
-     * @param {String} configName 
-     * @param {{}} newObj 
-     * @returns 
+     * @param {string} categoryName
+     * @param {string} configName
+     * @param {{}} newObj
+     * @returns
      */
-    _makeObj(categoryName, configName, newObj) {        
+    _makeObj(categoryName, configName, newObj) {
         categoryName = this._checkCategory(categoryName, configName)
 
         if (newObj.subcategory === "") newObj.subcategory = null
@@ -82,9 +89,9 @@ export default class DefaultConfig {
      * - Checks whether the given [categoryName] is valid.
      * - also checks whether that category is created.
      * - if not we create it.
-     * @param {String} categoryName 
-     * @param {String} configName 
-     * @returns {String} the category name itself
+     * @param {string} categoryName
+     * @param {string} configName
+     * @returns {string} the category name itself
      */
     _checkCategory(categoryName, configName) {
         if (!categoryName && !this.lastCategory) throw new Error(`${categoryName} is not a valid Category Name.`)

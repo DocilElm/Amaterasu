@@ -7,7 +7,7 @@ import Category from "./Category"
 import Configs from "./Config"
 
 // Credits to @unclaimedbloom6 (big thank)
-const mergeObjects = (obj1, obj2, final={}) => {
+const mergeObjects = (obj1, obj2, final = {}) => {
     // Add the keys from the first object
     for (let entry of Object.entries(obj1)) {
         let [k, v] = entry
@@ -20,7 +20,7 @@ const mergeObjects = (obj1, obj2, final={}) => {
         // Key was already added from the first object
         if (k in final) {
             // Go a level deeper if this is an object
-            if (typeof(v) == "object" && !Array.isArray(v)) {
+            if (typeof (v) == "object" && !Array.isArray(v)) {
                 final[k] = mergeObjects(obj1[k], v)
             }
             continue
@@ -34,6 +34,12 @@ const mergeObjects = (obj1, obj2, final={}) => {
 }
 
 export default class Settings {
+    /**
+     * @param {string} moduleName
+     * @param {import('./DefaultConfig').default} defaultConfig
+     * @param {string} colorSchemePath
+     * @param {string?} titleText
+     */
     constructor(moduleName, defaultConfig, colorSchemePath, titleText) {
         // Module variables
         this.moduleName = moduleName
@@ -102,8 +108,8 @@ export default class Settings {
 
     /**
      * - Sets the command to open this gui
-     * @param {String} name 
-     * @param {String[]} aliases
+     * @param {string} name
+     * @param {string[]} aliases
      * @returns this for method chaining
      */
     setCommand(name, aliases = []) {
@@ -117,11 +123,12 @@ export default class Settings {
      * - The object is passed through the function
      * - (e.g "obj" would be a param so you can then do "obj.category" for its category name)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {Function} fn 
+     * @param {(a: import('./DefaultConfig').DefaultObject, b: import('./DefaultConfig').DefaultObject) => number} fn
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setCategorySort(fn) {
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
+        if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function`)
         this.sortCategories = fn
 
         return this
@@ -130,13 +137,14 @@ export default class Settings {
     /**
      * - Function to be ran whenever [CreateElement] attempts to sort the config components
      * - The object is passed through the function
-     * - (e.g "obj" would be a param so you can then do "obj.text" for its text)
+     * - (e.g "obj" would be a param so you can then do "obj.value" for its value)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {Function} fn 
+     * @param {(a: import('./DefaultConfig').DefaultObject, b: import('./DefaultConfig').DefaultObject) => number} fn
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setElementSort(fn) {
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function`)
+        if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function`)
         this.sortElements = fn
 
         return this
@@ -144,33 +152,36 @@ export default class Settings {
 
     /**
      * - Sets the starting x and y value of the gui (in percent)
-     * @param {Number} x 
-     * @param {Number} y 
+     * @param {number} x
+     * @param {number} y
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setPos(x, y) {
         this.bgPos.x = (x).percent()
         this.bgPos.y = (y).percent()
-        
+
         return this
     }
 
     /**
      * - Sets the width and height of the gui (in percent)
-     * @param {Number} width 
-     * @param {Number} height 
+     * @param {number} width
+     * @param {number} height
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setSize(width, height) {
         this.bgSize.width = (width).percent()
         this.bgSize.height = (height).percent()
-        
+
         return this
     }
 
     /**
-     * @param {String} colorSchemePath 
+     * @param {string} colorSchemePath
      * @returns this for method chaining
+     * @see this.{@link apply}()
      */
     setScheme(newPath) {
         this.colorSchemePath = newPath
@@ -184,9 +195,9 @@ export default class Settings {
     /**
      * - Sets the new config value of the given [configName]
      * - to the passed [value] then calls the `apply` method to re-build this window
-     * @param {String} category 
-     * @param {String} configName 
-     * @param {*} value 
+     * @param {string} category
+     * @param {string} configName
+     * @param {import('./DefaultConfig').DefaultObjectValue} value
      * @returns this for method chaining
      */
     setConfigValue(category, configName, value) {
@@ -204,7 +215,7 @@ export default class Settings {
     /**
      * - Adds a [Changelog] section with the given string
      * - Equivalent to `.addMarkdown("Changelog", text)`
-     * @param {String} text 
+     * @param {string} text
      * @returns this for method chaining
      */
     addChangelog(text) {
@@ -213,12 +224,12 @@ export default class Settings {
 
     /**
      * - Adds a markdown category
-     * @param {String} category
-     * @param {String|String[]} text 
+     * @param {string} category
+     * @param {string|string[]} text
      * @returns this for method chaining
      */
     addMarkdown(category, text, _internal = false) {
-        if (text instanceof Array) text = text.join("\n")
+        if (Array.isArray(text)) text = text.join("\n")
 
         if (!_internal) this.markdowns.push([category, text])
 
@@ -275,11 +286,11 @@ export default class Settings {
 
     /**
      * - Triggers the given function whenever this [GUI] is opened
-     * @param {Function} fn 
+     * @param {() => void} fn
      * @returns this for method chaining
      */
     onOpenGui(fn) {
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+        if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function.`)
 
         this._onOpenGui.push(fn)
 
@@ -288,11 +299,11 @@ export default class Settings {
 
     /**
      * - Triggers the given function whenever this [GUI] is closed
-     * @param {Function} fn 
+     * @param {() => void} fn
      * @returns this for method chaining
      */
     onCloseGui(fn) {
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+        if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function.`)
 
         this._onCloseGui.push(fn)
 
@@ -302,13 +313,13 @@ export default class Settings {
     /**
      * - Runs the given function whenever the configName changes value
      * - the function will recieve the args `(previousValue, newValue)`
-     * @param {String} configName 
-     * @param {Function} fn 
+     * @param {string} configName
+     * @param {(previousValue: import('./DefaultConfig').DefaultObjectValue, newValue: import('./DefaultConfig').DefaultObjectValue) => void} fn
      * @returns this for method chaining
      */
     registerListener(configName, fn) {
         if (!configName) throw new Error(`${configName} is not a valid config name.`)
-        if (typeof(fn) !== "function") throw new Error(`${fn} is not a valid function.`)
+        if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function.`)
 
         if (!this._configListeners.has(configName)) this._configListeners.set(configName, [])
 
@@ -316,18 +327,18 @@ export default class Settings {
 
         return this
     }
-    
+
     /**
      * - Redirects the current category to the given one
      * - if a `featureName` was given it will try to find it and scroll towards it
-     * @param {String} categoryName 
-     * @param {String?} featureName 
+     * @param {string} categoryName
+     * @param {string?} featureName
      * @returns this for method chaining
      */
     redirect(categoryName, featureName = null) {
         const categoryInstance = this.categories.get(categoryName)
         if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
-        
+
         // Reset the state of all the categories
         this.categories.forEach(value => value._setSelected(false))
 
@@ -444,7 +455,7 @@ export default class Settings {
             this.categories.set(
                 categoryName,
                 new Category(this, categoryName, index === 0).createElementClass._create()
-                )
+            )
         })
 
         // See `CreateElement.js` line 75.
@@ -464,9 +475,9 @@ export default class Settings {
     /**
      * - Checks whether the color scheme exists and if it doesnt it creates
      * a new one using the path and the default color scheme from the module
-     * @param {String} moduleName 
-     * @param {String} path 
-     * @returns {Object}
+     * @param {string} moduleName
+     * @param {string} path
+     * @returns {object}
      */
     _checkScheme(path) {
         const mainDefaultScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
@@ -484,7 +495,7 @@ export default class Settings {
 
         defaultScheme = mergeObjects(defaultScheme, mainDefaultScheme)
         colorScheme = mergeObjects(colorScheme, defaultScheme)
-        
+
         this._saveScheme(path, colorScheme)
 
         return colorScheme
@@ -544,8 +555,8 @@ export default class Settings {
 
     /**
      * - Saves the json color scheme into the given path
-     * @param {String} path 
-     * @param {Object} json 
+     * @param {String} path
+     * @param {Object} json
      */
     _saveScheme(path, json) {
         FileLib.write(
