@@ -1,0 +1,8 @@
+{
+  "name": "example",
+  "creator": "DocilElm",
+  "description": "This is an example config gui",
+  "version": "1.0.0",
+  "entry": "index.js",
+  "requires": ["Amaterasu"]
+}

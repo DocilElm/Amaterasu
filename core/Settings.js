@@ -36,7 +36,7 @@ const mergeObjects = (obj1, obj2, final = {}) => {
 export default class Settings {
     /**
      * @param {string} moduleName
-     * @param {import('./DefaultConfig').default} defaultConfig
+     * @param {import("./DefaultConfig").default} defaultConfig
      * @param {string} colorSchemePath
      * @param {string?} titleText
      */
@@ -123,9 +123,9 @@ export default class Settings {
      * - The object is passed through the function
      * - (e.g "obj" would be a param so you can then do "obj.category" for its category name)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {(a: import('./DefaultConfig').DefaultObject, b: import('./DefaultConfig').DefaultObject) => number} fn
+     * @param {(a: import("./DefaultConfig").DefaultObject, b: import("./DefaultConfig").DefaultObject) => number}} fn
      * @returns this for method chaining
-     * @see this.{@link apply}()
+     * @see {@link apply}
      */
     setCategorySort(fn) {
         if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function`)
@@ -139,9 +139,9 @@ export default class Settings {
      * - The object is passed through the function
      * - (e.g "obj" would be a param so you can then do "obj.value" for its value)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {(a: import('./DefaultConfig').DefaultObject, b: import('./DefaultConfig').DefaultObject) => number} fn
+     * @param {(a: import("./DefaultConfig").DefaultObject, b: import("./DefaultConfig").DefaultObject) => number} fn
      * @returns this for method chaining
-     * @see this.{@link apply}()
+     * @see {@link apply}
      */
     setElementSort(fn) {
         if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function`)
@@ -155,7 +155,7 @@ export default class Settings {
      * @param {number} x
      * @param {number} y
      * @returns this for method chaining
-     * @see this.{@link apply}()
+     * @see {@link apply}
      */
     setPos(x, y) {
         this.bgPos.x = (x).percent()
@@ -169,7 +169,7 @@ export default class Settings {
      * @param {number} width
      * @param {number} height
      * @returns this for method chaining
-     * @see this.{@link apply}()
+     * @see {@link apply}
      */
     setSize(width, height) {
         this.bgSize.width = (width).percent()
@@ -181,7 +181,7 @@ export default class Settings {
     /**
      * @param {string} colorSchemePath
      * @returns this for method chaining
-     * @see this.{@link apply}()
+     * @see {@link apply}
      */
     setScheme(newPath) {
         this.colorSchemePath = newPath
@@ -197,7 +197,7 @@ export default class Settings {
      * - to the passed [value] then calls the `apply` method to re-build this window
      * @param {string} category
      * @param {string} configName
-     * @param {import('./DefaultConfig').DefaultObjectValue} value
+     * @param {import("./DefaultConfig").DefaultObjectValue} value
      * @returns this for method chaining
      */
     setConfigValue(category, configName, value) {
@@ -314,7 +314,7 @@ export default class Settings {
      * - Runs the given function whenever the configName changes value
      * - the function will recieve the args `(previousValue, newValue)`
      * @param {string} configName
-     * @param {(previousValue: import('./DefaultConfig').DefaultObjectValue, newValue: import('./DefaultConfig').DefaultObjectValue) => void} fn
+     * @param {(previousValue: import("./DefaultConfig").DefaultObjectValue, newValue: import("./DefaultConfig").DefaultObjectValue) => void} fn
      * @returns this for method chaining
      */
     registerListener(configName, fn) {

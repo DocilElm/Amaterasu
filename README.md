@@ -10,7 +10,7 @@ Amaterasu is a ChatTriggers library designed to make creating and using a settin
 - custom sorting
 - no memory leak (sad vigilance noises)
 - markdown support
-- support for many different property types (e.g. Keybind, button to redirect to different config, multicheckbox, etc)
+- support for many different property types (e.g. Keybind, TextParagraph, MultiCheckbox, etc)
 - flexible "config dependencies"
 - no red squiggly lines
 
