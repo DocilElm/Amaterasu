@@ -66,7 +66,7 @@ dm tree man or chicken man for help ig
 
 apply using `.setScheme(/**/).apply();` or `Settings` constructor
 
-schema can be found somewhere
+schema can be found [here](ColorScheme.schema.json)
 
 ## Vigilance Translations
 

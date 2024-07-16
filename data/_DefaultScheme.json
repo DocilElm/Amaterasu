@@ -462,7 +462,6 @@
         },
         "descriptionbackground": {
             "color": [0, 0, 0, 80],
-            "size": 0.5,
             "outlineColor": [255, 255, 255, 80],
             "outlineSize": 0.5,
             "roundness": 5
@@ -483,6 +482,7 @@
         },
         "line": {
             "color": [255, 255, 255, 80],
+            "size": 0.5,
             "outlineColor": [255, 255, 255, 255],
             "outlineSize": 0,
             "roundness": 3
