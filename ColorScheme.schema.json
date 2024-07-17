@@ -59,6 +59,21 @@
     "Checkbox": {
       "$ref": "#/$defs/Checkbox"
     },
+    "Switch": {
+      "type": "object",
+      "description": "style of the multicheckbox component",
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/switchBackground"
+        },
+        "switchbox": {
+          "$ref": "#/$defs/switchBackground"
+        },
+        "mouseClickAnimation": {
+          "$ref": "#/$defs/animation"
+        }
+      }
+    },
     "Slider": {
       "$ref": "#/$defs/Slider"
     },
@@ -584,6 +599,29 @@
       "properties": {
         "text": {
           "$ref": "#/$defs/textBasic"
+        }
+      }
+    },
+    "switchBackground": {
+      "type": "object",
+      "description": "style of the background of the switch element",
+      "properties": {
+        "enabledColor": {
+          "$ref": "#/$defs/color"
+        },
+        "disabledColor": {
+          "$ref": "#/$defs/color"
+        },
+        "outlineColor": {
+          "$ref": "#/$defs/color"
+        },
+        "outlineSize": {
+          "type": "number",
+          "description": "border width of the gui"
+        },
+        "roundness": {
+          "type": "integer",
+          "description": "radius size of the corners"
         }
       }
     }
