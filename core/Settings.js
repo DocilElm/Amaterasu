@@ -57,6 +57,7 @@ export default class Settings {
         this._onOpenGui = []
         this._onCloseGui = []
         this._configListeners = new Map()
+        this.generalSymbol = Symbol("all")
 
         this.handler.registers
             .onOpen(() => {
@@ -319,6 +320,10 @@ export default class Settings {
      */
     registerListener(configName, fn) {
         if (!configName) throw new Error(`${configName} is not a valid config name.`)
+        if (typeof configName === "function") {
+            fn = configName
+            configName = this.generalSymbol
+        }
         if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function.`)
 
         if (!this._configListeners.has(configName)) this._configListeners.set(configName, [])
