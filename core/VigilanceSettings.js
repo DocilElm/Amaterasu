@@ -15,7 +15,7 @@ const saveAmaterasuSettings = (moduleName, configPath, str) => {
     FileLib.write(
         moduleName,
         "data/ColorScheme.json",
-        "{}",
+        FileLib.read("Amaterasu", "data/_DefaultScheme.json"),
         true
     )
 
@@ -83,6 +83,10 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
                 str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: [${min}, ${max}],\n    value: ${min},\n    subcategory: "${subcategory}"\n})`
                 break
 
+            case PropertyType.PERCENT_SLIDER:
+                str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: [0.001, 1],\n    value: ${minF},\n    subcategory: "${subcategory}"\n})`
+                break
+
             case PropertyType.DECIMAL_SLIDER:
                 str += `\n.addSlider({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    options: [${minF}, ${maxF}],\n    value: ${minF},\n    subcategory: "${subcategory}"\n})`
                 break
@@ -108,7 +112,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
         str += `\n.addButton({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    subcategory: "${subcategory}",\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
     })
 
-    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
+    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]\n\nexport default () => setting.settings`
 
     saveAmaterasuSettings(moduleName, configPath, str)
 }
@@ -167,7 +171,7 @@ export const convertObjToAmateras = (obj, moduleName = null, configPath = null, 
 
     })
 
-    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]`
+    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]\n\nexport default () => setting.settings`
 
     saveAmaterasuSettings(moduleName, configPath, str)
 }
