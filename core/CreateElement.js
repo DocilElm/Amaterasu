@@ -500,7 +500,7 @@ export default class CreateElement {
                 return
             }
 
-            this._unhide(component, obj.previousComponent)
+            this._unhide(component, idx)
         })
     }
 
@@ -539,14 +539,15 @@ export default class CreateElement {
     /**
      * - Internal use
      * - Fixed version to my needs of Elementa's `#unhide` method
-     * @param {*} component 
-     * @param {*} prevcomponent 
+     * @param {*} component
+     * @param {*} idx
      * @returns 
      */
-    _unhide(component, prevcomponent) {
-        if (!component || !prevcomponent) return
+    _unhide(component, idx) {
+        if (!component) return
 
-        const parent = prevcomponent.parent
+        const prevcomponent = this._findPreviousComponent(idx)
+        const parent = prevcomponent?.parent
         const childrens = parent?.children
         const previousIdx = childrens?.indexOf(prevcomponent)
         const compIdx = childrens?.indexOf(component)
@@ -567,5 +568,25 @@ export default class CreateElement {
     _find(name) {
         // i promise i'm not lazy i just work smart
         return this.elements.find(it => it.name === name)
+    }
+
+    /**
+     * - Internal use.
+     * - Finds the previous component doing a backwards search through the list with the starting point
+     * - The starting point being the given index
+     * @param {number} start The starting point the `for..loop` will take
+     * @returns {UIComponent?}
+     */
+    _findPreviousComponent(start) {
+        for (let idx = start; idx > 0; idx--) {
+            let comp = this.elements?.[idx]?.previousComponent
+            let parent = comp?.parent
+            let children = parent?.children
+            let compidx = children?.indexOf(comp)
+
+            if (compidx === -1) continue
+
+            return comp
+        }
     }
 }
