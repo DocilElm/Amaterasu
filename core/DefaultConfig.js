@@ -19,7 +19,7 @@ const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 
  * @prop {string?} placeHolder The placeholder for this component (only if it supports it)
  * @prop {Value} value The current config value of this component (only if it supports it)
  * @prop {?(data: R<string, DefaultObjectValue>) => boolean} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`) (it is passed the `Settings::settings` object)
- * @prop {?(data: import('./Settings').default) => void} onClick The function that runs whenever a button is clicked (it is passed the `Settings` object)
+ * @prop {?(data: import("./Settings").default) => void} onClick The function that runs whenever a button is clicked (it is passed the `Settings` object)
  * @prop {string?} subcategory The subcategory for this config component
  * @prop {string[]?} tags The searching tags for this component (if any is defined these will make the component come up in results whenever searching these strings)
  * @prop {?(previousValue: Value, newValue: Value) => void} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
@@ -89,7 +89,7 @@ export default class DefaultConfig {
          */
         this.config = []
         /**
-         * @type {?import('./Settings').default<this>}
+         * @type {?import("./Settings").default<this>}
          */
         this.settingsInstance = null
 

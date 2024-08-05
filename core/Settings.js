@@ -108,7 +108,7 @@ export default class Settings {
         this.configsClass = this.defaultConfig._init() // keeping the same name because too lazy to find where else i use it
         this.config = this.configsClass.config
         /**
-         * @type {ReturnType<DefaultConfig['_normalizeSettings']>}
+         * @type {ReturnType<DefaultConfig["_normalizeSettings"]>}
          */
         this.settings = this.configsClass._normalizeSettings()
 
@@ -351,7 +351,7 @@ export default class Settings {
      * - Runs the given function whenever any config changes value
      * - the function will recieve the args `(previousValue, newValue, configName)`
      * @overload
-     * @param {(previousValue: import('./DefaultConfig').DefaultObjectValue, newValue: import('./DefaultConfig').DefaultObjectValue, name: string) => void} configName
+     * @param {(previousValue: import("./DefaultConfig").DefaultObjectValue, newValue: import("./DefaultConfig").DefaultObjectValue, name: string) => void} configName
      * @returns {this} this for method chaining
      */
     registerListener(configName, fn) {
