@@ -204,7 +204,7 @@ export default class Settings {
      * @template {string} ConfigName
      * @param {string} category
      * @param {ConfigName} configName
-     * @param {DefaultConfig['🐀types'][ConfigName]} value
+     * @param {DefaultConfig["types"][ConfigName]} value
      * @returns this for method chaining
      */
     setConfigValue(category, configName, value) {
@@ -322,7 +322,7 @@ export default class Settings {
      * - the function will recieve the args `(previousValue, newValue)`
      * @template {string} ConfigName
      * @param {ConfigName} configName
-     * @param {(previousValue: DefaultConfig['🐀types'][ConfigName], newValue: DefaultConfig['🐀types'][ConfigName]) => void} fn
+     * @param {(previousValue: DefaultConfig["types"][ConfigName], newValue: DefaultConfig["types"][ConfigName]) => void} fn
      * @returns this for method chaining
      */
     registerListener(configName, fn) {

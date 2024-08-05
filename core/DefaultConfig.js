@@ -31,7 +31,10 @@ const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 
  */
 
 export default class DefaultConfig {
-    '🐀types' = {}
+    /**
+     * - Internal use only for typings.
+     */
+    types = {}
 
     /**
      * - This class handles all the data required by the
@@ -189,7 +192,7 @@ export default class DefaultConfig {
      * - Makes the current config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
-     * @returns {this['🐀types'] & { getConfig() => import("./Settings").default }}
+     * @returns {this["types"] & { getConfig() => import("./Settings").default }}
      */
     _normalizeSettings() {
         // TODO: change this to only be ran once per feature change
@@ -239,7 +242,6 @@ export default class DefaultConfig {
         )
     }
 
-    // * @returns {this & { '🐀types': Record<ConfigName, undefined> }} this for method chaining
     /**
      * - Creates a new button with the given params and pushes it into the config
      * @template {string} ConfigName
@@ -275,7 +277,7 @@ export default class DefaultConfig {
      * - Creates a new toggle with the given params and pushes it into the config
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, boolean, undefined>} options
-     * @returns {this & { '🐀types': Record<ConfigName, boolean> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, boolean> }} this for method chaining
      */
     addToggle({
         category = null,
@@ -306,7 +308,7 @@ export default class DefaultConfig {
      * - Creates a new switch with the given params and pushes it into the config
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, boolean, undefined>} options
-     * @returns {this & { '🐀types': Record<ConfigName, boolean> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, boolean> }} this for method chaining
      */
     addSwitch({
         category = null,
@@ -337,7 +339,7 @@ export default class DefaultConfig {
      * - Creates a new textinput with the given params and pushes it into the config
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, string, undefined>} options
-     * @returns {this & { '🐀types': Record<ConfigName, string> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, string> }} this for method chaining
      */
     addTextInput({
         category = null,
@@ -371,7 +373,7 @@ export default class DefaultConfig {
      * - For a decimal slider, the first number of the `options` property should include a decimal e.g. 0.01
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, number, [number, number]>} options
-     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
      */
     addSlider({
         category = null,
@@ -405,7 +407,7 @@ export default class DefaultConfig {
      * - The `value` property is the index of the option, not the option itself
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, number, string[]>} options
-     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
      */
     addSelection({
         category = null,
@@ -438,7 +440,7 @@ export default class DefaultConfig {
      * - Creates a new color picker with the given params and pushes it into the config
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, [number, number, number, number], undefined>} options
-     * @returns {this & { '🐀types': Record<ConfigName, [number, number, number, number]> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, [number, number, number, number]> }} this for method chaining
      */
     addColorPicker({
         category = null,
@@ -471,7 +473,7 @@ export default class DefaultConfig {
      * - The `value` property is the index of the option, not the option itself
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, number, string[]>} options
-     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
      */
     addDropDown({
         category = null,
@@ -504,7 +506,7 @@ export default class DefaultConfig {
      * - Creates a new multi checkbox with the given params and pushes it into the config
      * @template {string} ConfigName
      * @param {DefaultObject<undefined, undefined, DefaultObject<ConfigName, boolean, string[]>[]>} options
-     * @returns {this & { '🐀types': Record<ConfigName, boolean> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, boolean> }} this for method chaining
      */
     addMultiCheckbox({
         category = null,
@@ -536,7 +538,7 @@ export default class DefaultConfig {
      * - This is for displaying text, not for a paragraph input
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, undefined, undefined>} options
-     * @returns {this & { '🐀types': Record<ConfigName, undefined> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, undefined> }} this for method chaining
      */
     addTextParagraph({
         category = null,
@@ -565,7 +567,7 @@ export default class DefaultConfig {
      * - Creates a new keybind with the given params and pushes it into the config
      * @template {string} ConfigName
      * @param {DefaultObject<ConfigName, number, undefined>} options
-     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
+     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
      */
     addKeybind({
         category = null,
