@@ -32,10 +32,13 @@ const mergeObjects = (obj1, obj2, final = {}) => {
     return final
 }
 
+/**
+ * @template {import("./DefaultConfig").default} DefaultConfig
+ */
 export default class Settings {
     /**
      * @param {string} moduleName
-     * @param {import("./DefaultConfig").default} defaultConfig
+     * @param {DefaultConfig} defaultConfig
      * @param {string} colorSchemePath
      * @param {string?} titleText
      */
@@ -126,7 +129,7 @@ export default class Settings {
      * - The object is passed through the function
      * - (e.g "obj" would be a param so you can then do "obj.category" for its category name)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {(a: import("./DefaultConfig").DefaultObject, b: import("./DefaultConfig").DefaultObject) => number}} fn
+     * @param {(a: import("./DefaultConfig").DefaultDefaultObject, b: import("./DefaultConfig").DefaultDefaultObject) => number}} fn
      * @returns this for method chaining
      * @see {@link apply}
      */
@@ -142,7 +145,7 @@ export default class Settings {
      * - The object is passed through the function
      * - (e.g "obj" would be a param so you can then do "obj.value" for its value)
      * - NOTE: this function should return [-1, 0, 1]
-     * @param {(a: import("./DefaultConfig").DefaultObject, b: import("./DefaultConfig").DefaultObject) => number} fn
+     * @param {(a: import("./DefaultConfig").DefaultDefaultObject, b: import("./DefaultConfig").DefaultDefaultObject) => number} fn
      * @returns this for method chaining
      * @see {@link apply}
      */
@@ -198,9 +201,10 @@ export default class Settings {
     /**
      * - Sets the new config value of the given [configName]
      * - to the passed [value] then calls the `apply` method to re-build this window
+     * @template {string} ConfigName
      * @param {string} category
-     * @param {string} configName
-     * @param {import("./DefaultConfig").DefaultObjectValue} value
+     * @param {ConfigName} configName
+     * @param {DefaultConfig['🐀types'][ConfigName]} value
      * @returns this for method chaining
      */
     setConfigValue(category, configName, value) {
@@ -316,8 +320,9 @@ export default class Settings {
     /**
      * - Runs the given function whenever the configName changes value
      * - the function will recieve the args `(previousValue, newValue)`
-     * @param {string} configName
-     * @param {(previousValue: import("./DefaultConfig").DefaultObjectValue, newValue: import("./DefaultConfig").DefaultObjectValue) => void} fn
+     * @template {string} ConfigName
+     * @param {ConfigName} configName
+     * @param {(previousValue: DefaultConfig['🐀types'][ConfigName], newValue: DefaultConfig['🐀types'][ConfigName]) => void} fn
      * @returns this for method chaining
      */
     registerListener(configName, fn) {

@@ -18,9 +18,7 @@ const schemes = ["data/ColorScheme.json", "data/scheme-vigil.json", "data/scheme
 // and give it our [ModuleName] this is important since it'll be used to save the data
 // and the [FilePath] this is also important since it'll be used to save the data
 const defaultConf = new DefaultConfig("example", "data/settings.json")
-
-// Now that we have our [DefaultConfig] instance we can start creating our configuration system
-defaultConf
+    // Now that we have our [DefaultConfig] instance we can start creating our configuration system
     // Here we'll be adding a simple button that copies a link into your clipboard
     .addButton({
         category: "General", // Defining the category name
