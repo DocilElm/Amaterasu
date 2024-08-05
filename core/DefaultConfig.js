@@ -38,6 +38,26 @@ export default class DefaultConfig {
         // Holds all the categories names
         this.categories = new Set()
         this.savedConfig = JSON.parse(FileLib.read(this.moduleName, this.filePath))
+
+        // Config stuff
+        this.config = []
+        this.settingsInstance = null
+
+        // Registers
+        register("gameUnload", this._saveToFile.bind(this))
+    }
+
+    /**
+     * - Internal use.
+     * - Used to setup all the configs after the defaults are set.
+     * - This is done this way due to the default configurations being created before the `Settings` instance
+     * @returns {this}
+     */
+    _init() {
+        this._makeConfig()
+        this._saveToFile()
+        
+        return this
     }
 
     /**
@@ -115,6 +135,76 @@ export default class DefaultConfig {
     }
 
     /**
+     * - Internal use.
+     */
+    _makeConfig() {
+        this.categories.forEach(categoryName => {
+            const settings = this[categoryName]
+
+            settings.forEach(dobj => {
+                const obj = this.config.find(names => names.category === categoryName)
+                if (!obj) return this.config.push({ category: categoryName, settings: [dobj] })
+
+                obj.settings.push(dobj)
+            })
+        })
+    }
+
+    /**
+     * - Internal use.
+     * - Makes the current config into an actual dev friendly format
+     * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
+     * converts it into `{ configName: false }`
+     * @returns {{ getConfig() => import("./Settings").default }}
+     */
+    _normalizeSettings() {
+        // TODO: change this to only be ran once per feature change
+        // rather than everytime one changes re-scan the entire thing and re-build it
+        let settings = {}
+
+        this.config.forEach(obj => {
+            obj.settings.forEach(settingsObj => {
+                if (settingsObj.type === ConfigTypes.MULTICHECKBOX) {
+                    settingsObj.options.forEach(opts => {
+                        settings[opts.configName] = opts.value
+                    })
+                    return
+                }
+
+                settings[settingsObj.name] = settingsObj.value
+            })
+        })
+
+        settings.getConfig = () => this.settingsInstance
+
+        this.settingsInstance.settings = settings
+
+        return settings
+    }
+
+    /**
+     * - Internal use.
+     * - Saves the current config json into the module's given config file path
+     */
+    _saveToFile() {
+        const data = this.config.map(it => {
+            return { category: it.category, settings: it.settings.map(it2 => {
+                // Perfection.
+                if (it2.type === ConfigTypes.MULTICHECKBOX) return { type: it2.type, name: it2.name, options: it2.options.map(opts => { return { name: opts.configName, value: opts.value } }) }
+
+                return { type: it2.type, name: it2.name, value: it2.value }
+            }) }
+        })
+
+        FileLib.write(
+            this.moduleName,
+            this.filePath,
+            JSON.stringify(data, null, 4),
+            true
+        )
+    }
+
+    /**
      * - Creates a new button with the given params and pushes it into the config
      * @param {DefaultObject} options
      * @returns this for method chaining
@@ -178,8 +268,9 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new switch with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} T
+     * @param {DefaultObject & { configName: T }} options
+     * @returns {this & {settings: Record<T, boolean>}}
      */
     addSwitch({
         category = null,

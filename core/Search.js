@@ -127,7 +127,7 @@ export default class SearchElement {
      * @returns this for method chaining
      */
     _reBuildConfig() {
-        this.parentClass.settings = this.parentClass.configsClass._normalizeSettings(this.parentClass)
+        this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
         this.createElementClass._hideElement(this.parentClass.settings)
 
         return this

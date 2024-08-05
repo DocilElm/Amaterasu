@@ -4,7 +4,6 @@ import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
 import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 import Category from "./Category"
-import Configs from "./Config"
 
 // Credits to @unclaimedbloom6 (big thank)
 const mergeObjects = (obj1, obj2, final = {}) => {
@@ -83,9 +82,12 @@ export default class Settings {
             })
 
         // Config variables
-        this.configsClass = new Configs(this.defaultConfig)
+        // Set this so we can actually have the [settings] field auto update
+        // Rather than having to use a function to return its newly defined value
+        this.defaultConfig.settingsInstance = this
+        this.configsClass = this.defaultConfig._init() // keeping the same name because too lazy to find where else i use it
         this.config = this.configsClass.config
-        this.settings = this.configsClass._normalizeSettings(this)
+        this.settings = this.configsClass._normalizeSettings()
 
         // Categories variables
         this.categories = new Map()
