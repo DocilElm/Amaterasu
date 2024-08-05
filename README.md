@@ -26,11 +26,31 @@ If you are coming from `Vigilance` and would prefer a table of equilavent proper
 
 intellisense will carry, jsdocs should be fine (read through code if you need to do anything not covered in [Usage](#usage))
 
+### IMPORTANT:
+
+if you do not create the `DefaultConfig` correctly, your typings will NOT WORK
+
+```js
+// GOOD CODE
+const defaultConf = new DefaultConfig('example', 'data/settings.json')
+  .addButton({})
+  // more things
+  .addToggle({});
+
+// BAD CODE
+const defaultConf = new DefaultConfig('example', 'data/settings.json');
+defaultConf
+  .addButton({})
+  // more things
+  .addToggle({});
+```
+
 ## Usage
 
 See [Installation](#installation).
 
 ### Basic Usage
+
 use intellisense or be blind your choice
 
 `DefaultConfig` and `Settings` are the main 2 things.
@@ -54,10 +74,7 @@ how to use:
 ### Custom Size & Position
 
 ```js
-[Settings]
-    .setSize(width, height)
-    .setPosition(x, y)
-    .apply()
+[Settings].setSize(width, height).setPosition(x, y).apply();
 ```
 
 The `#apply` method needs to be called so it can reload the GUI with the given values
@@ -425,8 +442,7 @@ getPropertyComparator: () => (a, b) => {}
 Amaterasu
 
 ```js
-[Settings].setElementSort((a, b) => {})
-[Settings].setCategorySort((a, b) => {})
+[Settings].setElementSort((a, b) => {})[Settings].setCategorySort((a, b) => {});
 ```
 
 You need to call the `#apply` method afterwards for these to actually be taken into consideration by the GUI.
@@ -434,12 +450,13 @@ You need to call the `#apply` method afterwards for these to actually be taken i
 ---
 
 ## [Settings]
+
 If you're still confused what the `[Settings]` part of this guide is referring to here's an example
 
 ### This variable holds the [Settings] instance
 
 ```js
-const setting = new Settings("Amaterasu", config, "data/ColorScheme.json")
+const setting = new Settings('Amaterasu', config, 'data/ColorScheme.json');
 ```
 
 ---
@@ -447,7 +464,7 @@ const setting = new Settings("Amaterasu", config, "data/ColorScheme.json")
 ### Here we use it to set a category sort
 
 ```js
-setting.setCategorySort((a, b) => {}).apply()
+setting.setCategorySort((a, b) => {}).apply();
 ```
 
 ---
@@ -457,13 +474,13 @@ setting.setCategorySort((a, b) => {}).apply()
 For example if you have this
 
 ```js
-export default () => setting.settings
+export default () => setting.settings;
 ```
 
 You can then get the [Settings] instance by doing
 
 ```js
-settings().getConfig()
+settings().getConfig();
 ```
 
 ---
