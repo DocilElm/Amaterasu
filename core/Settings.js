@@ -371,7 +371,7 @@ export default class Settings {
 
     /**
      * - Redirects the current category to the given one
-     * - if a `featureName` was given it will try to find it and scroll towards it
+     * - if a `configName` was given it will try to find it and scroll towards it
      * @template {keyof GetTypeC<DefaultConfig>} CategoryName
      * @param {CategoryName} categoryName
      * @param {?keyof GetTypeC<DefaultConfig>[CategoryName]} configName
