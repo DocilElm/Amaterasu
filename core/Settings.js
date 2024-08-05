@@ -33,6 +33,23 @@ const mergeObjects = (obj1, obj2, final = {}) => {
 }
 
 /**
+ * @template {import("./DefaultConfig").default} T
+ * @typedef {T extends import("./DefaultConfig").default<infer U, any, any, any> ? U : never} GetTypeP
+ */
+/**
+ * @template {import("./DefaultConfig").default} T
+ * @typedef {T extends import("./DefaultConfig").default<any, infer U, any, any> ? U : never} GetTypeC
+ */
+/**
+ * @template {import("./DefaultConfig").default} T
+ * @typedef {T extends import("./DefaultConfig").default<any, any, infer U, any> ? U : never} GetTypeA
+ */
+/**
+ * @template {import("./DefaultConfig").default} T
+ * @typedef {T extends import("./DefaultConfig").default<any, any, any, infer U> ? U : never} GetTypeL
+ */
+
+/**
  * @template {import("./DefaultConfig").default} DefaultConfig
  */
 export default class Settings {
@@ -90,6 +107,9 @@ export default class Settings {
         this.defaultConfig.settingsInstance = this
         this.configsClass = this.defaultConfig._init() // keeping the same name because too lazy to find where else i use it
         this.config = this.configsClass.config
+        /**
+         * @type {ReturnType<DefaultConfig["_normalizeSettings"]>}
+         */
         this.settings = this.configsClass._normalizeSettings()
 
         // Categories variables
@@ -116,7 +136,7 @@ export default class Settings {
      * - Sets the command to open this gui
      * @param {string} name
      * @param {string[]} aliases
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     setCommand(name, aliases = []) {
         this.handler.setCommand(name, aliases)
@@ -130,7 +150,7 @@ export default class Settings {
      * - (e.g "obj" would be a param so you can then do "obj.category" for its category name)
      * - NOTE: this function should return [-1, 0, 1]
      * @param {(a: import("./DefaultConfig").DefaultDefaultObject, b: import("./DefaultConfig").DefaultDefaultObject) => number}} fn
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      * @see {@link apply}
      */
     setCategorySort(fn) {
@@ -146,7 +166,7 @@ export default class Settings {
      * - (e.g "obj" would be a param so you can then do "obj.value" for its value)
      * - NOTE: this function should return [-1, 0, 1]
      * @param {(a: import("./DefaultConfig").DefaultDefaultObject, b: import("./DefaultConfig").DefaultDefaultObject) => number} fn
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      * @see {@link apply}
      */
     setElementSort(fn) {
@@ -160,7 +180,7 @@ export default class Settings {
      * - Sets the starting x and y value of the gui (in percent)
      * @param {number} x
      * @param {number} y
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      * @see {@link apply}
      */
     setPos(x, y) {
@@ -174,7 +194,7 @@ export default class Settings {
      * - Sets the width and height of the gui (in percent)
      * @param {number} width
      * @param {number} height
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      * @see {@link apply}
      */
     setSize(width, height) {
@@ -186,7 +206,7 @@ export default class Settings {
 
     /**
      * @param {string} colorSchemePath
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      * @see {@link apply}
      */
     setScheme(newPath) {
@@ -201,11 +221,12 @@ export default class Settings {
     /**
      * - Sets the new config value of the given [configName]
      * - to the passed [value] then calls the `apply` method to re-build this window
-     * @template {string} ConfigName
-     * @param {string} category
+     * @template {keyof GetTypeA<DefaultConfig>} CategoryName
+     * @template {keyof GetTypeA<DefaultConfig>[CategoryName]} ConfigName
+     * @param {CategoryName} category
      * @param {ConfigName} configName
-     * @param {DefaultConfig["types"][ConfigName]} value
-     * @returns this for method chaining
+     * @param {GetTypeA<DefaultConfig>[CategoryName][ConfigName]} value
+     * @returns {this} this for method chaining
      */
     setConfigValue(category, configName, value) {
         if (!category || !configName || !this.categories.has(category)) throw new Error(`category: ${category} or configName: ${configName} are not valid.`)
@@ -223,7 +244,7 @@ export default class Settings {
      * - Adds a [Changelog] section with the given string
      * - Equivalent to `.addMarkdown("Changelog", text)`
      * @param {string} text
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     addChangelog(text) {
         return this.addMarkdown("Changelog", text)
@@ -233,7 +254,7 @@ export default class Settings {
      * - Adds a markdown category
      * @param {string} category
      * @param {string|string[]} text
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     addMarkdown(category, text, _internal = false) {
         if (Array.isArray(text)) text = text.join("\n")
@@ -273,7 +294,7 @@ export default class Settings {
 
     /**
      * - Opens this [Settings] Gui
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     openGui() {
         this.handler.ctGui.open()
@@ -283,7 +304,7 @@ export default class Settings {
 
     /**
      * - Closes this [Settings] Gui
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     closeGui() {
         this.handler.ctGui.close()
@@ -294,7 +315,7 @@ export default class Settings {
     /**
      * - Triggers the given function whenever this [GUI] is opened
      * @param {() => void} fn
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     onOpenGui(fn) {
         if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function.`)
@@ -307,7 +328,7 @@ export default class Settings {
     /**
      * - Triggers the given function whenever this [GUI] is closed
      * @param {() => void} fn
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     onCloseGui(fn) {
         if (typeof (fn) !== "function") throw new Error(`${fn} is not a valid function.`)
@@ -319,11 +340,19 @@ export default class Settings {
 
     /**
      * - Runs the given function whenever the configName changes value
-     * - the function will recieve the args `(previousValue, newValue)`
-     * @template {string} ConfigName
+     * - the function will recieve the args `(previousValue, newValue, configName)`
+     * @template {keyof GetTypeP<DefaultConfig>} ConfigName
+     * @overload
      * @param {ConfigName} configName
-     * @param {(previousValue: DefaultConfig["types"][ConfigName], newValue: DefaultConfig["types"][ConfigName]) => void} fn
-     * @returns this for method chaining
+     * @param {(previousValue: GetTypeP<DefaultConfig>[ConfigName], newValue: GetTypeP<DefaultConfig>[ConfigName], name: ConfigName) => void} fn
+     * @returns {this} this for method chaining
+     */
+    /**
+     * - Runs the given function whenever any config changes value
+     * - the function will recieve the args `(previousValue, newValue, configName)`
+     * @overload
+     * @param {(previousValue: import("./DefaultConfig").DefaultObjectValue, newValue: import("./DefaultConfig").DefaultObjectValue, name: string) => void} configName
+     * @returns {this} this for method chaining
      */
     registerListener(configName, fn) {
         if (!configName) throw new Error(`${configName} is not a valid config name.`)
@@ -342,12 +371,13 @@ export default class Settings {
 
     /**
      * - Redirects the current category to the given one
-     * - if a `featureName` was given it will try to find it and scroll towards it
-     * @param {string} categoryName
-     * @param {string?} featureName
-     * @returns this for method chaining
+     * - if a `configName` was given it will try to find it and scroll towards it
+     * @template {keyof GetTypeC<DefaultConfig>} CategoryName
+     * @param {CategoryName} categoryName
+     * @param {?keyof GetTypeC<DefaultConfig>[CategoryName]} configName
+     * @returns {this} this for method chaining
      */
-    redirect(categoryName, featureName = null) {
+    redirect(categoryName, configName = null) {
         const categoryInstance = this.categories.get(categoryName)
         if (!categoryInstance) throw new Error(`${categoryName} is not a valid category name.`)
 
@@ -361,10 +391,10 @@ export default class Settings {
         // Update the state of the given categoryName
         this.categories.get(this.currentCategory)._setSelected(true)
 
-        if (featureName) {
+        if (configName) {
             Client.scheduleTask(2, () => {
                 const rightBlock = categoryInstance.rightBlock
-                const comp = categoryInstance.createElementClass._find(featureName)?.component
+                const comp = categoryInstance.createElementClass._find(configName)?.component
                 if (!comp) return
 
                 const newY = rightBlock.getTop() - comp.getTop()
@@ -378,7 +408,7 @@ export default class Settings {
     /**
      * - Applies the changes made to the [SettingsGui]
      * - (e.g you called #setSize you'd have to call `apply()` at the end)
-     * @returns this for method chaining
+     * @returns {this} this for method chaining
      */
     apply() {
         this.oldCategory = null

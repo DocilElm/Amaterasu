@@ -8,17 +8,18 @@ const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 
 
 /**
  * @template {string} ConfigName
+ * @template {string?} CategoryName
  * @template {DefaultObjectValue?} Value
- * @template {(number|string|DefaultObject)[]} Options
+ * @template {(number|string|MultiCheckBoxChildObject)[]} Options
  * @typedef {object} DefaultObject
- * @prop {string} category The category name for this config component
+ * @prop {CategoryName} category The category name for this config component
  * @prop {ConfigName} configName The config name for this config component (used to get its current value)
  * @prop {string} title The title to be displayed for this config component
  * @prop {string} description The description to be displayed for this config component
  * @prop {string?} placeHolder The placeholder for this component (only if it supports it)
  * @prop {Value} value The current config value of this component (only if it supports it)
- * @prop {?(data: DefaultObject<ConfigName, Value, Options>) => boolean} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`)
- * @prop {?(data: DefaultObject<ConfigName, Value, Options>) => void} onClick The function that runs whenever a button is clicked
+ * @prop {?(data: R<string, DefaultObjectValue>) => boolean} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`) (it is passed the `Settings::settings` object)
+ * @prop {?(data: import("./Settings").default) => void} onClick The function that runs whenever a button is clicked (it is passed the `Settings` object)
  * @prop {string?} subcategory The subcategory for this config component
  * @prop {string[]?} tags The searching tags for this component (if any is defined these will make the component come up in results whenever searching these strings)
  * @prop {?(previousValue: Value, newValue: Value) => void} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
@@ -27,14 +28,30 @@ const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 
 */
 
 /**
- * @typedef {DefaultObject<string, DefaultObjectValue, (number|string|DefaultObject)[]>} DefaultDefaultObject
+ * @typedef {DefaultObject<string, string, DefaultObjectValue, (number|string|MultiCheckBoxChildObject)[]>} DefaultDefaultObject
  */
 
+/**
+ * @template {string} ConfigName
+ * @typedef {object} MultiCheckBoxChildObject
+ * @prop {string} title The title to be displayed for this config component
+ * @prop {ConfigName} configName The config name for this config component (used to get its current value)
+ * @prop {boolean?} value The current config value of this component
+ */
+
+/**
+ * @template K
+ * @template [V = undefined]
+ * @typedef {Record<K, V>} R
+ */
+
+/**
+ * @template [P = R<never>]
+ * @template [C = R<never>]
+ * @template [A = R<never>]
+ * @template {string} [L = never]
+ */
 export default class DefaultConfig {
-    /**
-     * - Internal use only for typings.
-     */
-    types = {}
 
     /**
      * - This class handles all the data required by the
@@ -72,7 +89,7 @@ export default class DefaultConfig {
          */
         this.config = []
         /**
-         * @type {import('./Settings').default?}
+         * @type {?import("./Settings").default<this>}
          */
         this.settingsInstance = null
 
@@ -192,7 +209,7 @@ export default class DefaultConfig {
      * - Makes the current config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
-     * @returns {this["types"] & { getConfig() => import("./Settings").default }}
+     * @returns {P & { getConfig() => import("./Settings").default<this> }}
      */
     _normalizeSettings() {
         // TODO: change this to only be ran once per feature change
@@ -244,9 +261,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new button with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, undefined, undefined>} options
-     * @returns {this} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G extends string ? G : L, undefined, undefined>} options
+     * @returns {DefaultConfig<P, C & R<G extends string ? G : L, R<N>>, A, G extends string ? G : L>} this for method chaining
      */
     addButton({
         category = null,
@@ -275,9 +293,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new toggle with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, boolean, undefined>} options
-     * @returns {this & { types: Record<ConfigName, boolean> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G extends string ? G : L, boolean, undefined>} options
+     * @returns {DefaultConfig<P & R<N, boolean>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, boolean>>, G extends string ? G : L>} this for method chaining
      */
     addToggle({
         category = null,
@@ -306,9 +325,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new switch with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, boolean, undefined>} options
-     * @returns {this & { types: Record<ConfigName, boolean> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, boolean, undefined>} options
+     * @returns {DefaultConfig<P & R<N, boolean>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, boolean>>, G extends string ? G : L>} this for method chaining
      */
     addSwitch({
         category = null,
@@ -337,9 +357,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new textinput with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, string, undefined>} options
-     * @returns {this & { types: Record<ConfigName, string> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, string, undefined>} options
+     * @returns {DefaultConfig<P & R<N, string>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, string>>, G extends string ? G : L>} this for method chaining
      */
     addTextInput({
         category = null,
@@ -371,9 +392,10 @@ export default class DefaultConfig {
     /**
      * - Creates a new slider with the given params and pushes it into the config
      * - For a decimal slider, the first number of the `options` property should include a decimal e.g. 0.01
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, number, [number, number]>} options
-     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, number, [number, number]>} options
+     * @returns {DefaultConfig<P & R<N, number>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, number>>, G extends string ? G : L>} this for method chaining
      */
     addSlider({
         category = null,
@@ -405,9 +427,10 @@ export default class DefaultConfig {
     /**
      * - Creates a new selection with the given params and pushes it into the config
      * - The `value` property is the index of the option, not the option itself
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, number, string[]>} options
-     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, number, string[]>} options
+     * @returns {DefaultConfig<P & R<N, number>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, number>>, G extends string ? G : L>} this for method chaining
      */
     addSelection({
         category = null,
@@ -438,9 +461,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new color picker with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, [number, number, number, number], undefined>} options
-     * @returns {this & { types: Record<ConfigName, [number, number, number, number]> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, [number, number, number, number], undefined>} options
+     * @returns {DefaultConfig<P & R<N, [number, number, number, number]>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, [number, number, number, number]>>, G extends string ? G : L>} this for method chaining
      */
     addColorPicker({
         category = null,
@@ -471,9 +495,10 @@ export default class DefaultConfig {
     /**
      * - Creates a new drop down with the given params and pushes it into the config
      * - The `value` property is the index of the option, not the option itself
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, number, string[]>} options
-     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, number, string[]>} options
+     * @returns {DefaultConfig<P & R<N, number>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, number>>, G extends string ? G : L>} this for method chaining
      */
     addDropDown({
         category = null,
@@ -504,9 +529,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new multi checkbox with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<undefined, undefined, DefaultObject<ConfigName, boolean, string[]>[]>} options
-     * @returns {this & { types: Record<ConfigName, boolean> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<undefined, G, undefined, MultiCheckBoxChildObject<N>[]>} options
+     * @returns {DefaultConfig<P & R<N, boolean>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, boolean>>, G extends string ? G : L>} this for method chaining
      */
     addMultiCheckbox({
         category = null,
@@ -536,9 +562,10 @@ export default class DefaultConfig {
     /**
      * - Creates a new text paragraph with the given params and pushes it into the config
      * - This is for displaying text, not for a paragraph input
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, undefined, undefined>} options
-     * @returns {this & { types: Record<ConfigName, undefined> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, undefined, undefined>} options
+     * @returns {DefaultConfig<P, C & R<G extends string ? G : L, R<N>>, A, G extends string ? G : L>} this for method chaining
      */
     addTextParagraph({
         category = null,
@@ -565,9 +592,10 @@ export default class DefaultConfig {
 
     /**
      * - Creates a new keybind with the given params and pushes it into the config
-     * @template {string} ConfigName
-     * @param {DefaultObject<ConfigName, number, undefined>} options
-     * @returns {this & { types: Record<ConfigName, number> }} this for method chaining
+     * @template {string} N
+     * @template {string?} G
+     * @param {DefaultObject<N, G, number, undefined>} options
+     * @returns {DefaultConfig<P & R<N, number>, C & R<G extends string ? G : L, R<N>>, A & R<G extends string ? G : L, R<N, number>>, G extends string ? G : L>} this for method chaining
      */
     addKeybind({
         category = null,
