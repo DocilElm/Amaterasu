@@ -32,17 +32,17 @@ if you do not create the `DefaultConfig` correctly, your typings will NOT WORK
 
 ```js
 // GOOD CODE
-const defaultConf = new DefaultConfig('example', 'data/settings.json')
+const defaultConf = new DefaultConfig("example", "data/settings.json")
   .addButton({})
   // more things
-  .addToggle({});
+  .addToggle({})
 
 // BAD CODE
-const defaultConf = new DefaultConfig('example', 'data/settings.json');
+const defaultConf = new DefaultConfig("example", "data/settings.json")
 defaultConf
   .addButton({})
   // more things
-  .addToggle({});
+  .addToggle({})
 ```
 
 ## Usage
@@ -74,7 +74,10 @@ how to use:
 ### Custom Size & Position
 
 ```js
-[Settings].setSize(width, height).setPosition(x, y).apply();
+[Settings].
+    setSize(width, height)
+    .setPosition(x, y)
+    .apply()
 ```
 
 The `#apply` method needs to be called so it can reload the GUI with the given values
@@ -418,7 +421,7 @@ Amaterasu
 Vigilance
 
 ```js
-@Vigilant("Vigilance", "My Settings Title Example",
+@Vigilant("Vigilance", "My Settings Title Example", /**/),
 ```
 
 Amaterasu
@@ -442,7 +445,8 @@ getPropertyComparator: () => (a, b) => {}
 Amaterasu
 
 ```js
-[Settings].setElementSort((a, b) => {})[Settings].setCategorySort((a, b) => {});
+[Settings].setElementSort((a, b) => {})
+[Settings].setCategorySort((a, b) => {})
 ```
 
 You need to call the `#apply` method afterwards for these to actually be taken into consideration by the GUI.
@@ -456,7 +460,7 @@ If you're still confused what the `[Settings]` part of this guide is referring t
 ### This variable holds the [Settings] instance
 
 ```js
-const setting = new Settings('Amaterasu', config, 'data/ColorScheme.json');
+const setting = new Settings("Amaterasu", config, "data/ColorScheme.json")
 ```
 
 ---
@@ -464,7 +468,7 @@ const setting = new Settings('Amaterasu', config, 'data/ColorScheme.json');
 ### Here we use it to set a category sort
 
 ```js
-setting.setCategorySort((a, b) => {}).apply();
+setting.setCategorySort((a, b) => {}).apply()
 ```
 
 ---
@@ -474,13 +478,13 @@ setting.setCategorySort((a, b) => {}).apply();
 For example if you have this
 
 ```js
-export default () => setting.settings;
+export default () => setting.settings
 ```
 
 You can then get the [Settings] instance by doing
 
 ```js
-settings().getConfig();
+settings().getConfig()
 ```
 
 ---
