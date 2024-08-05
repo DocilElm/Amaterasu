@@ -1,29 +1,38 @@
 import ConfigTypes from "./ConfigTypes"
 
-const defaultValues = [ false, 1, undefined, 0, "", [ 255, 255, 255, 255 ], false, 0, 0 ]
+const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 0, 0]
 
 /**
  * @typedef {string|number|number[]} DefaultObjectValue
  */
 
 /**
+ * @template {string} ConfigName
+ * @template {DefaultObjectValue?} Value
+ * @template {(number|string|DefaultObject)[]} Options
  * @typedef {object} DefaultObject
- * @prop {string?} category The category name for this config component
- * @prop {string?} configName The config name for this config component (used to get its current value)
+ * @prop {string} category The category name for this config component
+ * @prop {ConfigName} configName The config name for this config component (used to get its current value)
  * @prop {string} title The title to be displayed for this config component
  * @prop {string} description The description to be displayed for this config component
  * @prop {string?} placeHolder The placeholder for this component (only if it supports it)
- * @prop {DefaultObjectValue?} value The current config value of this component (only if it supports it)
- * @prop {?(data: DefaultConfig) => boolean} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`)
- * @prop {?(data: DefaultConfig) => void} onClick The function that runs whenever a button is clicked
+ * @prop {Value} value The current config value of this component (only if it supports it)
+ * @prop {?(data: DefaultObject<ConfigName, Value, Options>) => boolean} shouldShow The function that runs whenever `Amaterasu` attempts to hide a component (this function should only return `Boolean`)
+ * @prop {?(data: DefaultObject<ConfigName, Value, Options>) => void} onClick The function that runs whenever a button is clicked
  * @prop {string?} subcategory The subcategory for this config component
  * @prop {string[]?} tags The searching tags for this component (if any is defined these will make the component come up in results whenever searching these strings)
- * @prop {?(previousValue: DefaultObjectValue, newValue: DefaultObjectValue) => void} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
- * @prop {?(number|string|DefaultObject)[]} options Usage varies depending on type of setting. [min, max] for slider, options for checkbox/multicheck box (strings in checkbox, nested objects for multi), and probably more. Pay me.
+ * @prop {?(previousValue: Value, newValue: Value) => void} registerListener The function that runs whenever this component's value changes (returns params `previousValue` and `newValue`)
+ * @prop {Options?} options Usage varies depending on type of setting. [min, max] for slider, options for checkbox/multicheck box (strings in checkbox, nested objects for multi), and probably more. Pay me.
  * @prop {boolean?} centered Whether the [title] and [description] should be centered
 */
 
+/**
+ * @typedef {DefaultObject<string, DefaultObjectValue, (number|string|DefaultObject)[]>} DefaultDefaultObject
+ */
+
 export default class DefaultConfig {
+    '🐀types' = {}
+
     /**
      * - This class handles all the data required by the
      * - whole [Amaterasu]'s [Config] system
@@ -31,16 +40,37 @@ export default class DefaultConfig {
      * @param {string} filePath The file path to store the data at. default: `data/settings.json`.
      */
     constructor(moduleName, filePath = "data/settings.json") {
+        /**
+         * @type {string}
+         */
         this.moduleName = moduleName
+        /**
+         * @type {string}
+         */
         this.filePath = filePath
+        /**
+         * @type {string?}
+         */
         this.lastCategory = null
 
-        // Holds all the categories names
+        /**
+         * Holds all the categories names
+         * @type {Set<string>}
+         */
         this.categories = new Set()
+        /**
+         * @type {any[]}
+         */
         this.savedConfig = JSON.parse(FileLib.read(this.moduleName, this.filePath))
 
-        // Config stuff
+        /**
+         * Config stuff
+         * @type {{ category: string, settings: DefaultDefaultObject[] }[]}
+         */
         this.config = []
+        /**
+         * @type {import('./Settings').default?}
+         */
         this.settingsInstance = null
 
         // Registers
@@ -48,6 +78,7 @@ export default class DefaultConfig {
     }
 
     /**
+     * @private
      * - Internal use.
      * - Used to setup all the configs after the defaults are set.
      * - This is done this way due to the default configurations being created before the `Settings` instance
@@ -56,17 +87,17 @@ export default class DefaultConfig {
     _init() {
         this._makeConfig()
         this._saveToFile()
-        
         return this
     }
 
     /**
+     * @private
      * - Internal use.
      * - Checks whether the saved data has changed from the new data
      * - This will make it so it saves the correct value and changes the [ConfigType] properly
      * @param {string} categoryName
      * @param {string} configName
-     * @param {{}} newObj
+     * @param {DefaultDefaultObject} newObj
      * @returns
      */
     _makeObj(categoryName, configName, newObj) {
@@ -105,6 +136,7 @@ export default class DefaultConfig {
     }
 
     /**
+     * @private
      * - Internal use.
      * - Checks whether the given [categoryName] is valid.
      * - also checks whether that category is created.
@@ -135,6 +167,7 @@ export default class DefaultConfig {
     }
 
     /**
+     * @private
      * - Internal use.
      */
     _makeConfig() {
@@ -151,11 +184,12 @@ export default class DefaultConfig {
     }
 
     /**
+     * @private
      * - Internal use.
      * - Makes the current config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
-     * @returns {{ getConfig() => import("./Settings").default }}
+     * @returns {this['🐀types'] & { getConfig() => import("./Settings").default }}
      */
     _normalizeSettings() {
         // TODO: change this to only be ran once per feature change
@@ -187,14 +221,15 @@ export default class DefaultConfig {
      * - Saves the current config json into the module's given config file path
      */
     _saveToFile() {
-        const data = this.config.map(it => {
-            return { category: it.category, settings: it.settings.map(it2 => {
+        const data = this.config.map(it => ({
+            category: it.category,
+            settings: it.settings.map(it2 => {
                 // Perfection.
                 if (it2.type === ConfigTypes.MULTICHECKBOX) return { type: it2.type, name: it2.name, options: it2.options.map(opts => { return { name: opts.configName, value: opts.value } }) }
 
                 return { type: it2.type, name: it2.name, value: it2.value }
-            }) }
-        })
+            })
+        }))
 
         FileLib.write(
             this.moduleName,
@@ -204,10 +239,12 @@ export default class DefaultConfig {
         )
     }
 
+    // * @returns {this & { '🐀types': Record<ConfigName, undefined> }} this for method chaining
     /**
      * - Creates a new button with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, undefined, undefined>} options
+     * @returns {this} this for method chaining
      */
     addButton({
         category = null,
@@ -231,14 +268,14 @@ export default class DefaultConfig {
             subcategory,
             tags
         })
-
         return this
     }
 
     /**
      * - Creates a new toggle with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, boolean, undefined>} options
+     * @returns {this & { '🐀types': Record<ConfigName, boolean> }} this for method chaining
      */
     addToggle({
         category = null,
@@ -262,15 +299,14 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new switch with the given params and pushes it into the config
-     * @template {string} T
-     * @param {DefaultObject & { configName: T }} options
-     * @returns {this & {settings: Record<T, boolean>}}
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, boolean, undefined>} options
+     * @returns {this & { '🐀types': Record<ConfigName, boolean> }} this for method chaining
      */
     addSwitch({
         category = null,
@@ -294,14 +330,14 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new textinput with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, string, undefined>} options
+     * @returns {this & { '🐀types': Record<ConfigName, string> }} this for method chaining
      */
     addTextInput({
         category = null,
@@ -327,21 +363,22 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new slider with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * - For a decimal slider, the first number of the `options` property should include a decimal e.g. 0.01
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, number, [number, number]>} options
+     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
      */
     addSlider({
         category = null,
         configName = null,
         title,
         description,
-        options = [ 0, 10 ],
+        options = [0, 10],
         value = 1,
         shouldShow,
         subcategory = null,
@@ -360,21 +397,22 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new selection with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * - The `value` property is the index of the option, not the option itself
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, number, string[]>} options
+     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
      */
     addSelection({
         category = null,
         configName = null,
         title,
         description,
-        options = [ "Test 1", "Test 2" ],
+        options = ["Test 1", "Test 2"],
         value = 0,
         shouldShow,
         subcategory = null,
@@ -393,21 +431,21 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new color picker with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, [number, number, number, number], undefined>} options
+     * @returns {this & { '🐀types': Record<ConfigName, [number, number, number, number]> }} this for method chaining
      */
     addColorPicker({
         category = null,
         configName = null,
         title,
         description,
-        value = [ 255, 255, 255, 255 ],
+        value = [255, 255, 255, 255],
         shouldShow,
         subcategory = null,
         tags = [],
@@ -425,21 +463,22 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new drop down with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * - The `value` property is the index of the option, not the option itself
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, number, string[]>} options
+     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
      */
     addDropDown({
         category = null,
         configName = null,
         title,
         description,
-        options = [ "Test 1", "Test 2" ],
+        options = ["Test 1", "Test 2"],
         value = 0,
         shouldShow,
         subcategory = null,
@@ -458,14 +497,14 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 
     /**
      * - Creates a new multi checkbox with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} ConfigName
+     * @param {DefaultObject<undefined, undefined, DefaultObject<ConfigName, boolean, string[]>[]>} options
+     * @returns {this & { '🐀types': Record<ConfigName, boolean> }} this for method chaining
      */
     addMultiCheckbox({
         category = null,
@@ -489,14 +528,15 @@ export default class DefaultConfig {
             subcategory,
             tags
         })
-
         return this
     }
 
     /**
      * - Creates a new text paragraph with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * - This is for displaying text, not for a paragraph input
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, undefined, undefined>} options
+     * @returns {this & { '🐀types': Record<ConfigName, undefined> }} this for method chaining
      */
     addTextParagraph({
         category = null,
@@ -518,14 +558,14 @@ export default class DefaultConfig {
             subcategory,
             tags
         })
-
         return this
     }
 
     /**
      * - Creates a new keybind with the given params and pushes it into the config
-     * @param {DefaultObject} options
-     * @returns this for method chaining
+     * @template {string} ConfigName
+     * @param {DefaultObject<ConfigName, number, undefined>} options
+     * @returns {this & { '🐀types': Record<ConfigName, number> }} this for method chaining
      */
     addKeybind({
         category = null,
@@ -549,7 +589,6 @@ export default class DefaultConfig {
             tags,
             registerListener
         })
-
         return this
     }
 }
