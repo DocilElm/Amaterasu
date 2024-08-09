@@ -32,7 +32,7 @@ export default class SearchElement {
 
         this.elementsSlider = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
-            .setWidth((5).pixels())
+            .setWidth((this.parentClass.AmaterasuGui.scrollbarSize).pixels())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar.color))
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
@@ -48,7 +48,7 @@ export default class SearchElement {
         // Whenever [CTRL+F] is typed on the main window enable search
         this.handler.getWindow().onKeyType((_, __, keycode) => {
             if (keycode !== 33 || !Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) return
-            
+
             this._focusSearch()
         })
 

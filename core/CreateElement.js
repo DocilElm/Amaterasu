@@ -66,7 +66,7 @@ export default class CreateElement {
 
         const descElement = new TextDescriptionElement(obj.text, obj.description, obj.centered ?? false, 0, 0, textWidth, 75)
             ._setPosition(
-                (3).pixel(),
+                (this.categoryClass.parentClass.AmaterasuGui.descriptionElement.xPadding).percent(),
                 new CenterConstraint()
             )
         descElement
@@ -424,7 +424,7 @@ export default class CreateElement {
 
     _addMultiCheckbox(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
-            
+
         const component = new MultiCheckbox(obj.options, obj.placeHolder, 0, 0, 20, 35)
             ._setPosition(
                 (5).pixel(true),

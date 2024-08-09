@@ -119,13 +119,88 @@ export default class Settings {
         this.markdowns = []
 
         // Drawing variables
-        this.bgPos = {
-            x: (20).percent(),
-            y: (20).percent()
-        }
-        this.bgSize = {
-            width: (60).percent(),
-            height: (50).percent()
+        /**
+         * - This should be used to edit certain aspects of this [Amaterasu] instance's [Gui]
+         */
+        this.AmaterasuGui = {
+            /**
+             * - The background (main background) of this [Gui]
+             */
+            background: {
+                /**
+                 * @type {number}
+                 * - Sets the X position for the background in percent
+                 * - Defaults to `20`
+                 */
+                x: 20,
+                /**
+                 * @type {number}
+                 * - Sets the Y position for the background in percent
+                 * - Defaults to `20`
+                 */
+                y: 20,
+                /**
+                 * @type {number}
+                 * - Sets the width for the background in percent
+                 * - Defaults to `60`
+                 */
+                width: 60,
+                /**
+                 * @type {number}
+                 * - Sets the height for the background in percent
+                 * - Defaults to `50`
+                 */
+                height: 50
+            },
+            /** 
+             * @type {number}
+             * - The scrollbar size (`width`) in pixels
+             * - Defaults to `5` pixels
+             */
+            scrollbarSize: 5,
+            /** 
+             * - Holds size and position for the searchbar
+             */
+            searchBar: {
+                /**
+                 * @type {number}
+                 * - Sets the X position for the searchBar in percent
+                 * - Defaults to `68.4`
+                 */
+                x: 68.4,
+                /**
+                 * @type {number}
+                 * - Sets the Y position for the searchBar in percent
+                 * - Defaults to `1.5`
+                 */
+                y: 1.5,
+                /**
+                 * @type {number}
+                 * - Sets the width for the searchBar in percent
+                 * - Defaults to `15`
+                 */
+                width: 15,
+                /**
+                 * @type {number}
+                 * - Sets the height for the searchBar in percent
+                 * - Defaults to `5`
+                 */
+                height: 5
+            },
+            /** - The entire descriptionElement component (aka where the setting, title and description go) */
+            descriptionElement: {
+                /**
+                 * @type {number}
+                 * - Sets the xPadding in percent
+                 * - Defaults to `1.5`
+                 */
+                xPadding: 1.5
+            },
+            /**
+             * - Calls the main instance's `apply` method
+             * @returns {this}
+             */
+            apply: () => this.apply()
         }
 
         // Init function
@@ -184,8 +259,8 @@ export default class Settings {
      * @see {@link apply}
      */
     setPos(x, y) {
-        this.bgPos.x = (x).percent()
-        this.bgPos.y = (y).percent()
+        if (x) this.AmaterasuGui.background.x = x
+        if (y) this.AmaterasuGui.background.y = y
 
         return this
     }
@@ -198,8 +273,8 @@ export default class Settings {
      * @see {@link apply}
      */
     setSize(width, height) {
-        this.bgSize.width = (width).percent()
-        this.bgSize.height = (height).percent()
+        if (width) this.AmaterasuGui.background.width = width
+        if (height) this.AmaterasuGui.background.height = height
 
         return this
     }
@@ -235,6 +310,7 @@ export default class Settings {
         if (!configObj) return this
 
         configObj.value = value
+        this.settings = this.configsClass._normalizeSettings()
         this.apply()
 
         return this
@@ -423,10 +499,10 @@ export default class Settings {
 
     _init() {
         this.mainBlock = new UIRoundedRectangle(this.handler.getColorScheme().Amaterasu.background.roundness)
-            .setX(this.bgPos.x)
-            .setY(this.bgPos.y)
-            .setWidth(this.bgSize.width)
-            .setHeight(this.bgSize.height)
+            .setX((this.AmaterasuGui.background.x).percent())
+            .setY((this.AmaterasuGui.background.y).percent())
+            .setWidth((this.AmaterasuGui.background.width).percent())
+            .setHeight((this.AmaterasuGui.background.height).percent())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.background.color))
             .enableEffect(new OutlineEffect(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.background.outlineColor), this.handler.getColorScheme().Amaterasu.background.outlineSize))
 
@@ -438,10 +514,10 @@ export default class Settings {
             .setChildOf(this.mainBlock)
 
         this.searchBarBg = new UIRoundedRectangle(3)
-            .setX((68.4).percent())
-            .setY((1.5).percent())
-            .setWidth((15).percent())
-            .setHeight((5).percent())
+            .setX((this.AmaterasuGui.searchBar.x).percent())
+            .setY((this.AmaterasuGui.searchBar.y).percent())
+            .setWidth((this.AmaterasuGui.searchBar.width).percent())
+            .setHeight((this.AmaterasuGui.searchBar.height).percent())
             .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             .setChildOf(this.mainBlock)
 
@@ -471,7 +547,7 @@ export default class Settings {
 
         this.leftBlockScrollbar = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
-            .setWidth((5).pixels())
+            .setWidth((this.AmaterasuGui.scrollbarSize).pixels())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar.color))
             .setChildOf(this.leftBlockBg)
 

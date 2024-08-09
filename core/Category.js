@@ -33,7 +33,7 @@ export default class Category {
         // [elementsSlider] here refers to the [scrollbar]
         this.elementsSlider = new UIRoundedRectangle(3)
             .setX((3).pixels(true))
-            .setWidth((5).pixels())
+            .setWidth((this.parentClass.AmaterasuGui.scrollbarSize).pixels())
             .setColor(ElementUtils.getJavaColor(this.handler.getColorScheme().Amaterasu.scrollbar.color))
 
         this.rightBlock.setScrollBarComponent(this.elementsSlider, true, false)
