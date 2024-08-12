@@ -91,6 +91,8 @@ export default class Settings {
                 Client.getMinecraft().field_71474_y.field_74335_Z = 2
             })
             .onClose(() => {
+                this.categories?.forEach(it => it?.createElementClass?._hideDropDownComps())
+
                 // Trigger listeners
                 this._onCloseGui.forEach(it => it())
 
