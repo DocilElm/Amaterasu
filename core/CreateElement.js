@@ -155,6 +155,7 @@ export default class CreateElement {
 
             case ConfigTypes.SLIDER:
                 this._addSlider(obj, (sliderValue) => {
+                    if (typeof sliderValue === "string") sliderValue = parseFloat(sliderValue)
                     if (typeof(sliderValue) !== "number" || !this.categoryClass.selected) return
                     // Trigger listeners
                     if (obj.value !== sliderValue) this.triggerListeners(obj, sliderValue)
