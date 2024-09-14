@@ -88,6 +88,29 @@ apply using `.setScheme(/**/).apply()` or `Settings` constructor
 
 schema can be found [here](ColorScheme.schema.json)
 
+The Custom [AmaterasuSchemes](https://github.com/DocilElm/AmaterasuSchemes/) Repo can also be used:
+```js
+// Import setter method for scheme
+import { setCustomScheme } from "../Amaterasu/core/RepoSchemes"
+
+[Settings]
+    .addButton({
+        configName: "apply",
+        title: "Apply Changes",
+        description: "Applies the new scheme",
+        onClick(setting) {
+            // Pass in the settings instance and the current input value
+            setCustomScheme(setting, setting.settings.customScheme)
+        }
+    })
+    .addTextInput({
+        configName: "customScheme",
+        title: "Custom Scheme",
+        description: "Input the custom scheme name from the github repo here",
+        placeHolder: "Amaterasu"
+    })
+```
+
 ## Vigilance Translations
 
 ### Text Input
