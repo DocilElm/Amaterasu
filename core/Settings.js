@@ -63,7 +63,8 @@ export default class Settings {
         // Module variables
         this.moduleName = moduleName
         this.defaultConfig = defaultConfig
-        this.colorScheme = this._checkScheme(colorSchemePath)
+        this.colorSchemePath = colorSchemePath
+        this.colorScheme = this._checkScheme(this.colorSchemePath)
 
         //
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
