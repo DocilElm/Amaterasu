@@ -62,6 +62,7 @@ export default class Settings {
     constructor(moduleName, defaultConfig, colorSchemePath, titleText) {
         // Module variables
         this.moduleName = moduleName
+        /** @type {DefaultConfig} */
         this.defaultConfig = defaultConfig
         this.colorSchemePath = colorSchemePath
         this.colorScheme = this._checkScheme(this.colorSchemePath)
