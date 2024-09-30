@@ -75,10 +75,10 @@ export default class CreateElement {
 
         const textScale = descElement._getSchemeValue("text", "scale")
         const textScaleType = this.handler.getColorScheme().Amaterasu.Text.text.scaleType
-        const scale = textScaleType.toLowerCase() === "percent" ? (textScale).percent() : (textScale).pixels()
+        const isPercent = textScaleType.toLowerCase() === "percent"
 
-        descElement.text.setTextScale(scale)
-        descElement.descriptionElement.setTextScale(scale)
+        descElement.text.setTextScale((textScale)[isPercent ? "percent" : "pixels"]())
+        descElement.descriptionElement.setTextScale((textScale)[isPercent ? "percent" : "pixels"]())
             // TODO: make an actual good hovering system for wrapped text
             // this code has been commented out in order to not publish something that
             // not even i am happy of but i do want to fix it later on maybe
