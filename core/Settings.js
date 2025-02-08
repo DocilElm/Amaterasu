@@ -198,7 +198,45 @@ export default class Settings {
                  * - Sets the xPadding in percent
                  * - Defaults to `1.5`
                  */
-                xPadding: 1.5
+                xPadding: 1.5,
+                /**
+                 * - Holds data needed for description text wrapping
+                 */
+                textWrap: {
+                    /** 
+                     * - Whether or not to wrap the text
+                     * - Disable this if you want the description background box to
+                     * auto adjust with the description text height
+                     * - Defaults to `true`
+                     * @type {boolean}
+                     */
+                    enabled: true,
+                    /**
+                     * - Base lines height
+                     * - Used to multiply this value by the extra lines and add
+                     * to the background box
+                     * - Defaults to `7`
+                     * - Note: only used whenever `textWrap.enabled` is set to `false`
+                     * @type {number}
+                     */
+                    wrapHeight: 7,
+                    /**
+                     * - Max lines limit (for text wrapping vertically)
+                     * - Used to detection whether the description background box
+                     * should change height
+                     * - Defaults to `2`
+                     * - Note: only used whenever `textWrap.enabled` is set to `false`
+                     * @type {number}
+                     */
+                    linesLimit: 2,
+                    /**
+                     * - Lines to remove on the calculation for the new height of the description component
+                     * - Defaults to `1`
+                     * - Note: only used whenever `textWrap.enabled` is set to `false`
+                     * @type {number}
+                     */
+                    removeLines: 1
+                }
             },
             /**
              * - Calls the main instance's `apply` method
