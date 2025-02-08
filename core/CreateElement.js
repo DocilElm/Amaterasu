@@ -10,8 +10,11 @@ import SwitchElement from "../../DocGuiLib/elements/Switch"
 import DropDown from "../../DocGuiLib/elements/DropDown"
 import MultiCheckbox from "../../DocGuiLib/elements/MultiCheckbox"
 import Keybind from "../../DocGuiLib/elements/Keybind"
-import { CenterConstraint, CramSiblingConstraint, OutlineEffect, UIRoundedRectangle } from "../../Elementa"
+import { AdditiveConstraint, CenterConstraint, CramSiblingConstraint, OutlineEffect, UIRoundedRectangle, UIWrappedText } from "../../Elementa"
 import ConfigTypes from "./ConfigTypes"
+
+const maxLinesMethod = UIWrappedText.class.getDeclaredMethod("getMaxLines")
+maxLinesMethod.setAccessible(true)
 
 export default class CreateElement {
     /**
@@ -63,15 +66,30 @@ export default class CreateElement {
             : obj.type === ConfigTypes.TEXTPARAGRAPH
                 ? 98
                 : 80
+        const textWrapping = this.categoryClass.parentClass.AmaterasuGui.descriptionElement.textWrap.enabled
 
         const descElement = new TextDescriptionElement(obj.text, obj.description, obj.centered ?? false, 0, 0, textWidth, 75)
             ._setPosition(
                 (this.categoryClass.parentClass.AmaterasuGui.descriptionElement.xPadding).percent(),
                 new CenterConstraint()
             )
+            .setWrapHeight(textWrapping)
         descElement
             ._create(this.handler.getColorScheme().Amaterasu)
             .setChildOf(bgBox)
+
+        if (!textWrapping) {
+            const lim = maxLinesMethod.invoke(descElement.descriptionElement)
+            if (lim > this.categoryClass.parentClass.AmaterasuGui.descriptionElement.textWrap.linesLimit) {
+                const linesLength = (lim - this.categoryClass.parentClass.AmaterasuGui.descriptionElement.textWrap.removeLines)
+                bgBox.setHeight(
+                    new AdditiveConstraint(
+                        (20).percent(),
+                        (this.categoryClass.parentClass.AmaterasuGui.descriptionElement.textWrap.wrapHeight * linesLength).pixels()
+                        )
+                    )
+            }
+        }
 
         const textScale = descElement._getSchemeValue("text", "scale")
         const textScaleType = this.handler.getColorScheme().Amaterasu.Text.text.scaleType
