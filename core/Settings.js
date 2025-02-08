@@ -313,9 +313,15 @@ export default class Settings {
         let configObj = this.config.find(it => it.category === category)?.settings?.find(it => it.name === configName)
         if (!configObj) return this
 
+        let oldv = configObj.value
         configObj.value = value
         this.settings = this.configsClass._normalizeSettings()
         this.apply()
+
+        // Trigger listener
+        this._configListeners.get(configObj.name)?.forEach(it => it(oldv, value, configObj.name))
+        this._configListeners.get(this.generalSymbol)?.forEach(it => it(oldv, value, configObj.name))
+        if (configObj.registerListener) configObj.registerListener(oldv, value, configObj.name)
 
         return this
     }
