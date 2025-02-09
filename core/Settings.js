@@ -4,6 +4,7 @@ import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
 import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 import Category from "./Category"
+import ConfigTypes from "./ConfigTypes"
 
 // Credits to @unclaimedbloom6 (big thank)
 const mergeObjects = (obj1, obj2, final = {}) => {
@@ -349,6 +350,13 @@ export default class Settings {
         if (!category || !configName || !this.categories.has(category)) throw new Error(`category: ${category} or configName: ${configName} are not valid.`)
 
         let configObj = this.config.find(it => it.category === category)?.settings?.find(it => it.name === configName)
+
+        // Multicheckbox logic
+        if (!configObj) {
+            configObj = this.config.find(it => it.category === category)?.settings?.find(it => it.options?.some(n => n.configName === configName))
+            if (configObj?.type === ConfigTypes.MULTICHECKBOX)
+                configObj = configObj.options.find(it => it.configName === configName)
+        }
         if (!configObj) return this
 
         let oldv = configObj.value
@@ -357,9 +365,10 @@ export default class Settings {
         this.apply()
 
         // Trigger listener
-        this._configListeners.get(configObj.name)?.forEach(it => it(oldv, value, configObj.name))
-        this._configListeners.get(this.generalSymbol)?.forEach(it => it(oldv, value, configObj.name))
-        if (configObj.registerListener) configObj.registerListener(oldv, value, configObj.name)
+        const editedName = configObj.name ?? configObj.configName
+        this._configListeners.get(editedName)?.forEach(it => it(oldv, value, editedName))
+        this._configListeners.get(this.generalSymbol)?.forEach(it => it(oldv, value, editedName))
+        if (configObj.registerListener) configObj.registerListener(oldv, value, editedName)
 
         return this
     }
