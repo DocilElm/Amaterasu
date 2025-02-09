@@ -81,7 +81,7 @@ export default class DefaultConfig {
         /**
          * @type {any[]}
          */
-        this.savedConfig = JSON.parse(FileLib.read(this.moduleName, this.filePath))
+        this.savedConfig = JSON.parse(FileLib.read(this.moduleName, this.filePath) || "{}")
 
         /**
          * Config stuff
