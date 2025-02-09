@@ -111,6 +111,19 @@ import { setCustomScheme } from "../Amaterasu/core/RepoSchemes"
     })
 ```
 
+### Dynamic Description Height
+```js
+// How to disable wrap so you can have dynamic description height
+const textWrap = config.AmaterasuGui.descriptionElement.textWrap
+textWrap.enabled = false // Set to false so the description does not get wrapped
+textWrap.linesLimit = 2 // Set the limit of vertical lines (`2` is set by default so you can avoid setting it)
+textWrap.removeLines = 1 // Set the amount of lines to remove when calculating the new height (`1` is set by default this is mostly for padding issues)
+textWrap.wrapHeight = 7 // Set the amount of "text height" this is the value that will be used to calculate the new height (`7` is set by default)
+
+// Now we call apply so our changes work
+config.AmaterasuGui.apply()
+```
+
 ## Vigilance Translations
 
 ### Text Input
