@@ -113,9 +113,9 @@ export default class Settings {
         this.configsClass = this.defaultConfig._init() // keeping the same name because too lazy to find where else i use it
         this.config = this.configsClass.config
         /**
-         * @type {ReturnType<DefaultConfig["_normalizeSettings"]>}
+         * @type {ReturnType<DefaultConfig["_initSettings"]>}
          */
-        this.settings = this.configsClass._normalizeSettings()
+        this.settings = this.configsClass._initSettings()
 
         // Categories variables
         this.categories = new Map()
@@ -361,7 +361,7 @@ export default class Settings {
 
         let oldv = configObj.value
         configObj.value = value
-        this.settings = this.configsClass._normalizeSettings()
+        this.configsClass._normalizeSettings(this.settings)
         this.apply()
 
         // Trigger listener

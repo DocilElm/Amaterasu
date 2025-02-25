@@ -206,15 +206,39 @@ export default class DefaultConfig {
     /**
      * @private
      * - Internal use.
-     * - Makes the current config into an actual dev friendly format
+     * - Forms and updates the current config into an actual dev friendly format
+     * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
+     * converts it into `{ configName: false }`
+     * @param {Object?}  
+     * @returns {P & { getConfig() => import("./Settings").default<this> }}
+     */
+    _normalizeSettings(settings) {
+        // TODO: change this to only be ran once per feature change
+        // rather than everytime one changes re-scan the entire thing and re-build it
+        this.config.forEach(obj => {
+            obj.settings.forEach(settingsObj => {
+                if (settingsObj.type === ConfigTypes.MULTICHECKBOX) {
+                    settingsObj.options.forEach(opts => {
+                        settings[opts.configName] = opts.value
+                    })
+                    return
+                }
+
+                settings[settingsObj.name] = settingsObj.value
+            })
+        })
+    }
+
+    /**
+     * @private
+     * - Internal use.
+     * - Builds the config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
      * @returns {P & { getConfig() => import("./Settings").default<this> }}
      */
-    _normalizeSettings() {
-        // TODO: change this to only be ran once per feature change
-        // rather than everytime one changes re-scan the entire thing and re-build it
-        let settings = {}
+    _initSettings() {
+        const settings = {}
 
         this.config.forEach(obj => {
             obj.settings.forEach(settingsObj => {

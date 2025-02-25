@@ -99,7 +99,7 @@ export default class Category {
      * @returns this for method chaining
      */
     _reBuildConfig() {
-        this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
+        this.parentClass.configsClass._normalizeSettings(this.parentClass.settings)
         this.createElementClass._hideElement(this.parentClass.settings)
 
         return this
