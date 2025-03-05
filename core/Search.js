@@ -23,7 +23,7 @@ export default class SearchElement {
         this.matches = null
         this.hasSearched = false
 
-        this.rightBlock = new ScrollComponent("no elements found", 5.0)
+        this.rightBlock = new ScrollComponent("No elements found...", 5.0)
             .setX((1).pixel())
             .setY((1).pixel())
             .setWidth((98).percent())
@@ -118,17 +118,6 @@ export default class SearchElement {
         this.rightBlock.hide()
         this.parentClass._unhideAll()
         this.hasSearched = false
-
-        return this
-    }
-
-    /**
-     * - Re-builds the normalize settings
-     * @returns this for method chaining
-     */
-    _reBuildConfig() {
-        this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
-        this.createElementClass._hideElement(this.parentClass.settings)
 
         return this
     }

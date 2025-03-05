@@ -95,11 +95,12 @@ export default class Category {
     }
 
     /**
-     * - Re-builds the normalize settings
+     * - Updates the parent class' element
+     * @param {any} element
      * @returns this for method chaining
      */
-    _reBuildConfig() {
-        this.parentClass.settings = this.parentClass.configsClass._normalizeSettings()
+    _updateElement(element) {
+        this.parentClass.settings[element.name] = element.value
         this.createElementClass._hideElement(this.parentClass.settings)
 
         return this

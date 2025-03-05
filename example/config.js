@@ -260,5 +260,5 @@ config
     .setScheme(currentScheme)
     .apply()
 
-// Now we export the [config.settings] as a default function
-export default () => config.settings
+// Now we export the [config.settings]
+export default config.settings

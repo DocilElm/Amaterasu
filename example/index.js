@@ -6,7 +6,7 @@ import settings from "./config"
 // For example only running a feature whenever "testingSwitch" is enabled
 register("step", () => {
     // If it's disabled we return (won't keep going further down)
-    if (!settings().testingSwitch) return
+    if (!settings.testingSwitch) return
 
     // Otherwise (if it's enabled) we say something in chat
     ChatLib.chat("testingSwitch is enabled!")
@@ -20,7 +20,7 @@ register("command", (...args) => {
     // If no arguments were passed to the command
     // (meaning only "/mytest" was ran and not "/mytest something here")
     // we open our Amaterasu gui
-    if (!args.length) return settings().getConfig().openGui()
+    if (!args.length) return settings.getConfig().openGui()
 
     // If args[0] is defined we do something else
     if (args[0]) {
@@ -33,6 +33,6 @@ register("command", (...args) => {
 
 // We can also use registerListener from here
 // as well as all the other options that [Settings] class gives
-settings().getConfig().registerListener("testingSwitch", (previousValue, newValue) => {
+settings.getConfig().registerListener("testingSwitch", (previousValue, newValue) => {
     ChatLib.chat(`looks like testingSwitch changed | ${previousValue} -> ${newValue} |`)
 })
