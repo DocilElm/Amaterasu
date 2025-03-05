@@ -259,7 +259,7 @@ export default class CreateElement {
 
         this.triggerListeners(obj, newValue)
         obj.value = newValue
-        this.categoryClass._reBuildConfig()
+        this.categoryClass._updateElement(obj)
     }
 
     // The following methods do not have jsdocs due to the fact that
@@ -489,8 +489,7 @@ export default class CreateElement {
             const isEnabled = obj.configObj.shouldShow(data)
             const component = obj.component
 
-            // Possibly get rid of this error
-            if (typeof(isEnabled) !== "boolean") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
+            if (typeof(isEnabled) === "object") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
 
             if (!isEnabled) {
                 this._hide(component)
