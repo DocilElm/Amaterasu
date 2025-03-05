@@ -169,24 +169,15 @@ export default class CreateElement {
     _createFromObj(obj) {
         switch (obj.type) {
             case ConfigTypes.TOGGLE:
-                this._addToggle(obj, () => {
-                    // Trigger listeners
-                    this.triggerListeners(obj, !obj.value)
-
-                    obj.value = !obj.value
-                    this.categoryClass._reBuildConfig()
-                })
+                this._addToggle(obj, () => this._handleUpdate(obj, !obj.value))
                 break
 
             case ConfigTypes.SLIDER:
                 this._addSlider(obj, (sliderValue) => {
                     if (typeof sliderValue === "string") sliderValue = parseFloat(sliderValue)
                     if (typeof(sliderValue) !== "number" || !this.categoryClass.selected) return
-                    // Trigger listeners
-                    if (obj.value !== sliderValue) this.triggerListeners(obj, sliderValue)
-    
-                    obj.value = sliderValue
-                    this.categoryClass._reBuildConfig()
+
+                    this._handleUpdate(obj, sliderValue)
                 })
                 break
 
@@ -197,65 +188,41 @@ export default class CreateElement {
             case ConfigTypes.SELECTION:
                 this._addSelection(obj, (selectionIndex) => {
                     if (typeof(selectionIndex) !== "number" || !this.categoryClass.selected) return
-                    // Trigger listeners
-                    if (obj.value !== selectionIndex) this.triggerListeners(obj, selectionIndex)
-
-                    obj.value = selectionIndex
-                    this.categoryClass._reBuildConfig()
+                    
+                    this._handleUpdate(obj, selectionIndex)
                 })
                 break
 
             case ConfigTypes.TEXTINPUT:
                 this._addTextInput(obj, (inputText) => {
                     if (!this.categoryClass.selected) return
-                    // Trigger listeners
-                    this.triggerListeners(obj, inputText)
-
-                    obj.value = inputText
-                    this.categoryClass._reBuildConfig()
+                    
+                    this._handleUpdate(obj, inputText)
                 })
                 break
 
             case ConfigTypes.COLORPICKER:
-                this._addColorPicker(obj, ([r, g, b, a]) => {
+                this._addColorPicker(obj, (rgbaArray) => {
                     if (!this.categoryClass.selected) return
-                    // Trigger listeners
-                    this.triggerListeners(obj, [r, g, b, a])
-
-                    obj.value = [r, g, b, a]
-                    this.categoryClass._reBuildConfig()
+                    
+                    this._handleUpdate(obj, rgbaArray)
                 })
                 break
 
             case ConfigTypes.SWITCH:
-                this._addSwitch(obj, () => {
-                    // Trigger listeners
-                    this.triggerListeners(obj, !obj.value)
-
-                    obj.value = !obj.value
-                    this.categoryClass._reBuildConfig()
-                })
+                this._addSwitch(obj, () => this._handleUpdate(obj, !obj.value))
                 break
 
             case ConfigTypes.DROPDOWN:
-                this._addDropDown(obj, (value) => {
-                    // Trigger listeners
-                    if (obj.value !== value) this.triggerListeners(obj, value)
-
-                    obj.value = value
-                    this.categoryClass._reBuildConfig()
-                })
+                this._addDropDown(obj, (value) => this._handleUpdate(obj, value))
                 break
 
             case ConfigTypes.MULTICHECKBOX:
                 this._addMultiCheckbox(obj, (configName, value) => {
                     const idx = obj.options.findIndex(it => it.configName === configName)
                     if (idx === -1) return
-                    // Trigger listeners
-                    this.triggerListeners(obj.options[idx], value)
-
-                    obj.options[idx].value = value
-                    this.categoryClass._reBuildConfig()
+                    
+                    this._handleUpdate(obj.options[idx], value)
                 })
                 break
 
@@ -264,13 +231,7 @@ export default class CreateElement {
                 break
 
             case ConfigTypes.KEYBIND:
-                this._addKeybind(obj, (value) => {
-                    // Trigger listeners
-                    this.triggerListeners(obj, value)
-
-                    obj.value = value
-                    this.categoryClass._reBuildConfig()
-                })
+                this._addKeybind(obj, (value) => this._handleUpdate(obj, value))
                 break
         }
     }
@@ -285,9 +246,20 @@ export default class CreateElement {
     triggerListeners(obj, newvalue) {
         const _configListeners = this.categoryClass.parentClass._configListeners
 
-        _configListeners.get(obj.name)?.forEach(it => it(obj.value, newvalue, obj.name))
-        _configListeners.get(this.categoryClass.parentClass.generalSymbol)?.forEach(it => it(obj.value, newvalue, obj.name))
-        if (obj.registerListener) obj.registerListener(obj.value, newvalue, obj.name)
+        const {name, value} = obj
+
+        _configListeners.get(name)?.forEach(it => it(value, newvalue, name))
+        _configListeners.get(this.categoryClass.parentClass.generalSymbol)?.forEach(it => it(value, newvalue, name))
+        if (obj.registerListener) obj.registerListener(value, newvalue, name)
+    }
+
+    _handleUpdate(obj, newValue) {
+        if (Array.isArray(newValue) && obj.value.every((value, index) => value === newValue[index])) return
+        else if (obj.value === newValue) return
+
+        this.triggerListeners(obj, newValue)
+        obj.value = newValue
+        this.categoryClass._reBuildConfig()
     }
 
     // The following methods do not have jsdocs due to the fact that
@@ -517,6 +489,7 @@ export default class CreateElement {
             const isEnabled = obj.configObj.shouldShow(data)
             const component = obj.component
 
+            // Possibly get rid of this error
             if (typeof(isEnabled) !== "boolean") throw new Error(`Error while attempting to check for shouldShow. ${obj.configObj.shouldShow} does not return a valid Boolean`)
 
             if (!isEnabled) {
