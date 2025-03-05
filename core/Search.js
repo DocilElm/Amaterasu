@@ -23,7 +23,7 @@ export default class SearchElement {
         this.matches = null
         this.hasSearched = false
 
-        this.rightBlock = new ScrollComponent("no elements found", 5.0)
+        this.rightBlock = new ScrollComponent("No elements found...", 5.0)
             .setX((1).pixel())
             .setY((1).pixel())
             .setWidth((98).percent())
