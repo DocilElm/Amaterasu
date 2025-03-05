@@ -123,17 +123,6 @@ export default class SearchElement {
     }
 
     /**
-     * - Re-builds the normalize settings
-     * @returns this for method chaining
-     */
-    _reBuildConfig() {
-        this.parentClass.configsClass._normalizeSettings(this.parentClass.settings)
-        this.createElementClass._hideElement(this.parentClass.settings)
-
-        return this
-    }
-
-    /**
      * - Hides the [rightBlock] component from the [mainRightBlock]
      * and sets this category unselected
      */
