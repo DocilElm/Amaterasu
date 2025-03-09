@@ -94,7 +94,16 @@ export default class DefaultConfig {
         this.settingsInstance = null
 
         // Registers
-        register("gameUnload", this._saveToFile.bind(this))
+        register("gameUnload", () => {
+            this._saveToFile()
+            if (this.settingsInstance) {
+                const gui = this.settingsInstance.handler.ctGui
+                if (gui.isOpen()) gui.close()
+
+                this.settingsInstance.handler = null
+                this.settingsInstance = null
+            }
+        })
     }
 
     /**
