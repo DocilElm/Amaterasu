@@ -118,6 +118,7 @@ export default class SearchElement {
         this.rightBlock.hide()
         this.parentClass._unhideAll()
         this.hasSearched = false
+        this.selected = false
 
         if (hadString) Client.scheduleTask(2, () => this.parentClass.searchBar._focusSearch())
 
@@ -138,7 +139,7 @@ export default class SearchElement {
      */
     _focusSearch() {
         // Avoid focusing search if there is a component already focused
-        if (this.parentClass.handler.window.focusedComponent) return
+        if (this.parentClass.handler.window.focusedComponent) return false
 
         this.selected = true
         this.searchBar.textInput.grabWindowFocus()
