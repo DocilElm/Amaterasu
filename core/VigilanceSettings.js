@@ -112,7 +112,7 @@ export const convertToAmaterasu = (instance, moduleName, moduleToConvert = null,
         str += `\n.addButton({\n    category: "${category}",\n    configName: "${key}",\n    title: "${name}",\n    description: ${JSON.stringify(description)},\n    subcategory: "${subcategory}",\n    onClick() {\n        ChatLib.chat("this is an example function")\n    }\n})`
     })
 
-    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]\n\nexport default () => setting.settings`
+    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]\n\nexport default setting.settings`
 
     saveAmaterasuSettings(moduleName, configPath, str)
 }
@@ -171,7 +171,7 @@ export const convertObjToAmateras = (obj, moduleName = null, configPath = null, 
 
     })
 
-    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]\n\nexport default () => setting.settings`
+    str += `\n\nconst setting = new Settings("${moduleName}", config, "data/ColorScheme.json") // make sure to set your command with [.setCommand("commandname")]\n\nexport default setting.settings`
 
     saveAmaterasuSettings(moduleName, configPath, str)
 }
