@@ -246,7 +246,7 @@ export default class CreateElement {
     triggerListeners(obj, newvalue) {
         const _configListeners = this.categoryClass.parentClass._configListeners
 
-        const {name, value} = obj
+        const { name, value } = obj
 
         _configListeners.get(name)?.forEach(it => it(value, newvalue, name))
         _configListeners.get(this.categoryClass.parentClass.generalSymbol)?.forEach(it => it(value, newvalue, name))

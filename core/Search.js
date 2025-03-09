@@ -62,7 +62,7 @@ export default class SearchElement {
         if (!this.selected) return this._reset()
 
         // Return & reset if the string is empty and the user has searched before
-        if (!string && this.hasSearched) return this._reset()
+        if (!string && this.hasSearched) return this._reset(true)
 
         // Return if the string is empty so it doesn't try to search for ""
         if (!string) return
@@ -114,10 +114,12 @@ export default class SearchElement {
      * - Resets the current search category and hides it
      * @returns this for method chaining
      */
-    _reset() {
+    _reset(hadString) {
         this.rightBlock.hide()
         this.parentClass._unhideAll()
         this.hasSearched = false
+
+        if (hadString) Client.scheduleTask(2, () => this.parentClass.searchBar._focusSearch())
 
         return this
     }
