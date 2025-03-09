@@ -139,7 +139,10 @@ export default class SearchElement {
      */
     _focusSearch() {
         // Avoid focusing search if there is a component already focused
-        if (this.parentClass.handler.window.focusedComponent) return false
+        const focused = this.parentClass.handler.window.focusedComponent
+        this.selected = focused?.equals(this.searchBar.textInput)
+        if (this.selected && !focused?.equals(this.searchBar.textInput)) return this.selected = false
+        else if (focused && !this.selected) return false
 
         this.selected = true
         this.searchBar.textInput.grabWindowFocus()
