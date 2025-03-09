@@ -2,9 +2,11 @@ import ElementUtils from "../../DocGuiLib/core/Element"
 import HandleGui from "../../DocGuiLib/core/Gui"
 import MarkdownElement from "../../DocGuiLib/elements/Markdown"
 import SearchElement from "./Search"
-import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText, Window } from "../../Elementa"
 import Category from "./Category"
 import ConfigTypes from "./ConfigTypes"
+import { CustomGui } from "../../DocGuiLib/core/CustomGui"
+import HandleRegisters from "../../DocGuiLib/listeners/Registers"
 
 // Credits to @unclaimedbloom6 (big thank)
 const mergeObjects = (obj1, obj2, final = {}) => {
@@ -68,8 +70,19 @@ export default class Settings {
         this.colorSchemePath = colorSchemePath
         this.colorScheme = this._checkScheme(this.colorSchemePath)
 
-        //
+        // Gui Listener Handler
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
+
+        // Rebuild handler with new Custom Gui in DocGuiLib
+        this.handler.ctGui = new CustomGui()
+        this.handler.window = new Window()
+        this.handler.registers = new HandleRegisters(this.handler.ctGui, this.handler.window)
+        this.handler.registers.isCustom = true
+
+        // Save window size to fix textwrapping issue
+        this._startedWidth = Renderer.screen.getWidth() * Renderer.screen.getScale()
+        this._startedHeight = Renderer.screen.getHeight() * Renderer.screen.getScale()
+
         this.titleText = titleText?.addColor() ?? `${this.moduleName.addColor()} Settings`
         this.sortCategories = null
         this.sortElements = null
@@ -81,8 +94,19 @@ export default class Settings {
         this._configListeners = new Map()
         this.generalSymbol = Symbol("all")
 
+        // Enable repeat keys so people can hold down keys to type now
+        this.handler.ctGui
+            .registerInit(() => {
+                Keyboard.enableRepeatEvents(true)
+            })
+            .registerResize(() => {
+                this._checkResize()
+            })
+
         this.handler.registers
             .onOpen(() => {
+                this._checkResize()
+
                 // Trigger listeners
                 this._onOpenGui.forEach(it => it())
 
@@ -94,6 +118,9 @@ export default class Settings {
                 Client.getMinecraft().field_71474_y.field_74335_Z = 2
             })
             .onClose(() => {
+                // Disable repeating keys so it doesn't leak to the main game
+                Keyboard.enableRepeatEvents(false)
+
                 this.categories?.forEach(it => it?.createElementClass?._hideDropDownComps())
 
                 // Trigger listeners
@@ -701,6 +728,29 @@ export default class Settings {
             // Reset to default values
             selectedAmount = 0
         })
+    }
+
+    /**
+     * - Checks whether the screen has changed in size since last time
+     * - If it has we rebuild the entire UI
+     * - This isn't very efficient but due to the very nature of Amaterasu
+     * it has to be done this way
+     */
+    _checkResize() {
+        if (
+            this._startedWidth !== (Renderer.screen.getWidth() * Renderer.screen.getScale()) ||
+            this._startedHeight !== (Renderer.screen.getHeight() * Renderer.screen.getScale())
+        ) {
+            // Window size changed since last time we were created
+            // This means textwrap might look weird so we need to rebuild the gui
+            // This is not really that optimal since it's changing the size only but
+            // due to the nature of how Amaterasu works it has to be done this way
+            this.apply()
+
+            // Set new size so we don't constantly rebuild
+            this._startedWidth = Renderer.screen.getWidth() * Renderer.screen.getScale()
+            this._startedHeight = Renderer.screen.getHeight() * Renderer.screen.getScale()
+        }
     }
 
     /**
