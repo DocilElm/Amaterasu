@@ -137,6 +137,9 @@ export default class SearchElement {
      * - Focus the search component to be interacted with
      */
     _focusSearch() {
+        // Avoid focusing search if there is a component already focused
+        if (this.parentClass.handler.window.focusedComponent) return
+
         this.selected = true
         this.searchBar.textInput.grabWindowFocus()
         this.searchBar.textInput.focus()
