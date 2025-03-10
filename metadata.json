@@ -2,6 +2,6 @@
   "name": "Amaterasu",
   "creator": "DocilElm",
   "description": "doc is the best.",
-  "version": "2.18.4",
+  "version": "2.19.4",
   "requires": ["DocGuiLib"]
 }
