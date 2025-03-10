@@ -273,6 +273,8 @@ export default class Settings {
             apply: () => this.apply()
         }
 
+        this._onClickSound = null
+
         // Init function
         this._init()
     }
@@ -396,6 +398,19 @@ export default class Settings {
         this._configListeners.get(editedName)?.forEach(it => it(oldv, value, editedName))
         this._configListeners.get(this.generalSymbol)?.forEach(it => it(oldv, value, editedName))
         if (configObj.registerListener) configObj.registerListener(oldv, value, editedName)
+
+        return this
+    }
+
+    /**
+     * - Sets the callback function to be ran whenever certain components get clicked
+     * @param {() => void} cb 
+     * @returns {this} this for method chaining
+     */
+    setClickSound(cb) {
+        if (typeof cb !== "function") throw `[Amateras] ${cb} is not a valid function`
+
+        this._onClickSound = cb
 
         return this
     }

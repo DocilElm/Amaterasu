@@ -40,7 +40,10 @@ export default class SearchElement {
 
         this.searchBar = new TextInputElement("", 0, 0, 100, 100)
             .setPlaceHolder("Search...")
-            .onMouseClickEvent(() => this.selected = true)
+            .onMouseClickEvent(() => {
+                this.parentClass._onClickSound?.()
+                this.selected = true
+            })
             .onKeyTypeEvent(this._onKeyType.bind(this))
 
         this.createElementClass = new CreateElement(this)
@@ -49,6 +52,7 @@ export default class SearchElement {
         this.handler.getWindow().onKeyType((_, __, keycode) => {
             if (keycode !== 33 || !Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) return
 
+            this.parentClass._onClickSound?.()
             this._focusSearch()
         })
 

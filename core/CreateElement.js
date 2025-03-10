@@ -262,6 +262,10 @@ export default class CreateElement {
         this.categoryClass._updateElement(obj)
     }
 
+    _triggerSoundClick() {
+        this.categoryClass.parentClass._onClickSound?.()
+    }
+
     // The following methods do not have jsdocs due to the fact that
     // it's pretty easy to understand what they're doing and pretty much are similar to each other
     // (and yes these are only internal use methods)
@@ -274,7 +278,10 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
-            .onMouseClickEvent(fn)
+            .onMouseClickEvent(() => {
+                this._triggerSoundClick()
+                fn()
+            })
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
 
@@ -289,6 +296,9 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
+            .onMouseClickEvent(() => {
+                this._triggerSoundClick()
+            })
             .onMouseReleaseEvent(fn)
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
@@ -304,7 +314,10 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
-            .onMouseClickEvent(fn)
+            .onMouseClickEvent((idx) => {
+                this._triggerSoundClick()
+                fn(idx)
+            })
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
 
@@ -320,6 +333,9 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
+            .onMouseClickEvent(() => {
+                this._triggerSoundClick()
+            })
             .onKeyTypeEvent(fn)
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
@@ -330,14 +346,23 @@ export default class CreateElement {
     _addColorPicker(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new ColorPickerElement(obj.value, 0, 0, 17, 30)
+        const comp = new ColorPickerElement(obj.value, 0, 0, 17, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
             )
             .onKeyTypeEvent(fn)
-            ._create(this.handler.getColorScheme())
+
+        comp._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+
+        comp.textInput.onMouseClickEvent(() => {
+            this._triggerSoundClick()
+        })
+
+        comp.arrowText.onMouseClick(() => {
+            this._triggerSoundClick()
+        })
 
         return this
     }
@@ -351,12 +376,14 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
+            .onMouseClickEvent(() => {
+                this._triggerSoundClick()
+                obj.onClick?.(this.categoryClass.parentClass)
+            })
 
         button
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
-
-        if (obj.onClick) button.onMouseClickEvent(() => obj.onClick(this.categoryClass.parentClass))
 
         return this
     }
@@ -369,7 +396,10 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
-            .onMouseClickEvent(fn)
+            .onMouseClickEvent(() => {
+                this._triggerSoundClick()
+                fn()
+            })
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
 
@@ -384,7 +414,10 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
-            .onMouseClickEvent(fn)
+            .onMouseClickEvent((v) => {
+                this._triggerSoundClick()
+                fn(v)
+            })
 
         component
             ._create(this.handler.getColorScheme())
@@ -428,7 +461,10 @@ export default class CreateElement {
                 (5).pixel(true),
                 new CenterConstraint()
             )
-            .onMouseClickEvent(fn)
+            .onMouseClickEvent((configName, value) => {
+                this._triggerSoundClick()
+                fn(configName, value)
+            })
 
         component
             ._create(this.handler.getColorScheme())
@@ -466,14 +502,19 @@ export default class CreateElement {
     _addKeybind(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new Keybind(obj.value, 0, 0, 15, 30)
+        const comp = new Keybind(obj.value, 0, 0, 15, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
             )
             .onKeyTypeEvent(fn)
-            ._create(this.handler.getColorScheme())
+
+        comp._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+        
+        comp.bgbox.onMouseClick(() => {
+            this._triggerSoundClick()
+        })
 
         return this
     }

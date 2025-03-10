@@ -50,6 +50,7 @@ export default class Category {
 
                 this._setSelected(true)
                 this.parentClass._checkCategories()
+                this.parentClass._onClickSound?.()
             })
         
         this.sidebarButton
