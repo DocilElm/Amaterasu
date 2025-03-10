@@ -110,6 +110,19 @@ export default class SearchElement {
         this.createElementClass._create()
     }
 
+    
+    /**
+     * - Updates the parent class' element
+     * @param {any} element
+     * @returns this for method chaining
+     */
+    _updateElement(element) {
+        this.parentClass.settings[element.name] = element.value
+        this.createElementClass._hideElement(this.parentClass.settings)
+
+        return this
+    }
+
     /**
      * - Resets the current search category and hides it
      * @returns this for method chaining
