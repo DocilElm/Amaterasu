@@ -101,7 +101,8 @@ export default class Category {
      * @returns this for method chaining
      */
     _updateElement(element) {
-        this.parentClass.settings[element.name] = element.value
+        let name = element.name ?? element.configName
+        this.parentClass.settings[name] = element.value
         this.createElementClass._hideElement(this.parentClass.settings)
 
         return this
