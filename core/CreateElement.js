@@ -114,17 +114,23 @@ export default class CreateElement {
         if (!configCategory) return
 
         const configSettings = configCategory.settings
-        if (this.sortElement) configSettings.sort(this.sortElement)
+        // Thread loading the heavy part of this module
+        new Thread(() => {
+            if (this.sortElement) configSettings.sort(this.sortElement)
 
-        // Start creating the elements based off of the [Object]
-        for (let idx = 0; idx < configSettings.length; idx++) {
-            let obj = configSettings[idx]
+            // Start creating the elements based off of the [Object]
+            for (let idx = 0; idx < configSettings.length; idx++) {
+                let obj = configSettings[idx]
 
-            this._createFromObj(obj)
-        }
+                // Schedule task in the hopes of avoiding conc error
+                Client.scheduleTask(0, () => {
+                    this._createFromObj(obj)
+                })
+            }
 
-        // Trigger the hide/unhide of elements
-        this._hideElement(this.categoryClass.parentClass.settings)
+            // Trigger the hide/unhide of elements
+            this._hideElement(this.categoryClass.parentClass.settings)
+        }).start()
 
         // Return the parent class for main method chaining
         return this.categoryClass
