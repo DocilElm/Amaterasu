@@ -272,6 +272,7 @@ export default class DefaultConfig {
     /**
      * - Internal use.
      * - Saves the current config json into the module's given config file path
+     * @private
      */
     _saveToFile() {
         const data = this.config.map(it => ({

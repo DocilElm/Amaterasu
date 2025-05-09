@@ -18,7 +18,7 @@ maxLinesMethod.setAccessible(true)
 
 export default class CreateElement {
     /**
-     * @param {Category} categoryClass
+     * @param {import("./Category").default} categoryClass
      */
     constructor(categoryClass) {
         // Category class stuff
@@ -97,36 +97,6 @@ export default class CreateElement {
 
         descElement.text.setTextScale((textScale)[isPercent ? "percent" : "pixels"]())
         descElement.descriptionElement.setTextScale((textScale)[isPercent ? "percent" : "pixels"]())
-            // TODO: make an actual good hovering system for wrapped text
-            // this code has been commented out in order to not publish something that
-            // not even i am happy of but i do want to fix it later on maybe
-
-            // .onMouseEnter((component) => {
-            //     // Checks the boundaries of the [rightBlock] to not render
-            //     // the text once the component is below the scrollable (meaning the hidden ->) area
-            //     // After this checks whether the text width is above the width
-            //     // if it is, this means that the text will be wrapped so we can
-            //     // render wrapped text only as hover values instead of every single description
-            //     if (!(
-            //         component.getLeft() > this.rightBlock.getLeft() &&
-            //         component.getRight() < this.rightBlock.getRight() &&
-            //         component.getTop() > this.rightBlock.getTop() &&
-            //         component.getBottom() < this.rightBlock.getBottom()) ||
-            //         Renderer.getStringWidth(descElement.descriptionElement.getText().removeFormatting()) < bgBox.getWidth()
-            //     ) return
-
-            //     const hoverText = this.categoryClass.parentClass.hoverText
-
-            //     hoverText.setText(obj.description)
-            //     hoverText.setX((component.getLeft()).pixels())
-            //     hoverText.setY((descElement.descriptionElement.getTop()).pixels())
-            //     hoverText.setWidth((descElement.descriptionElement.getWidth()).pixels())
-            // })
-            // .onMouseLeave(() => {
-            //     const hoverText = this.categoryClass.parentClass.hoverText
-
-            //     hoverText.setText("")
-            // })
 
         this.elements.push({ name: obj.name, component: bgBox, configObj: obj, previousComponent: null })
 
@@ -541,6 +511,7 @@ export default class CreateElement {
 
             this._unhide(component, idx)
         })
+        this.categoryClass.parentClass._triggerShouldShowCategory()
     }
 
     /**

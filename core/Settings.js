@@ -149,6 +149,7 @@ export default class Settings {
         this.currentCategory = null
         this.oldCategory = null
         this.markdowns = []
+        this._hideCategory = {}
 
         // Drawing variables
         /**
@@ -416,6 +417,21 @@ export default class Settings {
     }
 
     /**
+     * - Adds a callback function that is ran whenever a config value changes and/or apply is called
+     * to check whether the specified [category] should be hidden or not
+     * @template {keyof GetTypeA<DefaultConfig>} CategoryName
+     * @param {CategoryName} categoryName
+     * @param {(Settings) => boolean} cb
+     * @returns {this} this for method chaining
+     */
+    setCategoryCb(categoryName, cb) {
+        this._hideCategory[categoryName] = cb
+        this.categories.get(categoryName)?._setShouldShow(cb)
+
+        return this
+    }
+
+    /**
      * - Adds a [Changelog] section with the given string
      * - Equivalent to `.addMarkdown("Changelog", text)`
      * @param {string} text
@@ -596,6 +612,7 @@ export default class Settings {
         return this
     }
 
+    /** @private */
     _init() {
         this.mainBlock = new UIRoundedRectangle(this.handler.getColorScheme().Amaterasu.background.roundness)
             .setX((this.AmaterasuGui.background.x).percent())
@@ -673,25 +690,14 @@ export default class Settings {
                 categoryName,
                 new Category(this, categoryName, index === 0).createElementClass._create()
             )
+            this.categories.get(categoryName)._setShouldShow(this._hideCategory[categoryName]).shouldShow()
         })
-
-        // See `CreateElement.js` line 75.
-
-        // this.hoverText = new UIWrappedText("")
-        //     .setX(new CenterConstraint())
-        //     .setY(new CenterConstraint())
-        //     .setChildOf(this.handler.getWindow())
-        //     .onMouseScroll(() => {
-        //         this.hoverText.setText("")
-        //         this.hoverText
-        //             .setX((-1).pixels())
-        //             .setY((-1).pixels())
-        //     })
     }
 
     /**
      * - Checks whether the color scheme exists and if it doesnt it creates
      * a new one using the path and the default color scheme from the module
+     * @private
      * @param {string} moduleName
      * @param {string} path
      * @returns {object}
@@ -721,6 +727,7 @@ export default class Settings {
     /**
      * - Checks whether it should hide the previous category or not
      * this is to prevent them both being rendered at the same time
+     * @private
      */
     _checkCategories() {
         let selectedAmount = 0
@@ -750,6 +757,7 @@ export default class Settings {
      * - If it has we rebuild the entire UI
      * - This isn't very efficient but due to the very nature of Amaterasu
      * it has to be done this way
+     * @private
      */
     _checkResize() {
         if (
@@ -771,6 +779,7 @@ export default class Settings {
     /**
      * - Hides all of the categories
      * - Currently only used by [SearchBar]
+     * @private
      */
     _hideAll() {
         this.categories.forEach(value => {
@@ -783,6 +792,7 @@ export default class Settings {
     /**
      * - Unhides the previously selected category
      * - Currently only used by [SearchBar]
+     * @private
      */
     _unhideAll() {
         this.categories.get(this.currentCategory)._setSelected(true)
@@ -795,8 +805,9 @@ export default class Settings {
 
     /**
      * - Saves the json color scheme into the given path
-     * @param {String} path
-     * @param {Object} json
+     * @private
+     * @param {string} path
+     * @param {object} json
      */
     _saveScheme(path, json) {
         FileLib.write(
@@ -805,5 +816,12 @@ export default class Settings {
             JSON.stringify(json, null, 4),
             true
         )
+    }
+
+    /** @private */
+    _triggerShouldShowCategory() {
+        this.categories.forEach((it) => {
+            it.shouldShow()
+        })
     }
 }

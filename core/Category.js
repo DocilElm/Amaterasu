@@ -17,6 +17,7 @@ export default class Category {
         this.mainBlock = this.parentClass.mainBlock
         this.mainRightBlock = this.parentClass.mainRightBlock
         this.config = this.parentClass.config
+        this._shouldShow = null
 
         // This is used to know if this category
         // is the one currently being selected
@@ -53,7 +54,7 @@ export default class Category {
                 this.parentClass._onClickSound?.()
             })
         
-        this.sidebarButton
+        this.sidebarComp = this.sidebarButton
             ._create(this.handler.getColorScheme())
             .setChildOf(this.leftBlock)
 
@@ -125,7 +126,6 @@ export default class Category {
         return this
     }
 
-
     /**
      * - Internal use
      * - Sets unfocus on the main component of this [class] and clears the childrens
@@ -134,5 +134,28 @@ export default class Category {
         this._setSelected(false)
         this.rightBlock.clearChildren()
         delete this
+    }
+
+    /**
+     * @param {(Settings) => boolean} cb
+     * @returns {this}
+     */
+    _setShouldShow(cb) {
+        this._shouldShow = cb
+
+        return this
+    }
+
+    shouldShow() {
+        if (!this._shouldShow) return
+        const result = this._shouldShow(this.parentClass)
+
+        if (!result) {
+            this._setSelected(false)
+            this.sidebarComp.hide()
+            return
+        }
+
+        this.sidebarComp.unhide(true)
     }
 }
