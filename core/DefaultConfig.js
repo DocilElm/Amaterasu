@@ -243,7 +243,7 @@ export default class DefaultConfig {
      * - Builds the config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
-     * @returns {Readonly<P> & { getConfig() => import("./Settings").default<this> }}
+     * @returns {Readonly<P> & { getConfig() => import("./Settings").default<DefaultConfig<P, C, A, L>> }}
      */
     _initSettings() {
         const settings = {}
