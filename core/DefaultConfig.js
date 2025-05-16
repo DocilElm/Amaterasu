@@ -218,8 +218,7 @@ export default class DefaultConfig {
      * - Forms and updates the current config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
-     * @param {Object?}  
-     * @returns {P & { getConfig() => import("./Settings").default<this> }}
+     * @param {Object?}
      */
     _normalizeSettings(settings) {
         // TODO: change this to only be ran once per feature change
@@ -244,7 +243,7 @@ export default class DefaultConfig {
      * - Builds the config into an actual dev friendly format
      * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
      * converts it into `{ configName: false }`
-     * @returns {P & { getConfig() => import("./Settings").default<this> }}
+     * @returns {Readonly<P> & { getConfig() => import("./Settings").default<this> }}
      */
     _initSettings() {
         const settings = {}
