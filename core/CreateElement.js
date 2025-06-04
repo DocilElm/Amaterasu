@@ -210,13 +210,14 @@ export default class CreateElement {
      * - Internal use.
      * - Triggers all the listeners set to the current [Object]'s [configName]
      * - Passing through `(previousValue, newValue)`
-     * @param {{}} obj 
-     * @param {any} newvalue 
+     * @param {{}} obj
+     * @param {*} value
+     * @param {*} newvalue
      */
-    triggerListeners(obj, newvalue) {
+    triggerListeners(obj, value, newvalue) {
         const _configListeners = this.categoryClass.parentClass._configListeners
 
-        const { name, value } = obj
+        const name = obj.name
 
         _configListeners.get(name)?.forEach(it => it(value, newvalue, name))
         _configListeners.get(this.categoryClass.parentClass.generalSymbol)?.forEach(it => it(value, newvalue, name))
@@ -227,9 +228,11 @@ export default class CreateElement {
         if (Array.isArray(newValue) && obj.value.every((value, index) => value === newValue[index])) return
         else if (obj.value === newValue) return
 
-        this.triggerListeners(obj, newValue)
+        let oldv = obj.value
         obj.value = newValue
         this.categoryClass._updateElement(obj)
+        // Avoid triggering the listener BEFORE the object is actually updated
+        this.triggerListeners(obj, oldv, newValue)
     }
 
     _triggerSoundClick() {
