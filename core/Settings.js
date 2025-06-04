@@ -67,7 +67,7 @@ export default class Settings {
         this.moduleName = moduleName
         /** @type {DefaultConfig} */
         this.defaultConfig = defaultConfig
-        this.colorSchemePath = colorSchemePath
+        this.colorSchemePath = colorSchemePath || "data/ColorScheme.json"
         this.colorScheme = this._checkScheme(this.colorSchemePath)
 
         // Gui Listener Handler
