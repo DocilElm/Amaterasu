@@ -35,6 +35,7 @@ export default class CreateElement {
         // Stores all the created [subcategories]
         // maybe later on we store the actual settings of each
         this.subcategories = new Set()
+        this.configComps = new Map() // <configName>: component
     }
 
     /**
@@ -245,8 +246,8 @@ export default class CreateElement {
 
     _addToggle(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
-        
-        new CheckboxElement(obj.value, 0, 0, 12, 30, true)
+
+        const checkbox = new CheckboxElement(obj.value, 0, 0, 12, 30, true)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -255,8 +256,10 @@ export default class CreateElement {
                 this._triggerSoundClick()
                 fn()
             })
+        checkbox
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+        this.configComps.set(obj.name, checkbox)
 
         return this
     }
@@ -264,7 +267,7 @@ export default class CreateElement {
     _addSlider(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new SliderElement(obj.options, obj.value, 0, 0, 15, 30)
+        const slider = new SliderElement(obj.options, obj.value, 0, 0, 15, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -273,8 +276,10 @@ export default class CreateElement {
                 this._triggerSoundClick()
             })
             .onMouseReleaseEvent(fn)
+        slider
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+        this.configComps.set(obj.name, slider)
 
         return this
     }
@@ -282,7 +287,7 @@ export default class CreateElement {
     _addSelection(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new SelectionElement(obj.options, obj.value, 0, 0, 17, 30)
+        const selection = new SelectionElement(obj.options, obj.value, 0, 0, 17, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -291,8 +296,10 @@ export default class CreateElement {
                 this._triggerSoundClick()
                 fn(idx)
             })
+        selection
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+        this.configComps.set(obj.name, selection)
 
         return this
     }
@@ -300,7 +307,7 @@ export default class CreateElement {
     _addTextInput(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
 
-        new TextInputElement(obj.value, 0, 0, 17, 30)
+        const input = new TextInputElement(obj.value, 0, 0, 17, 30)
             .setPlaceHolder(obj.placeHolder)
             ._setPosition(
                 (5).pixel(true),
@@ -310,8 +317,10 @@ export default class CreateElement {
                 this._triggerSoundClick()
             })
             .onKeyTypeEvent(fn)
+        input
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+        this.configComps.set(obj.name, input)
 
         return this
     }
@@ -336,6 +345,7 @@ export default class CreateElement {
         comp.arrowText.onMouseClick(() => {
             this._triggerSoundClick()
         })
+        this.configComps.set(obj.name, comp)
 
         return this
     }
@@ -363,8 +373,8 @@ export default class CreateElement {
 
     _addSwitch(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
-            
-        new SwitchElement(obj.value, 0, 0, 12, 30)
+
+        const switchelm = new SwitchElement(obj.value, 0, 0, 12, 30)
             ._setPosition(
                 (5).pixel(true),
                 new CenterConstraint()
@@ -373,15 +383,17 @@ export default class CreateElement {
                 this._triggerSoundClick()
                 fn()
             })
+        switchelm
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
+        this.configComps.set(obj.name, switchelm)
 
         return this
     }
 
     _addDropDown(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
-            
+
         const component = new DropDown(obj.options, obj.value, 0, 0, 20, 35)
             ._setPosition(
                 (5).pixel(true),
@@ -422,12 +434,16 @@ export default class CreateElement {
 
 
         this._find(obj.name).compInstance = component
+        this.configComps.set(obj.name, component)
 
         return this
     }
 
     _addMultiCheckbox(obj, fn) {
         const textDescription = this._makeTextDescription(obj)
+
+        // TODO: update dgl to handle the value updates for us
+        //  REMEMBER: this one is missing the entire "rebuild" logic
 
         const component = new MultiCheckbox(obj.options, obj.placeHolder, 0, 0, 20, 35)
             ._setPosition(
@@ -484,10 +500,11 @@ export default class CreateElement {
 
         comp._create(this.handler.getColorScheme())
             .setChildOf(textDescription)
-        
+
         comp.bgbox.onMouseClick(() => {
             this._triggerSoundClick()
         })
+        this.configComps.set(obj.name, comp)
 
         return this
     }
@@ -601,5 +618,10 @@ export default class CreateElement {
 
             return comp
         }
+    }
+
+    shouldShow() {
+        // TODO: possibly find a better way to link components together
+        this._hideElement(this.categoryClass.parentClass.settings)
     }
 }

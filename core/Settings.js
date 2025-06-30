@@ -392,7 +392,9 @@ export default class Settings {
         let oldv = configObj.value
         configObj.value = value
         this.configsClass._normalizeSettings(this.settings)
-        this.apply()
+        const createElm = this.categories.get(category).createElementClass
+        createElm?.configComps?.get(configName)?.setValue(value)
+        createElm?.shouldShow()
 
         // Trigger listener
         const editedName = configObj.name ?? configObj.configName
