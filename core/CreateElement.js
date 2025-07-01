@@ -484,6 +484,10 @@ export default class CreateElement {
             })
 
         this._find(obj.name).compInstance = component
+        for (let k of Object.keys(component.checkboxes)) {
+            let v = component.checkboxes[k]
+            this.configComps.set(k, v)
+        }
 
         return this
     }
