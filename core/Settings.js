@@ -389,18 +389,18 @@ export default class Settings {
         }
         if (!configObj) return this
 
-        let oldv = configObj.value
-        configObj.value = value
-        this.configsClass._normalizeSettings(this.settings)
         const createElm = this.categories.get(category).createElementClass
-        createElm?.configComps?.get(configName)?.setValue(value)
+        let oldv = configObj.value
+        const newValue = createElm?.configComps?.get(configName)?.setValue(value)
+        if (newValue) configObj.value = newValue
+        this.configsClass._normalizeSettings(this.settings)
         createElm?.shouldShow()
 
         // Trigger listener
         const editedName = configObj.name ?? configObj.configName
-        this._configListeners.get(editedName)?.forEach(it => it(oldv, value, editedName))
-        this._configListeners.get(this.generalSymbol)?.forEach(it => it(oldv, value, editedName))
-        if (configObj.registerListener) configObj.registerListener(oldv, value, editedName)
+        this._configListeners.get(editedName)?.forEach(it => it(oldv, newValue, editedName))
+        this._configListeners.get(this.generalSymbol)?.forEach(it => it(oldv, newValue, editedName))
+        if (configObj.registerListener) configObj.registerListener(oldv, newValue, editedName)
 
         return this
     }
