@@ -67,9 +67,9 @@ how to use:
 4. populate your `DefaultConfig` using `.add_____` (e.g. `.addButton`)
 5. using your `DefaultConfig`, create a `Settings`
 6. do things you need to do with your `Settings`
-7. `export default () => mySettings.settings`
+7. `export default mySettings.settings`
 8. (in another file) import your settings e.g. `import settings from "./myConfig"`
-9. profit `settings().myProperty`
+9. profit `settings.myProperty`
 
 ### Custom Size & Position
 
@@ -514,13 +514,13 @@ setting.setCategorySort((a, b) => {}).apply()
 For example if you have this
 
 ```js
-export default () => setting.settings
+export default setting.settings
 ```
 
 You can then get the [Settings] instance by doing
 
 ```js
-settings().getConfig()
+settings.getConfig()
 ```
 
 ---
