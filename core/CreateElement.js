@@ -95,9 +95,10 @@ export default class CreateElement {
         const textScale = descElement._getSchemeValue("text", "scale")
         const textScaleType = this.handler.getColorScheme().Amaterasu.Text.text.scaleType
         const isPercent = textScaleType.toLowerCase() === "percent"
+        const sumType = isPercent ? (textScale).percent() : (textScale).pixels()
 
-        descElement.text.setTextScale((textScale)[isPercent ? "percent" : "pixels"]())
-        descElement.descriptionElement.setTextScale((textScale)[isPercent ? "percent" : "pixels"]())
+        descElement.text.setTextScale(sumType)
+        descElement.descriptionElement.setTextScale(sumType)
 
         this.elements.push({ name: obj.name, component: bgBox, configObj: obj, previousComponent: null })
 

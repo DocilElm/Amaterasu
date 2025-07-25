@@ -74,10 +74,10 @@ export default class Settings {
         this.handler = new HandleGui()._setColorScheme(this.colorScheme)
 
         // Rebuild handler with new Custom Gui in DocGuiLib
-        this.handler.ctGui = new CustomGui()
-        this.handler.window = new Window()
-        this.handler.registers = new HandleRegisters(this.handler.ctGui, this.handler.window)
-        this.handler.registers.isCustom = true
+        // this.handler.ctGui = new CustomGui()
+        // this.handler.window = new Window()
+        // this.handler.registers = new HandleRegisters(this.handler.ctGui, this.handler.window)
+        // this.handler.registers.isCustom = true
 
         // Save window size to fix textwrapping issue
         this._startedWidth = Renderer.screen.getWidth() * Renderer.screen.getScale()
@@ -95,43 +95,44 @@ export default class Settings {
         this.generalSymbol = Symbol("all")
 
         // Enable repeat keys so people can hold down keys to type now
-        this.handler.ctGui
-            .registerInit(() => {
-                Keyboard.enableRepeatEvents(true)
-            })
-            .registerResize(() => {
-                this._checkResize()
-            })
+        // this.handler.ctGui
+        //     .registerInit(() => {
+        //         Keyboard.enableRepeatEvents(true)
+        //     })
+        //     .registerResize(() => {
+        //         this._checkResize()
+        //     })
 
-        this.handler.registers
-            .onOpen(() => {
-                this._checkResize()
+        // FIXME
+        // this.handler.registers
+        //     .onOpen(() => {
+        //         this._checkResize()
 
-                // Trigger listeners
-                this._onOpenGui.forEach(it => it())
+        //         // Trigger listeners
+        //         this._onOpenGui.forEach(it => it())
 
-                if (Client.getMinecraft().field_71474_y.field_74335_Z === 2) return
+        //         if (Client.getMinecraft().field_71474_y.field_74335_Z === 2) return
 
-                // Save previous [GuiScale]
-                this.GuiScale = Client.getMinecraft().field_71474_y.field_74335_Z
-                // Set [Normal] [GuiScale]
-                Client.getMinecraft().field_71474_y.field_74335_Z = 2
-            })
-            .onClose(() => {
-                // Disable repeating keys so it doesn't leak to the main game
-                Keyboard.enableRepeatEvents(false)
+        //         // Save previous [GuiScale]
+        //         this.GuiScale = Client.getMinecraft().field_71474_y.field_74335_Z
+        //         // Set [Normal] [GuiScale]
+        //         Client.getMinecraft().field_71474_y.field_74335_Z = 2
+        //     })
+        //     .onClose(() => {
+        //         // Disable repeating keys so it doesn't leak to the main game
+        //         Keyboard.enableRepeatEvents(false)
 
-                this.categories?.forEach(it => it?.createElementClass?._hideDropDownComps())
+        //         this.categories?.forEach(it => it?.createElementClass?._hideDropDownComps())
 
-                // Trigger listeners
-                this._onCloseGui.forEach(it => it())
+        //         // Trigger listeners
+        //         this._onCloseGui.forEach(it => it())
 
-                if (Client.getMinecraft().field_71474_y.field_74335_Z !== 2 || this.GuiScale == null) return
-                if (this.GuiScale === 2) return
+        //         if (Client.getMinecraft().field_71474_y.field_74335_Z !== 2 || this.GuiScale == null) return
+        //         if (this.GuiScale === 2) return
 
-                Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
-                this.GuiScale = null
-            })
+        //         Client.getMinecraft().field_71474_y.field_74335_Z = this.GuiScale
+        //         this.GuiScale = null
+        //     })
 
         // Config variables
         // Set this so we can actually have the [settings] field auto update

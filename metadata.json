@@ -1,7 +1,7 @@
 {
   "name": "Amaterasu",
   "creator": "DocilElm",
-  "description": "doc is the best.",
+  "description": "Settings config gui for other modules",
   "version": "4.20.5",
   "requires": ["DocGuiLib"]
 }
