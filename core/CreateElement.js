@@ -318,6 +318,7 @@ export default class CreateElement {
                 this._triggerSoundClick()
             })
             .onKeyTypeEvent(fn)
+            .setUseCustomKeyEvent(false)
         input
             ._create(this.handler.getColorScheme())
             .setChildOf(textDescription)

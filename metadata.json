@@ -2,6 +2,6 @@
   "name": "Amaterasu",
   "creator": "DocilElm",
   "description": "Settings config gui for other modules",
-  "version": "4.20.5",
+  "version": "6.0.0",
   "requires": ["DocGuiLib"]
 }
