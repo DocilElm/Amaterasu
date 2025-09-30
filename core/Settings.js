@@ -136,13 +136,13 @@ export default class Settings {
         // Config variables
         // Set this so we can actually have the [settings] field auto update
         // Rather than having to use a function to return its newly defined value
-        this.defaultConfig.settingsInstance = this
+        this.defaultConfig.instance = this
         this.configsClass = this.defaultConfig._init() // keeping the same name because too lazy to find where else i use it
         this.config = this.configsClass.config
         /**
-         * @type {ReturnType<DefaultConfig["_initSettings"]>}
+         * @type {ReturnType<DefaultConfig["_settings"]>}
          */
-        this.settings = this.configsClass._initSettings()
+        this.settings = this.configsClass._settings()
 
         // Categories variables
         this.categories = new Map()
@@ -396,7 +396,7 @@ export default class Settings {
         if (newValue == null) return
 
         configObj.value = newValue
-        this.configsClass._normalizeSettings(this.settings)
+        this.configsClass._normalize(this.settings)
         createElm?.shouldShow()
 
         // Trigger listener

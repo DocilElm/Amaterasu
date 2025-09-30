@@ -1,6 +1,17 @@
 import ConfigTypes from "./ConfigTypes"
 
-const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 0, 0]
+const defaultValues = new Map()
+const configInstances = new (java.util.WeakHashMap)()
+
+defaultValues.set(ConfigTypes.TOGGLE, false)
+defaultValues.set(ConfigTypes.SLIDER, 1)
+defaultValues.set(ConfigTypes.BUTTON, null)
+defaultValues.set(ConfigTypes.SELECTION, 0)
+defaultValues.set(ConfigTypes.TEXTINPUT, "")
+defaultValues.set(ConfigTypes.COLORPICKER, [255, 255, 255, 255])
+defaultValues.set(ConfigTypes.SWITCH, false)
+defaultValues.set(ConfigTypes.DROPDOWN, 0)
+defaultValues.set(ConfigTypes.MULTICHECKBOX, 0)
 
 /**
  * @typedef {string|number|number[]} DefaultObjectValue
@@ -52,142 +63,115 @@ const defaultValues = [false, 1, undefined, 0, "", [255, 255, 255, 255], false, 
  * @template {string} [L = never]
  */
 export default class DefaultConfig {
-
     /**
      * - This class handles all the data required by the
      * - whole [Amaterasu]'s [Config] system
      * @param {string} moduleName The module name. this is used on the saving data process so make sure to set it correctly.
-     * @param {string} filePath The file path to store the data at. default: `data/settings.json`.
+     * @param {string} configPath The file path to store the data at. default: `data/settings.json`.
      */
-    constructor(moduleName, filePath = "data/settings.json") {
-        /**
-         * @type {string}
-         */
+    constructor(moduleName = "SetMe", configPath = "data/settings.json") {
+        /** @type {string} */
         this.moduleName = moduleName
-        /**
-         * @type {string}
-         */
-        this.filePath = filePath
-        /**
-         * @type {string?}
-         */
+        /** @type {string} */
+        this.configPath = configPath
+        /** @type {string?} */
         this.lastCategory = null
-
-        /**
-         * Holds all the categories names
-         * @type {Set<string>}
-         */
-        this.categories = new Set()
-        /**
-         * @type {any[]}
-         */
-        this.savedConfig = JSON.parse(FileLib.read(this.moduleName, this.filePath) || "{}")
-
-        /**
-         * Config stuff
-         * @type {{ category: string, settings: DefaultDefaultObject[] }[]}
-         */
+        /** @type {Set<string>} */
+        this.categoryNames = new Set()
+        const cachedFile = FileLib.read(this.moduleName, this.configPath)
+        /** @type {[]} */
+        this.savedData = JSON.parse(cachedFile || this._attemptRestore())
+        /** @type {{ category: string, settings: DefaultDefaultObject[] }[]} */
         this.config = []
         /**
          * @type {?import("./Settings").default<this>}
          */
-        this.settingsInstance = null
+        this.instance = null
 
-        // Registers
-        register("gameUnload", () => {
-            this._saveToFile()
-            if (this.settingsInstance) {
-                const gui = this.settingsInstance.handler.ctGui
-                if (gui.isOpen()) gui.close()
+        configInstances.put(this, false)
+    }
 
-                this.settingsInstance.handler = null
-                this.settingsInstance = null
-            }
+    /**
+     * @private
+     * @param {string} stage
+     * @param {string} msg
+     */
+    throwError(stage, err) {
+        throw `AmaterasuError[module=\"${this.moduleName}\", stage=\"${stage}\", error=\"${err}\"]`
+    }
+
+    /**
+     * @private
+     * @param {string} msg
+     */
+    warn(msg) {
+        console.warn(`AmaterasuWarn[module=\"${this.moduleName}\", message=\"${msg}\"]`)
+    }
+
+    /**
+     * - Attempts to restore a corrupted saved config with the backup data (if any exists)
+     * @private
+     */
+    _attemptRestore() {
+        return "[]" // TODO: impl me
+    }
+
+    /**
+     * @private
+     */
+    _init() {
+        this._buildObj()
+        return this
+    }
+
+    /**
+     * - Builds the necessary objects that are later used for settings
+     * @private
+     */
+    _buildObj() {
+        this.categoryNames.forEach((categoryName) => {
+            /** @type {DefaultDefaultObject[]} */
+            const defaultList = this[categoryName]
+
+            for (let defaultObj of defaultList)
+                this._addObj(categoryName, defaultObj)
         })
     }
 
     /**
      * @private
-     * - Internal use.
-     * - Used to setup all the configs after the defaults are set.
-     * - This is done this way due to the default configurations being created before the `Settings` instance
-     * @returns {this}
-     */
-    _init() {
-        this._makeConfig()
-        this._saveToFile()
-        return this
-    }
-
-    /**
-     * @private
-     * - Internal use.
-     * - Checks whether the saved data has changed from the new data
-     * - This will make it so it saves the correct value and changes the [ConfigType] properly
      * @param {string} categoryName
-     * @param {string} configName
-     * @param {DefaultDefaultObject} newObj
+     * @param {DefaultDefaultObject} obj
      * @returns
      */
-    _makeObj(categoryName, configName, newObj) {
-        categoryName = this._checkCategory(categoryName, configName)
-
-        if (newObj.subcategory === "") newObj.subcategory = null
-
-        const obj = this.savedConfig?.find(it => it.category === categoryName)?.settings?.find(currObj => currObj.name === configName)
-        if (!obj) return this[categoryName].push(newObj)
-
-        if (obj.type !== newObj.type) {
-            newObj.value = defaultValues[newObj.type]
-
-            this[categoryName].push(newObj)
-            console.warn(`[Amaterasu - ${this.moduleName}] config type for ${configName} was changed from ${obj.type} to ${newObj.type}. therefor the object was re-created to fit these changes`)
-
-            return
-        }
-
-        // Handle MultiCheckBox savings
-        if (obj.type === ConfigTypes.MULTICHECKBOX) {
-            obj.options.forEach(opts => {
-                const nObj = newObj.options.find(op => op.configName === opts.name)
-                if (!nObj) return
-
-                nObj.value = opts.value
+    _addObj(categoryName, obj) {
+        const configObj = this.config.find((it) => it.category === categoryName)
+        if (!configObj) {
+            this.config.push({
+                category: categoryName,
+                settings: [obj]
             })
-
-            this[categoryName].push(newObj)
-
             return
         }
 
-        newObj.value = obj.value
-        this[categoryName].push(newObj)
+        configObj.settings.push(obj)
     }
 
     /**
      * @private
-     * - Internal use.
-     * - Checks whether the given [categoryName] is valid.
-     * - also checks whether that category is created.
-     * - if not we create it.
      * @param {string} categoryName
-     * @param {string} configName
-     * @returns {string} the category name itself
+     * @returns {string}
      */
-    _checkCategory(categoryName, configName) {
-        if (!categoryName && !this.lastCategory) throw new Error(`${categoryName} is not a valid Category Name.`)
-        if (configName === "getConfig") throw new Error(`[Amaterasu - ${this.moduleName}] you cannot overwrite a built in function. attempting to create config with configName: ${configName}. failed please change this configName`)
+    _getCategory(categoryName) {
+        if (!categoryName && !this.lastCategory) return this.throwError("Category", `\"${categoryName}\" is not valid`)
+        if (categoryName == "getConfig") return this.throwError("Category", `Cannot override getConfig as that is a built in function.`)
 
-        // Gets the prevous category name if [categoryName] is [null]
         categoryName = categoryName ?? this.lastCategory
+        if (!categoryName) return this.throwError("Category", `${categoryName} is not valid.`)
 
-        if (!categoryName) throw new Error(`${categoryName} is not a valid Category Name`)
-        if (!configName) throw new Error(`${configName} is not a valid Config Name.`)
-
-        // Create category data if it does not exist.
-        if (!this.categories.has(categoryName)) {
+        if (!this.categoryNames.has(categoryName)) {
             this[categoryName] = []
-            this.categories.add(categoryName)
+            this.categoryNames.add(categoryName)
         }
 
         this.lastCategory = categoryName
@@ -195,101 +179,132 @@ export default class DefaultConfig {
         return categoryName
     }
 
+    // The key here is to not check for configType limitation
+    // since this leaves the door open for others to create their own types
     /**
      * @private
-     * - Internal use.
+     * @param {string} categoryName
+     * @param {string} configName
+     * @param {DefaultDefaultObject} obj
      */
-    _makeConfig() {
-        this.categories.forEach(categoryName => {
-            const settings = this[categoryName]
+    _addConfig(categoryName, configName, obj) {
+        categoryName = this._getCategory(categoryName)
+        if (obj.subcategory === "") obj.subcategory = null
 
-            settings.forEach(dobj => {
-                const obj = this.config.find(names => names.category === categoryName)
-                if (!obj) return this.config.push({ category: categoryName, settings: [dobj] })
+        const savedObj = this._findCategory(categoryName)?.settings?.find((it) => it.name === configName)
+        if (!savedObj) return this[categoryName].push(obj)
 
-                obj.settings.push(dobj)
+        // Handle type change (SWITCH to COLORPICKER etc) here
+        if (savedObj.type !== obj.type) {
+            obj.value = defaultValues.get(obj.type)
+            this[categoryName].push(obj)
+            this.warn(`${configName} type changed, object was re-created.`)
+            return
+        }
+
+        // Handle Multi Checkbox here
+        if (savedObj.type === ConfigTypes.MULTICHECKBOX) {
+            savedObj.options.forEach((opt) => {
+                const data = obj.options.find((it) => it.configName === opt.name)
+                if (!data) return
+
+                data.value = opt.value
             })
-        })
+            this[categoryName].push(obj)
+            return
+        }
+
+        // Fallthrough to normal behavior
+        obj.value = savedObj.value
+        this[categoryName].push(obj)
     }
 
     /**
      * @private
-     * - Internal use.
-     * - Forms and updates the current config into an actual dev friendly format
-     * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
-     * converts it into `{ configName: false }`
-     * @param {Object?}
      */
-    _normalizeSettings(settings) {
-        // TODO: change this to only be ran once per feature change
-        // rather than everytime one changes re-scan the entire thing and re-build it
-        this.config.forEach(obj => {
-            obj.settings.forEach(settingsObj => {
-                if (settingsObj.type === ConfigTypes.MULTICHECKBOX) {
-                    settingsObj.options.forEach(opts => {
-                        settings[opts.configName] = opts.value
-                    })
-                    return
+    _save() {
+        let data = []
+
+        for (let obj of this.config) {
+            let toSave = {
+                category: obj.category,
+                settings: []
+            }
+
+            for (let setting of obj.settings) {
+                if (setting.type === ConfigTypes.MULTICHECKBOX) {
+                    let checkboxData = {
+                        type: setting.type,
+                        name: setting.name,
+                        options: []
+                    }
+
+                    for (let opt of setting.options) {
+                        checkboxData.options.push({
+                            name: opt.configName,
+                            value: opt.value
+                        })
+                    }
+
+                    toSave.settings.push(checkboxData)
+                    continue
                 }
 
-                settings[settingsObj.name] = settingsObj.value
-            })
-        })
-    }
+                toSave.settings.push({
+                    type: setting.type,
+                    name: setting.name,
+                    value: setting.value
+                })
+            }
 
-    /**
-     * @private
-     * - Internal use.
-     * - Builds the config into an actual dev friendly format
-     * - e.g instead of `[Settings: { name: "configName", text: "config stuff" ...etc }]`
-     * converts it into `{ configName: false }`
-     * @returns {Readonly<P> & { getConfig() => import("./Settings").default<DefaultConfig<P, C, A, L>> }}
-     */
-    _initSettings() {
-        const settings = {}
-
-        this.config.forEach(obj => {
-            obj.settings.forEach(settingsObj => {
-                if (settingsObj.type === ConfigTypes.MULTICHECKBOX) {
-                    settingsObj.options.forEach(opts => {
-                        settings[opts.configName] = opts.value
-                    })
-                    return
-                }
-
-                settings[settingsObj.name] = settingsObj.value
-            })
-        })
-
-        settings.getConfig = () => this.settingsInstance
-
-        this.settingsInstance.settings = settings
-
-        return settings
-    }
-
-    /**
-     * - Internal use.
-     * - Saves the current config json into the module's given config file path
-     * @private
-     */
-    _saveToFile() {
-        const data = this.config.map(it => ({
-            category: it.category,
-            settings: it.settings.map(it2 => {
-                // Perfection.
-                if (it2.type === ConfigTypes.MULTICHECKBOX) return { type: it2.type, name: it2.name, options: it2.options.map(opts => { return { name: opts.configName, value: opts.value } }) }
-
-                return { type: it2.type, name: it2.name, value: it2.value }
-            })
-        }))
+            data.push(toSave)
+        }
 
         FileLib.write(
             this.moduleName,
-            this.filePath,
+            this.configPath,
             JSON.stringify(data, null, 4),
             true
         )
+    }
+
+    /**
+     * @private
+     * @param {*} data
+     */
+    _normalize(data) {
+        for (let obj of this.config) {
+            for (let setting of obj.settings) {
+                if (setting.type === ConfigTypes.MULTICHECKBOX) {
+                    for (let opt of setting.options) data[opt.configName] = opt.value
+                    continue
+                }
+                data[setting.name] = setting.value
+            }
+        }
+    }
+
+    /**
+     * @private
+     * @returns {Readonly<P> & { getConfig() => import("./Settings").default<DefaultConfig<P, C, A, L>> }}
+     */
+    _settings() {
+        const data = {}
+        this._normalize(data)
+
+        data.getConfig = () => this.instance
+        this.instance.settings = data
+
+        return data
+    }
+
+    /**
+     * @private
+     * @param {string} categoryName
+     * @returns
+     */
+    _findCategory(categoryName) {
+        return this.savedData.find((it) => it.category === categoryName)
     }
 
     /**
@@ -310,7 +325,7 @@ export default class DefaultConfig {
         subcategory = null,
         tags = []
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.BUTTON,
             name: configName,
             text: title,
@@ -342,7 +357,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.TOGGLE,
             name: configName,
             text: title,
@@ -374,7 +389,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.SWITCH,
             name: configName,
             text: title,
@@ -407,7 +422,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.TEXTINPUT,
             name: configName,
             text: title,
@@ -442,7 +457,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.SLIDER,
             name: configName,
             text: title,
@@ -477,7 +492,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener,
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.SELECTION,
             name: configName,
             text: title,
@@ -510,7 +525,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.COLORPICKER,
             name: configName,
             text: title,
@@ -545,7 +560,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.DROPDOWN,
             name: configName,
             text: title,
@@ -578,7 +593,7 @@ export default class DefaultConfig {
         subcategory = null,
         tags = []
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.MULTICHECKBOX,
             name: configName,
             text: title,
@@ -610,7 +625,7 @@ export default class DefaultConfig {
         subcategory = null,
         tags = []
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.TEXTPARAGRAPH,
             name: configName,
             text: title,
@@ -641,7 +656,7 @@ export default class DefaultConfig {
         tags = [],
         registerListener
     }) {
-        this._makeObj(category, configName, {
+        this._addConfig(category, configName, {
             type: ConfigTypes.KEYBIND,
             name: configName,
             text: title,
@@ -655,3 +670,19 @@ export default class DefaultConfig {
         return this
     }
 }
+
+register("gameUnload", () => {
+    new Thread(() => {
+        configInstances.keySet().forEach((ins) => {
+            let parent = ins.instance
+            ins._save()
+            if (!parent) return
+    
+            let gui = parent.handler.ctGui
+            if (gui.isOpen()) gui.close()
+    
+            parent.handler = null
+            ins.instance = null
+        })
+    }).start()
+})
