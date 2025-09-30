@@ -118,6 +118,11 @@ export default class Settings {
                 Client.getMinecraft().field_71474_y.field_74335_Z = 2
             })
             .onClose(() => {
+                new Thread(() => {
+                    // Backup on gui close
+                    this.defaultConfig._save(true)
+                }).start()
+
                 // Disable repeating keys so it doesn't leak to the main game
                 Keyboard.enableRepeatEvents(false)
 

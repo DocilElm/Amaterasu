@@ -113,7 +113,7 @@ export default class DefaultConfig {
      * @private
      */
     _attemptRestore() {
-        return "[]" // TODO: impl me
+        return FileLib.read(`./config/amaterasu/${this.moduleName}_backup.json`) ?? "[]"
     }
 
     /**
@@ -222,7 +222,7 @@ export default class DefaultConfig {
     /**
      * @private
      */
-    _save() {
+    _save(backup = false) {
         let data = []
 
         for (let obj of this.config) {
@@ -258,6 +258,15 @@ export default class DefaultConfig {
             }
 
             data.push(toSave)
+        }
+
+        if (backup) {
+            FileLib.write(
+                `./config/amaterasu/${this.moduleName}_backup.json`,
+                JSON.stringify(data, null, 4),
+                true
+            )
+            return
         }
 
         FileLib.write(
